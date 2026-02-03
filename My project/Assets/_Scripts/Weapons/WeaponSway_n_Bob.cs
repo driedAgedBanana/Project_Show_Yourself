@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class WeaponSway_n_Bob : MonoBehaviour
 {
+    public WeaponBase weaponBase;
+
     [Header("Sway Settings")]
     public float swayClamp = 0.09f;
     public float smoothing = 3f;
@@ -22,14 +24,19 @@ public class WeaponSway_n_Bob : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        _origin = transform.localPosition;
+        _defaultPos = transform.localPosition;
+
+        weaponBase = GetComponent<WeaponBase>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        SwayWeapon();
-        WeaponBobbing();
+        if (!weaponBase.IsAiming)
+        {
+            SwayWeapon();
+            WeaponBobbing();
+        }
     }
 
     private void SwayWeapon()
