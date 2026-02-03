@@ -17,6 +17,9 @@ public class PlayerController : MonoBehaviour
     private float _xRotation;
     private Vector3 _originalCamPosition;
     [SerializeField] private Transform _camHolder;
+    [Space]
+    [HideInInspector] public float mouseX;
+    [HideInInspector] public float mouseY;
 
     [Header("Movement Settings")]
     public float moveSpeed = 5f;
@@ -36,13 +39,13 @@ public class PlayerController : MonoBehaviour
     public float staminaFastGainRate;
     public float cooldownTime;
 
-    private bool _canSprint;
+    [HideInInspector] public bool canSprint;
     private float _coolDownTimer;
 
     private bool _isSlowWalk;
     private bool _isRunning;
     private bool _runButtonPressed;
-    private bool _isMoving;
+    [HideInInspector] public bool isMoving;
 
     [Header("Head Bobbing")]
     public float walkBobSpeed = 14f;
@@ -149,8 +152,8 @@ public class PlayerController : MonoBehaviour
 
     private void HandleLook()
     {
-        float mouseX = _lookDirection.x * sensitivity * Time.deltaTime;
-        float mouseY = _lookDirection.y * sensitivity * Time.deltaTime;
+        mouseX = _lookDirection.x * sensitivity * Time.deltaTime;
+        mouseY = _lookDirection.y * sensitivity * Time.deltaTime;
 
         transform.Rotate(Vector3.up * mouseX);
         _xRotation = Mathf.Clamp(_xRotation - mouseY, -_xClamp, _xClamp);
@@ -198,20 +201,20 @@ public class PlayerController : MonoBehaviour
     {
         if (_isSliding) return;
 
-        _canSprint = _runButtonPressed && _isMoving && !_isCrouching && _currentStamina > 0 && !_isSliding && !_leaningAllowed;
-        float speed = _isCrouching ? crouchSpeed : (_canSprint ? sprintSpeed : (_isSlowWalk ? slowWalkSpeed : moveSpeed));
+        canSprint = _runButtonPressed && isMoving && !_isCrouching && _currentStamina > 0 && !_isSliding && !_leaningAllowed;
+        float speed = _isCrouching ? crouchSpeed : (canSprint ? sprintSpeed : (_isSlowWalk ? slowWalkSpeed : moveSpeed));
 
         Vector3 movement = transform.right * _moveInput.x + transform.forward * _moveInput.y;
         rb.linearVelocity = new Vector3(movement.x * speed, rb.linearVelocity.y, movement.z * speed);
 
-        _isMoving = new Vector3(rb.linearVelocity.x, 0, rb.linearVelocity.z).magnitude > 0.1f;
+        isMoving = new Vector3(rb.linearVelocity.x, 0, rb.linearVelocity.z).magnitude > 0.1f;
         float baseY = _isCrouching ? crouchCamY : standCamY;
 
         // Head bobbing
 
-        if (_isMoving)
+        if (isMoving)
         {
-            bool isSprinting = _canSprint;
+            bool isSprinting = canSprint;
             float bobSpeed = isSprinting ? sprintBobSpeed : walkBobSpeed;
             float bobAmount = isSprinting ? sprintBobAmount : walkBobAmount;
 
@@ -226,7 +229,7 @@ public class PlayerController : MonoBehaviour
             camHolder.localPosition = new Vector3(camHolder.localPosition.x, Mathf.Lerp(camHolder.localPosition.y, baseY, Time.deltaTime * 5f), camHolder.localPosition.z);
         }
 
-        if (_canSprint)
+        if (canSprint)
         {
             _currentStamina -= staminaDrainRate * Time.deltaTime;
             _coolDownTimer = 0f;
@@ -237,7 +240,7 @@ public class PlayerController : MonoBehaviour
             _isRunning = false;
         }
 
-        float targetFOV = _canSprint ? 80f : 60f;
+        float targetFOV = canSprint ? 80f : 60f;
         playerCam.fieldOfView = Mathf.Lerp(playerCam.fieldOfView, targetFOV, Time.deltaTime * 5f);
 
         _currentStamina = Mathf.Clamp(_currentStamina, 0, maxStamina);
@@ -303,7 +306,7 @@ public class PlayerController : MonoBehaviour
     {
         _isSliding = false;
         _sprintBlockedAfterSlide = true;
-        _canSprint = false;
+        canSprint = false;
 
         print("Sliding stopped");
     }
@@ -330,7 +333,7 @@ public class PlayerController : MonoBehaviour
 
     public void OnRun(InputAction.CallbackContext ctx)
     {
-        if (ctx.performed && _isMoving)
+        if (ctx.performed && isMoving)
         {
             ResetLeaning();
 
@@ -347,7 +350,7 @@ public class PlayerController : MonoBehaviour
         {
             _leaningAllowed = true;
             _runButtonPressed = false;
-            _canSprint = true;
+            canSprint = true;
             _sprintBlockedAfterSlide = false;
         }
     }
@@ -356,7 +359,7 @@ public class PlayerController : MonoBehaviour
     {
         if (ctx.performed)
         {
-            if (_isRunning && _runTimer >= minRunTimeBeforeSlide && !_isSliding && _canSprint)
+            if (_isRunning && _runTimer >= minRunTimeBeforeSlide && !_isSliding && canSprint)
             {
                 StartSliding();
             }
