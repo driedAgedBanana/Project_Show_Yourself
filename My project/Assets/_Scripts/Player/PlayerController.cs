@@ -6,6 +6,7 @@ public class PlayerController : MonoBehaviour
     public static PlayerController Instance;
     private Vector2 _moveInput;
 
+    public Camera playerCam;
     public Rigidbody rb;
 
     [Header("Camera Settings")]
@@ -235,6 +236,9 @@ public class PlayerController : MonoBehaviour
         {
             _isRunning = false;
         }
+
+        float targetFOV = _canSprint ? 80f : 60f;
+        playerCam.fieldOfView = Mathf.Lerp(playerCam.fieldOfView, targetFOV, Time.deltaTime * 5f);
 
         _currentStamina = Mathf.Clamp(_currentStamina, 0, maxStamina);
     }
