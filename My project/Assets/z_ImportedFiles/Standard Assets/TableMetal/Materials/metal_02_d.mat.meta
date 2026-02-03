@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 8629d67886f1445eebccc37d2b17a9b9
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 22280
+  packageName: Common Loot Kit Sample
+  packageVersion: 1
+  assetPath: Assets/Standard Assets/TableMetal/Materials/metal_02_d.mat
+  uploadId: 23393

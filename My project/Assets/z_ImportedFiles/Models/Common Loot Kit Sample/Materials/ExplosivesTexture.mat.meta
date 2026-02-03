@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: cf1def6c1746dc945a78a2d1d3b87504
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 22280
+  packageName: Common Loot Kit Sample
+  packageVersion: 1
+  assetPath: Assets/Models/Common Loot Kit Sample/Materials/ExplosivesTexture.mat
+  uploadId: 23393
