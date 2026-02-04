@@ -14,24 +14,6 @@ public class WeaponBase : MonoBehaviour, IWeapon
     public Transform WeaponTransform => transform;
     public GameObject weaponItSelf;
 
-    [Header("Aiming")]
-    public Camera mainCam;
-    public GameObject crossHair;
-    public GameObject scopeCorssHair;
-    public Transform weaponRoot;
-    public Transform defaultPosition;
-    public Transform aimingPosition;
-    public float aimingSpeed = 5f;
-    public float aimTime;
-
-    [Space]
-    // FOV when ADS
-    public int zoomInFOV;
-    public int defaultFOV;
-
-    public float fovSmoothTime = 0.1f; // How long the transition takes
-    private float _fovVelocity = 0f;    // This MUST be private and only used by SmoothDamp
-
     [Header("Sway Settings")]
     public float swayClamp = 0.09f;
     public float smoothing = 3f;
@@ -51,13 +33,38 @@ public class WeaponBase : MonoBehaviour, IWeapon
     private Vector3 _defaultPos;
     private float _timer;
 
+    [Header("Aiming")]
+    private Camera _mainCam;
+    public GameObject crossHair;
+    public GameObject scopeCorssHair;
+    public Transform weaponRoot;
+    public Transform defaultPosition;
+    public Transform aimingPosition;
+    public float aimingSpeed = 5f;
+    public float aimTime;
+
+    [Space]
+    // FOV when ADS
+    public int zoomInFOV;
+    public int defaultFOV;
+
+    public float fovSmoothTime = 0.1f; // How long the transition takes
+    private float _fovVelocity = 0f;    // This MUST be private and only used by SmoothDamp
+
+    [Header("Shooting and Damages")]
+    public weaponType currentWeaponType = weaponType.Rifle;
+    public GameObject shootingPoint;
+    public LineRenderer bulletTrail;
+    public GameObject bulletHitImpact;
+    public ParticleSystem muzzleFlash;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         crossHair.SetActive(true);
         scopeCorssHair.SetActive(false);
 
-        mainCam = PlayerController.Instance.playerCam;
+        _mainCam = PlayerController.Instance.playerCam;
 
         _defaultPos = transform.localPosition;
     }
@@ -99,14 +106,14 @@ public class WeaponBase : MonoBehaviour, IWeapon
             weaponRoot.rotation = Quaternion.Slerp(defaultPosition.rotation, aimingPosition.rotation, aimTime);
 
             // Camera POV transistion between aiming or not
-            float currentFOV = mainCam.fieldOfView;
-            mainCam.fieldOfView = Mathf.SmoothDamp(currentFOV, targetFOV, ref _fovVelocity, fovSmoothTime);
+            float currentFOV = _mainCam.fieldOfView;
+            _mainCam.fieldOfView = Mathf.SmoothDamp(currentFOV, targetFOV, ref _fovVelocity, fovSmoothTime);
         }
         else
         {
             isAiming = false;
-            float currentFOV = mainCam.fieldOfView;
-            mainCam.fieldOfView = Mathf.SmoothDamp(currentFOV, defaultFOV, ref _fovVelocity, fovSmoothTime);
+            float currentFOV = _mainCam.fieldOfView;
+            _mainCam.fieldOfView = Mathf.SmoothDamp(currentFOV, defaultFOV, ref _fovVelocity, fovSmoothTime);
         }
     }
 

@@ -32,6 +32,8 @@ public class PlayerController : MonoBehaviour
 
     [Space]
     // Stamina for sprinting
+    public float sprintingFOV = 80f;
+    public float normalFOV = 60f;
     public float maxStamina;
     private float _currentStamina;
     public float staminaDrainRate;
@@ -240,7 +242,7 @@ public class PlayerController : MonoBehaviour
             _isRunning = false;
         }
 
-        float targetFOV = canSprint ? 80f : 60f;
+        float targetFOV = canSprint ? sprintingFOV : normalFOV;
         playerCam.fieldOfView = Mathf.Lerp(playerCam.fieldOfView, targetFOV, Time.deltaTime * 5f);
 
         _currentStamina = Mathf.Clamp(_currentStamina, 0, maxStamina);
