@@ -1167,9 +1167,9 @@ MonoBehaviour:
   zoomInFOV: 35
   defaultFOV: 80
   fovSmoothTime: 3
-  swayClamp: 0.09
+  swayClamp: 5
   smoothing: 3
-  swayMultiplier: 3
+  swayMultiplier: 7
   walkBobSpeed: 14
   walkBobAmount: 0.005
   sprintBobSpeed: 18

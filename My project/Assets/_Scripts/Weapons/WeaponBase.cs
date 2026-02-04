@@ -66,14 +66,24 @@ public class WeaponBase : MonoBehaviour, IWeapon
     void Update()
     {
         Aiming();
-        SwayWeapon();
-        ApplyFinalTransform();
-        WeaponBobbing();
+
+        if (isAiming)
+        {
+            _swayRotation = Quaternion.identity;
+            return;
+        }
+        else
+        {
+            SwayWeapon();
+            ApplyFinalTransform();
+            WeaponBobbing();
+        }
+
     }
 
     public void Aiming()
     {
-        if(true) // Replace 'true' with WeaponManager in the future
+        if (true) // Replace 'true' with WeaponManager in the future
         {
             Transform targetPosition = isAiming ? aimingPosition : defaultPosition;
             float targetFOV = isAiming ? zoomInFOV : defaultFOV;
@@ -112,12 +122,6 @@ public class WeaponBase : MonoBehaviour, IWeapon
 
     private void SwayWeapon()
     {
-        if (isAiming)
-        {
-            _swayRotation = Quaternion.identity;
-            return;
-        }
-
         float mouseX = Input.GetAxisRaw("Mouse X") * swayMultiplier;
         float mouseY = Input.GetAxisRaw("Mouse Y") * swayMultiplier;
 
