@@ -18,7 +18,7 @@ public class WeaponBase : MonoBehaviour, IWeapon
     public Camera mainCam;
     public GameObject crossHair;
     public GameObject scopeCorssHair;
-    public Transform weaponTransform;
+    public Transform weaponRoot;
     public Transform defaultPosition;
     public Transform aimingPosition;
     public float aimingSpeed = 5f;
@@ -32,7 +32,24 @@ public class WeaponBase : MonoBehaviour, IWeapon
     public float fovSmoothTime = 0.1f; // How long the transition takes
     private float _fovVelocity = 0f;    // This MUST be private and only used by SmoothDamp
 
+    [Header("Sway Settings")]
+    public float swayClamp = 0.09f;
+    public float smoothing = 3f;
+    private Vector3 _origin;
+    [Space]
+    public float swayMultiplier;
 
+    [Header("Bobbing Setting")]
+    public float walkBobSpeed = 14f;
+    public float walkBobAmount = 0.05f;
+    public float sprintBobSpeed = 18f;
+    public float sprintBobAmount = 0.1f;
+    private Vector3 _bobOffset;
+    private Quaternion _swayRotation = Quaternion.identity;
+
+
+    private Vector3 _defaultPos;
+    private float _timer;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -42,12 +59,16 @@ public class WeaponBase : MonoBehaviour, IWeapon
 
         mainCam = PlayerController.Instance.playerCam;
 
+        _defaultPos = transform.localPosition;
     }
 
     // Update is called once per frame
     void Update()
     {
         Aiming();
+        SwayWeapon();
+        ApplyFinalTransform();
+        WeaponBobbing();
     }
 
     public void Aiming()
@@ -64,8 +85,8 @@ public class WeaponBase : MonoBehaviour, IWeapon
             aimTime = Mathf.Clamp01(aimTime + Time.deltaTime * aimingSpeed * (isAiming ? 1 : -1));
 
             // Lerp the weapon's position and rotation smoothly between default and aiming positions
-            weaponTransform.position = Vector3.Lerp(defaultPosition.position, aimingPosition.position, aimTime);
-            weaponTransform.rotation = Quaternion.Slerp(defaultPosition.rotation, aimingPosition.rotation, aimTime);
+            weaponRoot.position = Vector3.Lerp(defaultPosition.position, aimingPosition.position, aimTime);
+            weaponRoot.rotation = Quaternion.Slerp(defaultPosition.rotation, aimingPosition.rotation, aimTime);
 
             // Camera POV transistion between aiming or not
             float currentFOV = mainCam.fieldOfView;
@@ -76,6 +97,56 @@ public class WeaponBase : MonoBehaviour, IWeapon
             isAiming = false;
             float currentFOV = mainCam.fieldOfView;
             mainCam.fieldOfView = Mathf.SmoothDamp(currentFOV, defaultFOV, ref _fovVelocity, fovSmoothTime);
+        }
+    }
+
+    private void ApplyFinalTransform()
+    {
+        // Position (aiming handled by weaponRoot, bob is additive)
+        transform.localPosition = _defaultPos + _bobOffset;
+
+        // Rotation (sway additive on top of current local rotation)
+        transform.localRotation = _swayRotation;
+    }
+
+
+    private void SwayWeapon()
+    {
+        if (isAiming)
+        {
+            _swayRotation = Quaternion.identity;
+            return;
+        }
+
+        float mouseX = Input.GetAxisRaw("Mouse X") * swayMultiplier;
+        float mouseY = Input.GetAxisRaw("Mouse Y") * swayMultiplier;
+
+        mouseX = Mathf.Clamp(mouseX, -swayClamp, swayClamp);
+        mouseY = Mathf.Clamp(mouseY, -swayClamp, swayClamp);
+
+        Quaternion rotX = Quaternion.AngleAxis(-mouseY, Vector3.right);
+        Quaternion rotY = Quaternion.AngleAxis(mouseX, Vector3.up);
+
+        Quaternion targetRot = rotX * rotY;
+        _swayRotation = Quaternion.Slerp(_swayRotation, targetRot, smoothing * Time.deltaTime);
+    }
+
+
+    public void WeaponBobbing()
+    {
+        if (PlayerController.Instance.isMoving)
+        {
+            bool isSprinting = PlayerController.Instance.canSprint;
+            float bobSpeed = isSprinting ? sprintBobSpeed : walkBobSpeed;
+            float bobAmount = isSprinting ? sprintBobAmount : walkBobAmount;
+
+            _timer += Time.deltaTime * bobSpeed;
+            _bobOffset = new Vector3(0, Mathf.Sin(_timer) * bobAmount, 0);
+        }
+        else
+        {
+            _timer = 0f;
+            _bobOffset = Vector3.Lerp(_bobOffset, Vector3.zero, Time.deltaTime * 8f);
         }
     }
 
