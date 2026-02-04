@@ -129,8 +129,8 @@ public class WeaponBase : MonoBehaviour, IWeapon
 
     private void SwayWeapon()
     {
-        float mouseX = Input.GetAxisRaw("Mouse X") * swayMultiplier;
-        float mouseY = Input.GetAxisRaw("Mouse Y") * swayMultiplier;
+        float mouseX = PlayerController.Instance.lookInput.x * swayMultiplier;
+        float mouseY = PlayerController.Instance.lookInput.y * swayMultiplier;
 
         mouseX = Mathf.Clamp(mouseX, -swayClamp, swayClamp);
         mouseY = Mathf.Clamp(mouseY, -swayClamp, swayClamp);

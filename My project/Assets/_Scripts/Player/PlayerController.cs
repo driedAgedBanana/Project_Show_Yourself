@@ -4,380 +4,188 @@ using UnityEngine.InputSystem;
 public class PlayerController : MonoBehaviour
 {
     public static PlayerController Instance;
-    private Vector2 _moveInput;
 
-    public Camera playerCam;
+    [Header("References")]
     public Rigidbody rb;
-
-    [Header("Camera Settings")]
+    public Camera playerCam;
+    public Transform leanPivot;
     public Transform camHolder;
-    public float sensitivity = 15f;
-    private Vector2 _lookDirection;
-    [Range(0f, 90f)] private float _xClamp = 50f;
-    private float _xRotation;
-    private Vector3 _originalCamPosition;
-    [SerializeField] private Transform _camHolder;
-    [Space]
-    [HideInInspector] public float mouseX;
-    [HideInInspector] public float mouseY;
+    public CapsuleCollider playerCollider;
 
-    [Header("Movement Settings")]
+    [Header("Mouse Look")]
+    public float sensitivity = 15f;
+    [Range(0, 90)] public float xClamp = 50f;
+    private float xRotation;
+    [HideInInspector] public Vector2 lookInput;
+
+    [Header("Movement")]
     public float moveSpeed = 5f;
     public float slowWalkSpeed = 2f;
     public float sprintSpeed = 10f;
+    public float crouchSpeed = 2f;
 
-    public LayerMask groundLayer;
-    public GameObject groundChecker;
-    public float groundCheckDistance = 0.2f;
-
-    [Space]
-    // Stamina for sprinting
-    public float sprintingFOV = 80f;
-    public float normalFOV = 60f;
-    public float maxStamina;
-    private float _currentStamina;
-    public float staminaDrainRate;
-    public float staminaNormalGainRate;
-    public float staminaFastGainRate;
-    public float cooldownTime;
-
-    [HideInInspector] public bool canSprint;
-    private float _coolDownTimer;
-
-    private bool _isSlowWalk;
-    private bool _isRunning;
-    private bool _runButtonPressed;
+    private Vector2 moveInput;
     [HideInInspector] public bool isMoving;
 
-    [Header("Head Bobbing")]
+    [Header("Stamina")]
+    public float maxStamina = 5f;
+    public float staminaDrainRate = 1f;
+    public float staminaRecoverRate = 0.5f;
+    private float currentStamina;
+    [HideInInspector] public bool canSprint;
+    private bool runHeld;
+
+    [Header("FOV")]
+    public float normalFOV = 60f;
+    public float sprintFOV = 80f;
+
+    [Header("Head Bob")]
     public float walkBobSpeed = 14f;
     public float walkBobAmount = 0.05f;
     public float sprintBobSpeed = 18f;
     public float sprintBobAmount = 0.1f;
+    private float bobTimer;
 
-    private float _defaultPosY = 0f;
-    private float _timer;
-
-    [Header("Crouching Mechanic")]
-    public float crouchSpeed;
-    public float crouchHeight = 1f;
+    [Header("Crouch")]
     public float standHeight = 2f;
-    public float crouchCamY = 0.8f;
+    public float crouchHeight = 1f;
     public float standCamY = 1.6f;
+    public float crouchCamY = 0.8f;
+    private bool isCrouching;
 
-    private bool _isCrouching;
+    [Header("Lean")]
+    public float leanAngle = 20f;
+    public float leanSpeed = 10f;
+    private float leanInput;
 
-    [SerializeField] private CapsuleCollider _playerCollider;
-
-    public LayerMask obstacleLayer;
-
-    [Header("Sliding Mechanic")]
-    public float slideForce = 12f;
-    public float slideDuration = 0.8f;
-    public float minRunTimeBeforeSlide = 1.5f;
-    public float slidingStaminaDrainRate = 30f;
-    private bool _sprintBlockedAfterSlide = false;
-
-    [SerializeField] private float _runTimer = 0f;
-    [SerializeField] private bool _isSliding = false;
-    [SerializeField] private float _slideTimer = 0f;
-
-    [Header("Leaning Mechanic")]
-    public float leaningAmount = 20f;
-    public float leaningSpeed = 15f;
-
-    private bool _leaningAllowed;
-    private Quaternion _targetLeanRotation;
-    private float _leaningDirection;
-
-    public Vector2 GetMovementInput() => _moveInput;
-    public Vector2 GetLookInput() => _lookDirection;
+    [Header("Ground Check")]
+    public Transform groundChecker;
+    public float groundCheckDistance = 0.2f;
+    public LayerMask groundLayer;
 
     private void Awake()
     {
-        if (Instance != null && Instance != this)
-        {
-            Destroy(Instance);
-        }
-        else
-        {
-            Instance = this;
-        }
-
-        rb = GetComponent<Rigidbody>();
-
-        _originalCamPosition = camHolder.localPosition;
-    }
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
+        Instance = this;
+        rb.interpolation = RigidbodyInterpolation.Interpolate;
+        currentStamina = maxStamina;
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+    }
 
-        _currentStamina = maxStamina;
-        _leaningAllowed = true;
-        _defaultPosY = transform.localPosition.y;
+    private void LateUpdate()
+    {
+        HandleLook();
+
+    }
+
+    private void Update()
+    {
+        HandleLean();
+        HandleFOV();
+        HandleHeadBob();
+        HandleStamina();
     }
 
     private void FixedUpdate()
     {
-        HandleMovement();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        HandleLook();
-        HandleLeaning();
-        IsGrounded();
-
-        // Tracking running time
-        if (_isRunning)
-        {
-            _runTimer += Time.deltaTime;
-        }
-        else
-        {
-            _runTimer = 0f;
-        }
-
-        if (_isSliding)
-        {
-            _slideTimer += Time.deltaTime;
-            if (_slideTimer >= slideDuration)
-            {
-                StopSliding();
-            }
-        }
+        HandleMovementPhysics();
     }
 
     private void HandleLook()
     {
-        mouseX = _lookDirection.x * sensitivity * Time.deltaTime;
-        mouseY = _lookDirection.y * sensitivity * Time.deltaTime;
+        float mouseX = lookInput.x * sensitivity;
+        float mouseY = lookInput.y * sensitivity;
 
+        // Yaw
         transform.Rotate(Vector3.up * mouseX);
-        _xRotation = Mathf.Clamp(_xRotation - mouseY, -_xClamp, _xClamp);
-        _camHolder.localRotation = Quaternion.Euler(_xRotation, 0f, 0f);
+
+        // Pitch
+        xRotation -= mouseY;
+        xRotation = Mathf.Clamp(xRotation, -xClamp, xClamp);
+
+        Vector3 euler = camHolder.localEulerAngles;
+        euler.x = xRotation;
+        camHolder.localEulerAngles = euler;
     }
 
-    public bool IsGrounded()
+    private void HandleMovementPhysics()
     {
-        return Physics.Raycast(groundChecker.transform.position, Vector3.down, groundCheckDistance, groundLayer);
-    }
+        float speed = isCrouching ? crouchSpeed : canSprint ? sprintSpeed : moveSpeed;
 
-    private void HandleLeaning()
-    {
-        if (!_leaningAllowed)
-        {
-            return;            
-        }
-        else
-        {
-            if(_leaningDirection > 0) // Lean left
-            {
-                _targetLeanRotation = Quaternion.Euler(0, transform.localEulerAngles.y, -leaningAmount);
-            }
-            else if (_leaningDirection < 0) // Lean right
-            {
-                _targetLeanRotation = Quaternion.Euler(0, transform.localEulerAngles.y, leaningAmount);
-            }
-            else
-            {
-                _targetLeanRotation = Quaternion.Euler(0, transform.localEulerAngles.y, 0);
-            }
-        }
+        Vector3 moveDir = transform.right * moveInput.x + transform.forward * moveInput.y;
+        Vector3 velocity = moveDir * speed;
+        velocity.y = rb.linearVelocity.y;
 
-        // Smoothly interpolate to the target rotation
-        transform.localRotation = Quaternion.Slerp(transform.localRotation, _targetLeanRotation, Time.deltaTime * leaningSpeed);
-    }
-
-    private void ResetLeaning()
-    {
-        transform.localRotation = Quaternion.Slerp(transform.localRotation, _targetLeanRotation, Time.deltaTime * leaningSpeed);
-        transform.localRotation = Quaternion.Euler(0, transform.localEulerAngles.y, 0);
-    }
-
-    private void HandleMovement()
-    {
-        if (_isSliding) return;
-
-        canSprint = _runButtonPressed && isMoving && !_isCrouching && _currentStamina > 0 && !_isSliding && !_leaningAllowed;
-        float speed = _isCrouching ? crouchSpeed : (canSprint ? sprintSpeed : (_isSlowWalk ? slowWalkSpeed : moveSpeed));
-
-        Vector3 movement = transform.right * _moveInput.x + transform.forward * _moveInput.y;
-        rb.linearVelocity = new Vector3(movement.x * speed, rb.linearVelocity.y, movement.z * speed);
+        rb.linearVelocity = velocity;
 
         isMoving = new Vector3(rb.linearVelocity.x, 0, rb.linearVelocity.z).magnitude > 0.1f;
-        float baseY = _isCrouching ? crouchCamY : standCamY;
+    }
 
-        // Head bobbing
+    private void HandleHeadBob()
+    {
+        float baseY = isCrouching ? crouchCamY : standCamY;
 
-        if (isMoving)
+        if (!isMoving)
         {
-            bool isSprinting = canSprint;
-            float bobSpeed = isSprinting ? sprintBobSpeed : walkBobSpeed;
-            float bobAmount = isSprinting ? sprintBobAmount : walkBobAmount;
+            bobTimer = 0;
+            Vector3 pos = camHolder.localPosition;
+            pos.y = Mathf.Lerp(pos.y, baseY, Time.deltaTime * 8f);
+            camHolder.localPosition = pos;
+            return;
+        }
 
-            // Calculate the head bobbing
-            _timer += Time.deltaTime * bobSpeed;
-            camHolder.localPosition = new Vector3(camHolder.localPosition.x, baseY + Mathf.Sin(_timer) * bobAmount, camHolder.localPosition.z);
-        }
-        else
-        {
-            // Reset timer and smoothly return to original position
-            _timer = 0f;
-            camHolder.localPosition = new Vector3(camHolder.localPosition.x, Mathf.Lerp(camHolder.localPosition.y, baseY, Time.deltaTime * 5f), camHolder.localPosition.z);
-        }
+        bool sprinting = canSprint;
+        float speed = sprinting ? sprintBobSpeed : walkBobSpeed;
+        float amount = sprinting ? sprintBobAmount : walkBobAmount;
+
+        bobTimer += Time.deltaTime * speed;
+        float offset = Mathf.Sin(bobTimer) * amount;
+
+        Vector3 newPos = camHolder.localPosition;
+        newPos.y = baseY + offset;
+        camHolder.localPosition = newPos;
+    }
+
+    private void HandleStamina()
+    {
+        canSprint = runHeld && isMoving && !isCrouching && currentStamina > 0;
 
         if (canSprint)
-        {
-            _currentStamina -= staminaDrainRate * Time.deltaTime;
-            _coolDownTimer = 0f;
-            _isRunning = true;
-        }
+            currentStamina -= staminaDrainRate * Time.deltaTime;
         else
-        {
-            _isRunning = false;
-        }
+            currentStamina += staminaRecoverRate * Time.deltaTime;
 
-        float targetFOV = canSprint ? sprintingFOV : normalFOV;
-        playerCam.fieldOfView = Mathf.Lerp(playerCam.fieldOfView, targetFOV, Time.deltaTime * 5f);
-
-        _currentStamina = Mathf.Clamp(_currentStamina, 0, maxStamina);
+        currentStamina = Mathf.Clamp(currentStamina, 0, maxStamina);
     }
 
-    private void CrouchDown()
+    private void HandleFOV()
     {
-        _isCrouching = true;
-        _playerCollider.height = crouchHeight;
-        //_playerCollider.center = new Vector3(0, crouchHeight / 2f, 0);
-
-        // Lower the camera
-        camHolder.localPosition = new Vector3(camHolder.localPosition.x, crouchCamY, camHolder.localPosition.z);
-        rb.AddForce(Vector3.down * 3f, ForceMode.Impulse);
+        float target = canSprint ? sprintFOV : normalFOV;
+        playerCam.fieldOfView = Mathf.Lerp(playerCam.fieldOfView, target, Time.deltaTime * 6f);
     }
 
-    private bool CanStandUp()
+    private void HandleLean()
     {
-        float radius = _playerCollider.radius * 0.95f;
-        float startY = transform.position.y + crouchHeight / 2f;
-        float endY = transform.position.y + standHeight / 2f;
-
-        Vector3 point1 = new Vector3(transform.position.x, startY, transform.position.z);
-        Vector3 point2 = new Vector3(transform.position.x, endY, transform.position.z);
-
-        Debug.DrawLine(point1, point2, Color.red, 1f);
-
-        return !Physics.CheckCapsule(point1, point2, radius, obstacleLayer);
+        float targetZ = -leanInput * leanAngle;
+        Quaternion targetRot = Quaternion.Euler(0, 0, targetZ);
+        leanPivot.localRotation = Quaternion.Slerp(leanPivot.localRotation, targetRot, Time.deltaTime * leanSpeed);
     }
 
-    private void StandUp()
+
+    private void ToggleCrouch()
     {
-        if (!CanStandUp()) return;
-
-        _isCrouching = false;
-        _playerCollider.height = standHeight;
-        //_playerCollider.center = new Vector3(0, standHeight / 2f, 0);
-
-        // Ensure standCamY is a small value (like 0.8), not the full height of the player
-        camHolder.localPosition = new Vector3(camHolder.localPosition.x, standCamY, camHolder.localPosition.z);
+        isCrouching = !isCrouching;
+        playerCollider.height = isCrouching ? crouchHeight : standHeight;
     }
 
-    private void StartSliding()
-    {
-        _isSliding = true;
-        _isCrouching = true;
 
-        CrouchDown();
-
-        Vector3 slideDirection = rb.linearVelocity.normalized;
-        rb.AddForce(slideDirection * slideForce, ForceMode.VelocityChange);
-
-        if (_isSliding)
-        {
-            _currentStamina -= slidingStaminaDrainRate * Time.deltaTime;
-            _slideTimer = 0f;
-        }
-
-        print("Sliding started");
-    }
-
-    private void StopSliding()
-    {
-        _isSliding = false;
-        _sprintBlockedAfterSlide = true;
-        canSprint = false;
-
-        print("Sliding stopped");
-    }
-
-    #region Inputs
-
-    public void OnLook(InputAction.CallbackContext context)
-    {
-        _lookDirection = context.ReadValue<Vector2>();
-    }
-
-    public void OnMove(InputAction.CallbackContext ctx)
-    {
-        _moveInput = ctx.ReadValue<Vector2>();
-    }
-
-    public void OnLean(InputAction.CallbackContext ctx)
-    {
-        if (_sprintBlockedAfterSlide) return;
-
-        float leaningInput = ctx.ReadValue<float>();
-        _leaningDirection = leaningInput;
-    }
-
-    public void OnRun(InputAction.CallbackContext ctx)
-    {
-        if (ctx.performed && isMoving)
-        {
-            ResetLeaning();
-
-            if (_isCrouching && CanStandUp())
-            {
-                StandUp();
-            }
-            _isRunning = true;
-            _runButtonPressed = true;
-            _leaningAllowed = false;
-        }
-
-        if (ctx.canceled)
-        {
-            _leaningAllowed = true;
-            _runButtonPressed = false;
-            canSprint = true;
-            _sprintBlockedAfterSlide = false;
-        }
-    }
+    public void OnMove(InputAction.CallbackContext ctx) => moveInput = ctx.ReadValue<Vector2>();
+    public void OnLook(InputAction.CallbackContext ctx) => lookInput = ctx.ReadValue<Vector2>();
+    public void OnRun(InputAction.CallbackContext ctx) => runHeld = ctx.ReadValueAsButton();
+    public void OnLean(InputAction.CallbackContext ctx) => leanInput = ctx.ReadValue<float>();
 
     public void OnCrouch(InputAction.CallbackContext ctx)
     {
-        if (ctx.performed)
-        {
-            if (_isRunning && _runTimer >= minRunTimeBeforeSlide && !_isSliding && canSprint)
-            {
-                StartSliding();
-            }
-            else
-            {
-                if (_isCrouching)
-                {
-                    StandUp();
-                }
-                else
-                {
-                    CrouchDown();
-                }
-            }
-        }
+        if (ctx.performed) ToggleCrouch();
     }
-
-    #endregion
 }
