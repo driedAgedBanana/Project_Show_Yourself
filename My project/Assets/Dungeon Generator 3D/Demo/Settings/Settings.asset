@@ -16,10 +16,10 @@ MonoBehaviour:
     minRooms: 10
     maxRooms: 15
     amountOfAdjacentRoomsToConnect: 3
-    minRoomWidth: 8
-    maxRoomWidth: 12
-    minRoomHeight: 8
-    maxRoomHeight: 12
+    minRoomWidth: 12
+    maxRoomWidth: 24
+    minRoomHeight: 12
+    maxRoomHeight: 24
     minBossRoomWidth: 10
     maxBossRoomWidth: 12
     minBossRoomHeight: 10
