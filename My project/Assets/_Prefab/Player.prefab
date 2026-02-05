@@ -200,8 +200,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1982049497142310322}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.96, z: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0.008726558, w: 0.999962}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.7, y: 0.8, z: 0.7}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -209,7 +209,7 @@ Transform:
   - {fileID: 7392611588130372000}
   - {fileID: 3620633590476733297}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 1}
 --- !u!114 &1652456138511553687
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -224,11 +224,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
   rb: {fileID: 6077063487532896022}
   playerCam: {fileID: 5011732459806026594}
-  leanPivot: {fileID: 0}
+  leanPivot: {fileID: 7392611588130372000}
   camHolder: {fileID: 2371788299209342651}
-  playerCollider: {fileID: 0}
-  sensitivity: 10
-  xClamp: 50
+  playerCollider: {fileID: 7165037070988328891}
+  sensitivity: 0.05
+  xClamp: 40
+  lookInput: {x: 0, y: 0}
   moveSpeed: 5
   slowWalkSpeed: 2
   sprintSpeed: 10
@@ -238,8 +239,8 @@ MonoBehaviour:
   staminaDrainRate: 15
   staminaRecoverRate: 0.5
   canSprint: 0
-  normalFOV: 60
-  sprintFOV: 80
+  normalFOV: 80
+  sprintFOV: 95
   walkBobSpeed: 14
   walkBobAmount: 0.05
   sprintBobSpeed: 18
@@ -254,7 +255,7 @@ MonoBehaviour:
   groundCheckDistance: 0.2
   groundLayer:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 0
 --- !u!136 &7165037070988328891
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -490,6 +491,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 9aa0d7b5-59ff-4e24-a4c2-33b4e992fa39
     m_ActionName: 'Player/Aim[/Mouse/rightButton]'
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1041242293284270902}
+        m_TargetAssemblyTypeName: WeaponBase, Assembly-CSharp
+        m_MethodName: OnShootAuto
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 4f96aafd-ba70-4773-a338-f7fd96dca672
+    m_ActionName: 'Player/ShootAuto[/Mouse/leftButton,/Keyboard/enter]'
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: Keyboard&Mouse
   m_DefaultActionMap: Player
@@ -1223,7 +1240,7 @@ ParticleSystem:
   emitterVelocityMode: 1
   looping: 0
   prewarm: 0
-  playOnAwake: 1
+  playOnAwake: 0
   useUnscaledTime: 0
   autoRandomSeed: 1
   startDelay:
@@ -1289,7 +1306,7 @@ ParticleSystem:
     startLifetime:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 0.06
+      scalar: 0.05
       minScalar: 0.02
       maxCurve:
         serializedVersion: 2
@@ -1342,7 +1359,7 @@ ParticleSystem:
     startSpeed:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 9
+      scalar: 21
       minScalar: 0
       maxCurve:
         serializedVersion: 2
@@ -6262,16 +6279,23 @@ MonoBehaviour:
   weaponRoot: {fileID: 6134131572410414498}
   defaultPosition: {fileID: 1102704317023216285}
   aimingPosition: {fileID: 73810953160420268}
-  aimingSpeed: 5
+  aimingSpeed: 8
   aimTime: 0
   zoomInFOV: 35
   defaultFOV: 80
   fovSmoothTime: 3
+  damage: 0
   currentWeaponType: 1
   shootingPoint: {fileID: 2562628699079626653}
   bulletTrail: {fileID: 4269913587632257975}
   bulletHitImpact: {fileID: 5238538877814813142, guid: 77b2e06f7d3d3e14885250830dab2fe7, type: 3}
   muzzleFlash: {fileID: 4132224945817349673}
+  range: 50
+  impactForce: 0
+  isShooting: 0
+  bulletSpread: 0.07
+  aimingBulletSpread: 0.02
+  fireRate: 0.1
 --- !u!120 &4269913587632257975
 LineRenderer:
   serializedVersion: 2
@@ -6320,9 +6344,7 @@ LineRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Positions:
-  - {x: 0, y: 0, z: 0}
-  - {x: 0, y: 0, z: 1}
+  m_Positions: []
   m_Parameters:
     serializedVersion: 3
     widthMultiplier: 1
@@ -6331,7 +6353,7 @@ LineRenderer:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 0.022058487
+        value: 0.009773746
         inSlope: 0
         outSlope: 0
         tangentMode: 0

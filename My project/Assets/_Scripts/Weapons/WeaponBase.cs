@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -52,11 +53,23 @@ public class WeaponBase : MonoBehaviour, IWeapon
     private float _fovVelocity = 0f;    // This MUST be private and only used by SmoothDamp
 
     [Header("Shooting and Damages")]
+    public int damage;
+    [Space]
     public weaponType currentWeaponType = weaponType.Rifle;
     public GameObject shootingPoint;
     public LineRenderer bulletTrail;
     public GameObject bulletHitImpact;
     public ParticleSystem muzzleFlash;
+    [Space]
+    public int range;
+    public float impactForce;
+    public bool isShooting = false;
+    public float bulletSpread = 0.07f;
+    public float aimingBulletSpread = 0.02f;
+    [Space]
+    public float fireRate = 0.1f;
+    private bool _isShootingAuto;
+    private Coroutine _shootAutoCoroutine;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -117,6 +130,71 @@ public class WeaponBase : MonoBehaviour, IWeapon
         }
     }
 
+    public void Shooting()
+    {
+        RaycastHit hit;
+        Vector3 force = _mainCam.transform.forward * impactForce;
+
+        if (muzzleFlash != null)
+        {
+            muzzleFlash.Play();
+        }
+
+        // Applying recoil here later on
+
+        // Random bullet spread
+        Vector3 direction = _mainCam.transform.forward;
+
+        if (!isAiming)
+        {
+            direction += _mainCam.transform.right * Random.Range(-bulletSpread, bulletSpread);
+            direction += _mainCam.transform.up * Random.Range(-bulletSpread, bulletSpread);
+        }
+        else
+        {
+            direction += _mainCam.transform.right * Random.Range(-aimingBulletSpread, aimingBulletSpread);
+            direction += _mainCam.transform.up * Random.Range(-aimingBulletSpread, aimingBulletSpread);
+        }
+
+        // Sounds later on
+
+        if (Physics.Raycast(_mainCam.transform.position, direction, out hit, range))
+        {
+            Debug.Log("Hit: " + hit.collider.name);
+
+            // Spawn bullet trail
+            StartCoroutine(SpawnBulletLine(shootingPoint.transform.position, hit.point));
+
+            // Spawn hit impact effect
+            GameObject bulletImpact = Instantiate(bulletHitImpact, hit.point, Quaternion.LookRotation(hit.normal));
+            Destroy(bulletImpact, 0.5f);
+        }
+        else
+        {
+            // No hit draw tracer into distance
+            Vector3 endPoint = shootingPoint.transform.position + direction * range;
+            StartCoroutine(SpawnBulletLine(shootingPoint.transform.position, endPoint));
+        }
+    }
+
+    private IEnumerator ShootAuto()
+    {
+        while (_isShootingAuto)
+        {
+            Shooting();
+            yield return new WaitForSeconds(fireRate);
+        }
+    }
+
+    private IEnumerator SpawnBulletLine(Vector3 startPoint, Vector3 hitTarget)
+    {
+        bulletTrail.positionCount = 2;
+        bulletTrail.SetPosition(0, startPoint);
+        bulletTrail.SetPosition(1, hitTarget);
+        yield return new WaitForSeconds(0.01f);
+        bulletTrail.positionCount = 0;
+    }
+
     private void ApplyFinalTransform()
     {
         // Position (aiming handled by weaponRoot, bob is additive)
@@ -166,6 +244,29 @@ public class WeaponBase : MonoBehaviour, IWeapon
     public void OnAim(InputAction.CallbackContext ctx)
     {
         isAiming = ctx.ReadValue<float>() > 0;
+    }
+
+    public void OnShoot(InputAction.CallbackContext ctx)
+    {
+        if (ctx.started)
+        {
+            Shooting();
+        }
+    }
+
+    public void OnShootAuto(InputAction.CallbackContext ctx)
+    {
+        if (ctx.started)
+        {
+            _isShootingAuto = true;
+            _shootAutoCoroutine = StartCoroutine(ShootAuto());
+        }
+        else if (ctx.canceled)
+        {
+            _isShootingAuto = false;
+            if (_shootAutoCoroutine != null)
+                StopCoroutine(_shootAutoCoroutine);
+        }
     }
 
     #endregion
