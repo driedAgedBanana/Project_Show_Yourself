@@ -71,9 +71,6 @@ public class WeaponBase : MonoBehaviour, IWeapon
     private bool _isShootingAuto;
     private Coroutine _shootAutoCoroutine;
 
-    [Header("Recoil")]
-    public WeaponRecoilManager recoilManager;
-
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -144,7 +141,7 @@ public class WeaponBase : MonoBehaviour, IWeapon
         }
 
         // Applying recoil 
-        recoilManager.ApplyingRecoil();
+        PlayerController.Instance.cameraShakeManager.ApplyingRecoil();
 
         // Random bullet spread
         Vector3 direction = _mainCam.transform.forward;
@@ -164,8 +161,6 @@ public class WeaponBase : MonoBehaviour, IWeapon
 
         if (Physics.Raycast(_mainCam.transform.position, direction, out hit, range))
         {
-            Debug.Log("Hit: " + hit.collider.name);
-
             // Spawn bullet trail
             StartCoroutine(SpawnBulletLine(shootingPoint.transform.position, hit.point));
 
@@ -188,7 +183,7 @@ public class WeaponBase : MonoBehaviour, IWeapon
                 }
 
                 Destroy(bulletImpact);
-            }
+            }   
         }
         else
         {

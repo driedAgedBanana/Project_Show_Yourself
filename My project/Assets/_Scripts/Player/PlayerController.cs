@@ -7,6 +7,8 @@ public class PlayerController : MonoBehaviour
 
     [Header("Script references")]
     public WeaponBase[] weaponBase;
+    public PlayerHealth playerHealth;
+    public CameraShakeManager cameraShakeManager;
 
     [Header("References")]
     public Rigidbody rb;
@@ -68,9 +70,20 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
         Instance = this;
+    }
+
+    private void Start()
+    {
         rb.interpolation = RigidbodyInterpolation.Interpolate;
         currentStamina = maxStamina;
+        cameraShakeManager = GetComponentInChildren<CameraShakeManager>();
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }

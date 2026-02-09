@@ -487,13 +487,13 @@ public class EnemyController : MonoBehaviour
         _attackCoroutine = null;
     }
 
-    //public void AttackPlayer()
-    //{
-    //    if (PlayerHealth.Instance != null && _distanceToPlayer <= attackRange)
-    //    {
-    //        PlayerHealth.Instance.TakeDamage(Random.Range(minDamageAmount, maxDamageAmount));
-    //    }
-    //}
+    public void AttackPlayer()
+    {
+        if (PlayerController.Instance != null && _distanceToPlayer <= attackRange)
+        {
+            PlayerController.Instance.playerHealth.TakeDamage(Random.Range(minDamageAmount, maxDamageAmount));
+        }
+    }
 
     private void StopAttacking()
     {

@@ -3866,8 +3866,10 @@ GameObject:
   - component: {fileID: 4243538704547566}
   - component: {fileID: 7353150931010406570}
   - component: {fileID: 3517141529484782431}
+  - component: {fileID: 1490317310310934104}
   - component: {fileID: 95921630161195528}
   - component: {fileID: 7963796608409310648}
+  - component: {fileID: 9071669330773166094}
   m_Layer: 0
   m_Name: Zombie_Base
   m_TagString: Untagged
@@ -3888,6 +3890,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 8393884296098213362}
   - {fileID: 4101432036228654}
   - {fileID: 4264353550843116}
   - {fileID: 4072632331783260}
@@ -3968,34 +3971,56 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyController
   _currentState: 0
   enemyID: 
+  agent: {fileID: 1490317310310934104}
+  targetSpeed: 5
   enemyType: 0
-  agent: {fileID: 0}
-  targetSpeed: 0
-  rb: {fileID: 0}
-  enemyRagdollController: {fileID: 0}
+  enemyRB: {fileID: 7963796608409310648}
+  enemyRagdollController: {fileID: 7353150931010406570}
   maxHealth: 100
   currentHealth: 0
-  bloodHitParticle: {fileID: 0}
-  bodyCollider: {fileID: 0}
-  headBone: {fileID: 0}
-  headCollider: {fileID: 0}
+  bloodHitParticle: {fileID: 194062, guid: 8b81f2bc17dd06346b0d4cb5d1249404, type: 3}
+  bodyCollider: {fileID: 9071669330773166094}
+  headBone: {fileID: 4854274546089016}
+  headCollider: {fileID: 220827599005428051}
   isAllowedToLoot: 0
   player: {fileID: 0}
-  visionDegree: 0
+  visionDegree: 80
   isDead: 0
-  stopSafeDistance: 0
-  maxWalkCount: 0
-  centerPoint: {fileID: 0}
-  enemyAnimator: {fileID: 0}
-  normalChaseRange: 0
-  _enragedChaseRange: 30
-  loseSightRange: 0
+  stopSafeDistance: 0.08
+  maxWalkCount: 4
+  centerPoint: {fileID: 4243538704547566}
+  enemyAnimator: {fileID: 95921630161195528}
+  normalChaseRange: 12
+  _enragedChaseRange: 50
+  loseSightRange: 7
   screamDuration: 2
-  bufferDistance: 0
-  attackRange: 0
-  _atkInterval: 2
+  bufferDistance: 0.03
+  attackRange: 1.8
+  _atkInterval: 1
   minDamageAmount: 10
   maxDamageAmount: 15
+--- !u!195 &1490317310310934104
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1418193975600942}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.2
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 1.46
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
 --- !u!95 &95921630161195528
 Animator:
   serializedVersion: 7
@@ -4045,6 +4070,27 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 126
   m_CollisionDetection: 1
+--- !u!65 &9071669330773166094
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1418193975600942}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.5, y: 1.8, z: 0.45}
+  m_Center: {x: 0, y: 0.9, z: 0}
 --- !u!1 &1423411692011380
 GameObject:
   m_ObjectHideFlags: 0
@@ -9875,3 +9921,56 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.000000059604645, y: 0.84347886, z: -0.06108754}
     m_Extent: {x: 1.0245616, y: 0.94457227, z: 0.25316468}
   m_DirtyAABB: 0
+--- !u!1 &3249497859293457099
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8393884296098213362}
+  - component: {fileID: 220827599005428051}
+  m_Layer: 0
+  m_Name: HeadCollider
+  m_TagString: Head
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8393884296098213362
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3249497859293457099}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.5, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4243538704547566}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &220827599005428051
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3249497859293457099}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.2712623, y: 0.31107238, z: 0.2667898}
+  m_Center: {x: 0, y: 0.15489031, z: -0.000521183}
