@@ -47,8 +47,8 @@ MonoBehaviour:
     - gameObject: {fileID: 8761019777689142071, guid: 0234e9a5ed8e17845afb71ada7e4676d, type: 3}
       name: Floor
     player: {fileID: 1982049497142310322, guid: a271d79b42c78d546a33b5543674a931, type: 3}
-    minEnemiesPerRoom: 10
-    maxEnemiesPerRoom: 20
+    minEnemiesPerRoom: 5
+    maxEnemiesPerRoom: 12
     enemies:
     - gameObject: {fileID: 1418193975600942, guid: 84e3fef1a71553848bd28b67adb5a2c3, type: 3}
       name: Zombie

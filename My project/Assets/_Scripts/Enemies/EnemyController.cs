@@ -46,6 +46,8 @@ public class EnemyController : MonoBehaviour
     public GameObject player;
     public float visionDegree;
     [HideInInspector] public bool isDead = false;
+    [SerializeField] private LayerMask visionBlockingLayers;
+
 
     [Header("Patrolling")]
     public float stopSafeDistance;
@@ -165,23 +167,39 @@ public class EnemyController : MonoBehaviour
             return;
         }
 
-        Vector3 direction = player.transform.position - transform.position;
+        Vector3 origin = transform.position + Vector3.up * 0.5f; // eye height
+        Vector3 direction = (player.transform.position - origin).normalized;
 
-        _distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
-        float stopDistance = Vector3.Distance(transform.position, player.transform.position);
+        _distanceToPlayer = Vector3.Distance(origin, player.transform.position);
 
-        if (Mathf.Abs(Vector3.Angle(transform.forward, direction)) < visionDegree)
+        // Angle check first (cheap)
+        if (Vector3.Angle(transform.forward, direction) > visionDegree)
+            return;
+
+        // Distance check
+        if (_distanceToPlayer > _currentChaseRange)
         {
-            if (_distanceToPlayer <= _currentChaseRange)
+            enemyAnimator.SetBool("isChasingPlayer", false);
+            _currentState = EnemyState.Patrol;
+            return;
+        }
+
+        // Line of sight check (IMPORTANT)
+        if (Physics.Raycast(origin, direction, out RaycastHit hit, _currentChaseRange, visionBlockingLayers))
+        {
+            if (hit.transform.CompareTag("Player"))
             {
                 enemyAnimator.SetBool("isChasingPlayer", true);
                 _currentState = EnemyState.Chase;
             }
-            else if (_distanceToPlayer > loseSightRange)
+            else
             {
+                // Hit wall or obstacle
                 enemyAnimator.SetBool("isChasingPlayer", false);
                 _currentState = EnemyState.Patrol;
             }
+
+            Debug.DrawRay(origin, direction * _currentChaseRange, Color.red);
         }
     }
     #endregion

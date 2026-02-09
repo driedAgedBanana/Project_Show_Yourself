@@ -95,6 +95,7 @@ public class Generator : MonoBehaviour
     {
         if(generationSettings != null)
         {
+
             ClearChildren();
 
             GetGenerationSettings();
@@ -104,7 +105,6 @@ public class Generator : MonoBehaviour
             InitialiseEmptyObjects();
 
             Generate();
-
             navMeshSurface.BuildNavMesh();
         }
         else
