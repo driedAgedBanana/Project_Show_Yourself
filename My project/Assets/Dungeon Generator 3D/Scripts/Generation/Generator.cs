@@ -5,12 +5,14 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.SocialPlatforms;
 using UnityEngine.AI;
+using Unity.AI.Navigation;
 
 public class Generator : MonoBehaviour
 {
     //[SerializeField] private GameObject m_wall;
 
     [SerializeField] private GenerationSettings generationSettings;
+    public NavMeshSurface navMeshSurface;
 
     private bool deleteInnerCorners;
 
@@ -102,6 +104,8 @@ public class Generator : MonoBehaviour
             InitialiseEmptyObjects();
 
             Generate();
+
+            navMeshSurface.BuildNavMesh();
         }
         else
         {

@@ -376,16 +376,16 @@ public class EnemyController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("WeaponNoise"))
-        {
-            BecomeAggresive();
-            StartCoroutine(EnragedVision());
-            if (!_hasScreamed)
-            {
-                MoveTowardsMarker();
-                _hasScreamed = true;
-            }
-        }
+        //if (other.CompareTag("WeaponNoise"))
+        //{
+        //    BecomeAggresive();
+        //    StartCoroutine(EnragedVision());
+        //    if (!_hasScreamed)
+        //    {
+        //        MoveTowardsMarker();
+        //        _hasScreamed = true;
+        //    }
+        //}
     }
 
     private void MoveTowardsMarker()

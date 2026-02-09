@@ -277,29 +277,6 @@ MonoBehaviour:
   m_ShadowLayerMask: 1
   m_RenderingLayers: 1
   m_ShadowRenderingLayers: 1
---- !u!1 &540024858 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1189985027005248462, guid: a271d79b42c78d546a33b5543674a931, type: 3}
-  m_PrefabInstance: {fileID: 2744262287896443451}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &540024864
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 540024858}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 50588d02f5655924d9d1b0a691826923, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::CameraShakeManager
-  _recoilX: -10
-  _recoilY: 5
-  resetSpeed: 5
-  _shakeX: -25
-  _shakeY: 15
-  recoverSpeed: 7
 --- !u!1 &832575517
 GameObject:
   m_ObjectHideFlags: 0
@@ -597,34 +574,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 84e3fef1a71553848bd28b67adb5a2c3, type: 3}
---- !u!1 &1842483865 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1982049497142310322, guid: a271d79b42c78d546a33b5543674a931, type: 3}
-  m_PrefabInstance: {fileID: 2744262287896443451}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1842483872
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1842483865}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e84ba30aff45b9d49967a0c4494aa439, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerHealth
-  maxHealth: 100
-  currentHealth: 0
-  isAlive: 1
-  currentRads: 0
-  maxRads: 100
-  radiationBar: {fileID: 0}
-  radChipSpeed: 1.2
-  baseSicknessTickDamage: 2
-  maxExtraDamageMultiplier: 4
-  maxTickFrequency: 0.8
-  minTickFrequency: 5
 --- !u!1 &2003455269
 GameObject:
   m_ObjectHideFlags: 0
@@ -697,49 +646,9 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1041242293284270902, guid: a271d79b42c78d546a33b5543674a931, type: 3}
-      propertyPath: damage
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 1041242293284270902, guid: a271d79b42c78d546a33b5543674a931, type: 3}
-      propertyPath: impactForce
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 1041242293284270902, guid: a271d79b42c78d546a33b5543674a931, type: 3}
-      propertyPath: recoilManager
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 1652456138511553687, guid: a271d79b42c78d546a33b5543674a931, type: 3}
-      propertyPath: xClamp
-      value: 50
-      objectReference: {fileID: 0}
-    - target: {fileID: 1652456138511553687, guid: a271d79b42c78d546a33b5543674a931, type: 3}
-      propertyPath: playerHealth
-      value: 
-      objectReference: {fileID: 1842483872}
-    - target: {fileID: 1652456138511553687, guid: a271d79b42c78d546a33b5543674a931, type: 3}
-      propertyPath: cameraShakeManager
-      value: 
-      objectReference: {fileID: 540024864}
-    - target: {fileID: 1652456138511553687, guid: a271d79b42c78d546a33b5543674a931, type: 3}
-      propertyPath: groundLayer.m_Bits
-      value: 128
-      objectReference: {fileID: 0}
     - target: {fileID: 1982049497142310322, guid: a271d79b42c78d546a33b5543674a931, type: 3}
       propertyPath: m_Name
       value: Player
-      objectReference: {fileID: 0}
-    - target: {fileID: 2762819532098926570, guid: a271d79b42c78d546a33b5543674a931, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 1.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 2762819532098926570, guid: a271d79b42c78d546a33b5543674a931, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 1.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 2762819532098926570, guid: a271d79b42c78d546a33b5543674a931, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 2762819532098926570, guid: a271d79b42c78d546a33b5543674a931, type: 3}
       propertyPath: m_LocalPosition.x
@@ -781,21 +690,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5011732459806026594, guid: a271d79b42c78d546a33b5543674a931, type: 3}
-      propertyPath: m_CullingMask.m_Bits
-      value: 183
-      objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 5723550677158814915, guid: a271d79b42c78d546a33b5543674a931, type: 3}
+    m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 1982049497142310322, guid: a271d79b42c78d546a33b5543674a931, type: 3}
-      insertIndex: 1
-      addedObject: {fileID: 1842483872}
-    - targetCorrespondingSourceObject: {fileID: 1189985027005248462, guid: a271d79b42c78d546a33b5543674a931, type: 3}
-      insertIndex: 1
-      addedObject: {fileID: 540024864}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a271d79b42c78d546a33b5543674a931, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

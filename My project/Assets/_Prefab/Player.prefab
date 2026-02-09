@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6864265393514186549}
-  - component: {fileID: 5723550677158814915}
+  - component: {fileID: 436444231019303425}
   - component: {fileID: 5011732459806026594}
   - component: {fileID: 4155629138816641152}
   - component: {fileID: 166510606523803859}
@@ -36,7 +36,7 @@ Transform:
   - {fileID: 4004979281731046212}
   m_Father: {fileID: 2371788299209342651}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5723550677158814915
+--- !u!114 &436444231019303425
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -45,12 +45,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 1189985027005248462}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 14a20b5c5c823e84dbcb681b1fe59ddf, type: 3}
+  m_Script: {fileID: 11500000, guid: 50588d02f5655924d9d1b0a691826923, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::WeaponRecoilManager
+  m_EditorClassIdentifier: Assembly-CSharp::CameraShakeManager
   _recoilX: -10
   _recoilY: 5
   resetSpeed: 5
+  _shakeX: -25
+  _shakeY: 15
+  recoverSpeed: 7
 --- !u!20 &5011732459806026594
 Camera:
   m_ObjectHideFlags: 0
@@ -90,7 +93,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 55
+    m_Bits: 183
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -196,6 +199,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2762819532098926570}
+  - component: {fileID: 1978263463632002946}
   - component: {fileID: 1652456138511553687}
   - component: {fileID: 7165037070988328891}
   - component: {fileID: 6077063487532896022}
@@ -218,7 +222,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 1, z: 0}
-  m_LocalScale: {x: 0.5282248, y: 0.5282248, z: 0.5282248}
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 5274874858923523072}
@@ -226,6 +230,29 @@ Transform:
   - {fileID: 3620633590476733297}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1978263463632002946
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1982049497142310322}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e84ba30aff45b9d49967a0c4494aa439, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerHealth
+  maxHealth: 100
+  currentHealth: 0
+  isAlive: 1
+  currentRads: 0
+  maxRads: 100
+  radiationBar: {fileID: 0}
+  radChipSpeed: 1.2
+  baseSicknessTickDamage: 2
+  maxExtraDamageMultiplier: 4
+  maxTickFrequency: 0.8
+  minTickFrequency: 5
 --- !u!114 &1652456138511553687
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -240,13 +267,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
   weaponBase:
   - {fileID: 1041242293284270902}
+  playerHealth: {fileID: 1978263463632002946}
+  cameraShakeManager: {fileID: 436444231019303425}
   rb: {fileID: 6077063487532896022}
   playerCam: {fileID: 5011732459806026594}
   leanPivot: {fileID: 7392611588130372000}
   camHolder: {fileID: 2371788299209342651}
   playerCollider: {fileID: 7165037070988328891}
   sensitivity: 0.05
-  xClamp: 40
+  xClamp: 50
   lookInput: {x: 0, y: 0}
   moveSpeed: 5
   slowWalkSpeed: 2
@@ -273,7 +302,7 @@ MonoBehaviour:
   groundCheckDistance: 0.2
   groundLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 128
 --- !u!136 &7165037070988328891
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -6302,19 +6331,18 @@ MonoBehaviour:
   zoomInFOV: 35
   defaultFOV: 80
   fovSmoothTime: 3
-  damage: 0
+  damage: 5
   currentWeaponType: 1
   shootingPoint: {fileID: 2562628699079626653}
   bulletTrail: {fileID: 4269913587632257975}
   bulletHitImpact: {fileID: 5238538877814813142, guid: 77b2e06f7d3d3e14885250830dab2fe7, type: 3}
   muzzleFlash: {fileID: 4132224945817349673}
   range: 50
-  impactForce: 0
+  impactForce: 3
   isShooting: 0
   bulletSpread: 0.07
   aimingBulletSpread: 0.02
   fireRate: 0.1
-  recoilManager: {fileID: 5723550677158814915}
 --- !u!120 &4269913587632257975
 LineRenderer:
   serializedVersion: 2
