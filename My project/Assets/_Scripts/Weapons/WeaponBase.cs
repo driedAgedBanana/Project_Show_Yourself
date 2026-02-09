@@ -71,6 +71,9 @@ public class WeaponBase : MonoBehaviour, IWeapon
     private bool _isShootingAuto;
     private Coroutine _shootAutoCoroutine;
 
+    [Header("Recoil")]
+    public WeaponRecoilManager recoilManager;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -140,7 +143,8 @@ public class WeaponBase : MonoBehaviour, IWeapon
             muzzleFlash.Play();
         }
 
-        // Applying recoil here later on
+        // Applying recoil 
+        recoilManager.ApplyingRecoil();
 
         // Random bullet spread
         Vector3 direction = _mainCam.transform.forward;
@@ -168,6 +172,23 @@ public class WeaponBase : MonoBehaviour, IWeapon
             // Spawn hit impact effect
             GameObject bulletImpact = Instantiate(bulletHitImpact, hit.point, Quaternion.LookRotation(hit.normal));
             Destroy(bulletImpact, 0.5f);
+
+            // Deal damage on the enemy
+            EnemyController enemy = hit.transform.GetComponentInParent<EnemyController>();
+            if (enemy != null)
+            {
+                if (hit.collider.CompareTag("Head"))
+                {
+                    int criticalDamage = Random.Range(25, 250);
+                    enemy.TakeHeadShot(criticalDamage, hit.point, force);
+                }
+                else
+                {
+                    enemy.TakeDamage(damage, hit.point, force);
+                }
+
+                Destroy(bulletImpact);
+            }
         }
         else
         {

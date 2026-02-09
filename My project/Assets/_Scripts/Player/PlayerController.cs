@@ -5,6 +5,9 @@ public class PlayerController : MonoBehaviour
 {
     public static PlayerController Instance;
 
+    [Header("Script references")]
+    public WeaponBase[] weaponBase;
+
     [Header("References")]
     public Rigidbody rb;
     public Camera playerCam;
@@ -75,7 +78,6 @@ public class PlayerController : MonoBehaviour
     private void LateUpdate()
     {
         HandleLook();
-
     }
 
     private void Update()
@@ -110,7 +112,24 @@ public class PlayerController : MonoBehaviour
 
     private void HandleMovementPhysics()
     {
-        float speed = isCrouching ? crouchSpeed : canSprint ? sprintSpeed : moveSpeed;
+        float speed = moveSpeed;
+
+        if (isCrouching)
+        {
+            speed = crouchSpeed;
+        }
+        else if (canSprint)
+        {
+            speed = sprintSpeed;
+        }
+        foreach (WeaponBase weapon in weaponBase)
+        {
+            if (weapon.isAiming)
+            {
+                speed = slowWalkSpeed;
+                break;
+            }
+        }
 
         Vector3 moveDir = transform.right * moveInput.x + transform.forward * moveInput.y;
         Vector3 velocity = moveDir * speed;

@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6864265393514186549}
+  - component: {fileID: 5723550677158814915}
   - component: {fileID: 5011732459806026594}
   - component: {fileID: 4155629138816641152}
   - component: {fileID: 166510606523803859}
@@ -35,6 +36,21 @@ Transform:
   - {fileID: 4004979281731046212}
   m_Father: {fileID: 2371788299209342651}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5723550677158814915
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1189985027005248462}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14a20b5c5c823e84dbcb681b1fe59ddf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WeaponRecoilManager
+  _recoilX: -10
+  _recoilY: 5
+  resetSpeed: 5
 --- !u!20 &5011732459806026594
 Camera:
   m_ObjectHideFlags: 0
@@ -67,14 +83,14 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.01
-  far clip plane: 1000
+  far clip plane: 500
   field of view: 80
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 247
+    m_Bits: 55
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -187,7 +203,7 @@ GameObject:
   - component: {fileID: 1806052750511949890}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -202,8 +218,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 1, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.5282248, y: 0.5282248, z: 0.5282248}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 5274874858923523072}
   - {fileID: 7392611588130372000}
@@ -222,6 +238,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b5342acc3dcdd14db45fde5ea96a1c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
+  weaponBase:
+  - {fileID: 1041242293284270902}
   rb: {fileID: 6077063487532896022}
   playerCam: {fileID: 5011732459806026594}
   leanPivot: {fileID: 7392611588130372000}
@@ -576,7 +594,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2350359990444479970}
-  m_Layer: 8
+  m_Layer: 6
   m_Name: ShootingPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -664,14 +682,14 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.01
-  far clip plane: 1000
+  far clip plane: 500
   field of view: 80
   orthographic: 0
   orthographic size: 5
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 64
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -1042,7 +1060,7 @@ GameObject:
   - component: {fileID: 2258438732926141988}
   - component: {fileID: 7425611119716912856}
   - component: {fileID: 2715345002491088787}
-  m_Layer: 8
+  m_Layer: 6
   m_Name: MuzzleLight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1200,7 +1218,7 @@ GameObject:
   - component: {fileID: 2099707999732665309}
   - component: {fileID: 4132224945817349673}
   - component: {fileID: 6600832070751942406}
-  m_Layer: 8
+  m_Layer: 6
   m_Name: MuzzleFlash
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6154,67 +6172,67 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 630341572420416615, guid: cf9491cb58efcbf42b79f8b1a900b693, type: 3}
       propertyPath: m_Layer
-      value: 8
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 1418640287101164750, guid: cf9491cb58efcbf42b79f8b1a900b693, type: 3}
       propertyPath: m_Layer
-      value: 8
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 1459565885616970673, guid: cf9491cb58efcbf42b79f8b1a900b693, type: 3}
       propertyPath: m_Layer
-      value: 8
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 1492441414373459708, guid: cf9491cb58efcbf42b79f8b1a900b693, type: 3}
       propertyPath: m_Layer
-      value: 8
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 1805704550373586676, guid: cf9491cb58efcbf42b79f8b1a900b693, type: 3}
       propertyPath: m_Layer
-      value: 8
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 2517581164125578546, guid: cf9491cb58efcbf42b79f8b1a900b693, type: 3}
       propertyPath: m_Layer
-      value: 8
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 2706682944331085689, guid: cf9491cb58efcbf42b79f8b1a900b693, type: 3}
       propertyPath: m_Layer
-      value: 8
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 2928359259610810045, guid: cf9491cb58efcbf42b79f8b1a900b693, type: 3}
       propertyPath: m_Layer
-      value: 8
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 3353720926855537770, guid: cf9491cb58efcbf42b79f8b1a900b693, type: 3}
       propertyPath: m_Layer
-      value: 8
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 5496842712831227821, guid: cf9491cb58efcbf42b79f8b1a900b693, type: 3}
       propertyPath: m_Layer
-      value: 8
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 5541375980196296752, guid: cf9491cb58efcbf42b79f8b1a900b693, type: 3}
       propertyPath: m_Layer
-      value: 8
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 5729804439854761016, guid: cf9491cb58efcbf42b79f8b1a900b693, type: 3}
       propertyPath: m_Layer
-      value: 8
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 6338185641421637442, guid: cf9491cb58efcbf42b79f8b1a900b693, type: 3}
       propertyPath: m_Layer
-      value: 8
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 7028590346039873640, guid: cf9491cb58efcbf42b79f8b1a900b693, type: 3}
       propertyPath: m_Layer
-      value: 8
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 7521150744397503792, guid: cf9491cb58efcbf42b79f8b1a900b693, type: 3}
       propertyPath: m_Layer
-      value: 8
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 8515362073655255281, guid: cf9491cb58efcbf42b79f8b1a900b693, type: 3}
       propertyPath: m_Layer
-      value: 8
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -6296,6 +6314,7 @@ MonoBehaviour:
   bulletSpread: 0.07
   aimingBulletSpread: 0.02
   fireRate: 0.1
+  recoilManager: {fileID: 5723550677158814915}
 --- !u!120 &4269913587632257975
 LineRenderer:
   serializedVersion: 2
