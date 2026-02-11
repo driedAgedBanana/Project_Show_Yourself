@@ -3975,6 +3975,8 @@ MonoBehaviour:
   targetSpeed: 5
   enemyType: 0
   enemyRB: {fileID: 7963796608409310648}
+  disappearParticle: {fileID: 19885060, guid: fe172aea7216ff249ba28a07e47596b1, type: 3}
+  enemyMesh: {fileID: 137694054147993012}
   enemyRagdollController: {fileID: 7353150931010406570}
   maxHealth: 100
   currentHealth: 0
@@ -3986,6 +3988,9 @@ MonoBehaviour:
   player: {fileID: 0}
   visionDegree: 80
   isDead: 0
+  visionBlockingLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
   stopSafeDistance: 0.08
   maxWalkCount: 4
   centerPoint: {fileID: 4243538704547566}
@@ -3993,7 +3998,8 @@ MonoBehaviour:
   normalChaseRange: 12
   _enragedChaseRange: 50
   loseSightRange: 7
-  screamDuration: 2
+  screamDuration: 0.5
+  screamCooldown: 1
   bufferDistance: 0.03
   attackRange: 1.8
   _atkInterval: 1
