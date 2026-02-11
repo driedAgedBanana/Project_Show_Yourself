@@ -68,6 +68,9 @@ public class EnemyController : MonoBehaviour
     private bool _hasScreamed = false;
     public float screamDuration = 2f;
 
+    private float _lastScreamTime;
+    [SerializeField] private float screamCooldown = 10f;
+
     [Header("Attacking and Damage")]
     public float bufferDistance;
     public float attackRange;
@@ -213,8 +216,6 @@ public class EnemyController : MonoBehaviour
 
         if (agent == null || !agent.isOnNavMesh || isDead || !_isAllowedToWalk) return;
 
-        _hasScreamed = false;
-
         // Only pick a new point if the agent is idle or reached the target
         if (!agent.hasPath || agent.remainingDistance <= agent.stoppingDistance)
         {
@@ -321,6 +322,16 @@ public class EnemyController : MonoBehaviour
     #endregion
 
     #region Chasing
+
+    private void TryScream()
+    {
+        if (_isScreaming || isDead) return;
+        if (Time.time < _lastScreamTime + screamCooldown) return;
+
+        _lastScreamTime = Time.time;
+        StartCoroutine(ScreamThenRunTowardsPlayer());
+    }
+
     private void ChasingPlayer()
     {
         if (isDead) return;
@@ -335,8 +346,7 @@ public class EnemyController : MonoBehaviour
         {
             if (_distanceToPlayer <= _currentChaseRange && _distanceToPlayer > attackRange)
             {
-                StartCoroutine(ScreamThenRunTowardsPlayer());
-                _hasScreamed = true;
+                TryScream();
                 return;
             }
         }
@@ -345,7 +355,7 @@ public class EnemyController : MonoBehaviour
         if (!_isScreaming)
         {
             agent.isStopped = false;
-            if (Vector3.Distance(agent.destination, player.transform.position) > 0.5f || !isDead || agent != null || agent.isActiveAndEnabled || agent.isOnNavMesh)
+            if (!isDead && agent != null && agent.isActiveAndEnabled && agent.isOnNavMesh)
             {
                 agent.SetDestination(player.transform.position);
             }
@@ -370,14 +380,9 @@ public class EnemyController : MonoBehaviour
         }
 
         _isScreaming = true;
-        _hasScreamed = true;
         agent.isStopped = true;
 
-        enemyAnimator.SetBool("isScreaming", true);
-
-        yield return new WaitForSeconds(screamDuration);
-
-        enemyAnimator.SetBool("isScreaming", false);
+        enemyAnimator.SetTrigger("isScreaming 0");
 
         if (agent != null && agent.isActiveAndEnabled && agent.isOnNavMesh)
         {
