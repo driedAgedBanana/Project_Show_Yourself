@@ -60,6 +60,8 @@ public class WeaponBase : MonoBehaviour, IWeapon
     public LineRenderer bulletTrail;
     public GameObject bulletHitImpact;
     public ParticleSystem muzzleFlash;
+    public ParticleSystem shellEjectParticle;
+    public Transform shellEjectPoint;
     [Space]
     public int range;
     public float impactForce;
@@ -80,6 +82,11 @@ public class WeaponBase : MonoBehaviour, IWeapon
         _mainCam = PlayerController.Instance.playerCam;
 
         _defaultPos = transform.localPosition;
+
+        if (shellEjectParticle != null)
+        {
+            shellEjectParticle.Stop();
+        }
     }
 
     // Update is called once per frame
@@ -183,7 +190,7 @@ public class WeaponBase : MonoBehaviour, IWeapon
                 }
 
                 Destroy(bulletImpact);
-            }   
+            }
         }
         else
         {
@@ -209,6 +216,28 @@ public class WeaponBase : MonoBehaviour, IWeapon
         bulletTrail.SetPosition(1, hitTarget);
         yield return new WaitForSeconds(0.01f);
         bulletTrail.positionCount = 0;
+    }
+
+    //public void Eject()
+    //{
+    //    if (shellEjectParticle != null)
+    //    {
+    //        shellEjectParticle.Play();
+    //        Destroy(shellEjectParticle.gameObject, 5f);
+    //    }
+    //}
+
+    public void SetEjectionState(bool shouldBeOn)
+    {
+        // Shell ejection
+        if (shouldBeOn)
+        {
+            shellEjectParticle.Play();
+        }
+        else
+        {
+            shellEjectParticle.Stop();
+        }
     }
 
     private void ApplyFinalTransform()
@@ -267,6 +296,7 @@ public class WeaponBase : MonoBehaviour, IWeapon
         if (ctx.started)
         {
             Shooting();
+            SetEjectionState(true);
         }
     }
 
@@ -276,12 +306,14 @@ public class WeaponBase : MonoBehaviour, IWeapon
         {
             _isShootingAuto = true;
             _shootAutoCoroutine = StartCoroutine(ShootAuto());
+            SetEjectionState(true);
         }
         else if (ctx.canceled)
         {
             _isShootingAuto = false;
             if (_shootAutoCoroutine != null)
                 StopCoroutine(_shootAutoCoroutine);
+            SetEjectionState(false);
         }
     }
 

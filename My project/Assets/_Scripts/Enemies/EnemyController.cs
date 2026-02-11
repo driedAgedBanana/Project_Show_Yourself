@@ -32,6 +32,8 @@ public class EnemyController : MonoBehaviour
     public Rigidbody enemyRB;
 
     [Header("Health and ragdoll system")]
+    public ParticleSystem disappearParticle;
+    public SkinnedMeshRenderer enemyMesh;
     public RagdollController enemyRagdollController;
     public int maxHealth = 100;
     public int currentHealth;
@@ -115,6 +117,11 @@ public class EnemyController : MonoBehaviour
 
         _distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
         agent.stoppingDistance = attackRange - bufferDistance;
+
+        if(disappearParticle != null)
+        {
+            disappearParticle.Stop();
+        }
 
         // Debug.Log("Enemy will walk for " + maxWalkCount + " times!");
     }
@@ -615,7 +622,7 @@ public class EnemyController : MonoBehaviour
 
         StopAllCoroutines();
 
-        enemyRB.mass = 0.1f;
+        enemyRB.mass = 0.001f;
         enemyRagdollController.SetRagdoll(true);
         bodyCollider.enabled = false;
         agent.enabled = false;
@@ -644,7 +651,16 @@ public class EnemyController : MonoBehaviour
 
         isAllowedToLoot = true;
 
-        //Destroy(gameObject, 7f);
+        StartCoroutine(HideBody());
+    }
+
+    private IEnumerator HideBody()
+    {
+        yield return new WaitForSeconds(2f);
+        enemyMesh.enabled = false;
+        ParticleSystem instance = Instantiate(disappearParticle, transform.position, transform.rotation);
+        instance.Play();
+        Destroy(gameObject, 20f);
     }
 
     public void DieImmediately()
