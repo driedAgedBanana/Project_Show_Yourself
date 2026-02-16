@@ -166,7 +166,7 @@ public class WeaponBase : MonoBehaviour, IWeapon
 
         // Sounds later on
 
-        if (Physics.Raycast(_mainCam.transform.position, direction, out hit, range))
+        if (Physics.Raycast(_mainCam.transform.position, direction, out hit, range, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore))
         {
             // Spawn bullet trail
             StartCoroutine(SpawnBulletLine(shootingPoint.transform.position, hit.point));
