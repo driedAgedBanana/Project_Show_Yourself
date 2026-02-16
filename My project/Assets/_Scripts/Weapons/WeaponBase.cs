@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -72,6 +73,14 @@ public class WeaponBase : MonoBehaviour, IWeapon
     private bool _isShootingAuto;
     private Coroutine _shootAutoCoroutine;
 
+    [Header("Ammunition and animations")]
+    public Animator weaponsAnimator;
+    public float reloadTime = 2f;
+    private bool _isReloading;
+    private Vector3 _defaultLocalPos;
+    private Quaternion _defaultLocalRot;
+
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -87,6 +96,14 @@ public class WeaponBase : MonoBehaviour, IWeapon
         if (shellEjectParticle != null)
         {
             shellEjectParticle.Stop();
+        }
+
+        _defaultLocalPos = transform.localPosition;
+        _defaultLocalRot = transform.localRotation;
+
+        if(weaponsAnimator != null)
+        {
+            DisableAnimator();
         }
     }
 
@@ -109,6 +126,54 @@ public class WeaponBase : MonoBehaviour, IWeapon
 
     }
 
+    #region Weapon moving
+
+    private void SwayWeapon()
+    {
+        float mouseX = PlayerController.Instance.lookInput.x * swayMultiplier;
+        float mouseY = PlayerController.Instance.lookInput.y * swayMultiplier;
+
+        mouseX = Mathf.Clamp(mouseX, -swayClamp, swayClamp);
+        mouseY = Mathf.Clamp(mouseY, -swayClamp, swayClamp);
+
+        Quaternion rotX = Quaternion.AngleAxis(-mouseY, Vector3.right);
+        Quaternion rotY = Quaternion.AngleAxis(mouseX, Vector3.up);
+
+        Quaternion targetRot = rotX * rotY;
+        _swayRotation = Quaternion.Slerp(_swayRotation, targetRot, smoothing * Time.deltaTime);
+    }
+
+
+    public void WeaponBobbing()
+    {
+        if (PlayerController.Instance.isMoving)
+        {
+            bool isSprinting = PlayerController.Instance.canSprint;
+            float bobSpeed = isSprinting ? sprintBobSpeed : walkBobSpeed;
+            float bobAmount = isSprinting ? sprintBobAmount : walkBobAmount;
+
+            _timer += Time.deltaTime * bobSpeed;
+            _bobOffset = new Vector3(0, Mathf.Sin(_timer) * bobAmount, 0);
+        }
+        else
+        {
+            _timer = 0f;
+            _bobOffset = Vector3.Lerp(_bobOffset, Vector3.zero, Time.deltaTime * 8f);
+        }
+    }
+
+    private void ApplyFinalTransform()
+    {
+        // Position (aiming handled by weaponRoot, bob is additive)
+        transform.localPosition = _defaultPos + _bobOffset;
+
+        // Rotation (sway additive on top of current local rotation)
+        transform.localRotation = _swayRotation;
+    }
+
+    #endregion
+
+    #region Aiming
     public void Aiming()
     {
         if (true) // Replace 'true' with WeaponManager in the future
@@ -137,7 +202,9 @@ public class WeaponBase : MonoBehaviour, IWeapon
             _mainCam.fieldOfView = Mathf.SmoothDamp(currentFOV, defaultFOV, ref _fovVelocity, fovSmoothTime);
         }
     }
+    #endregion
 
+    #region Shooting
     public void Shooting()
     {
         RaycastHit hit;
@@ -221,15 +288,6 @@ public class WeaponBase : MonoBehaviour, IWeapon
         bulletTrail.positionCount = 0;
     }
 
-    //public void Eject()
-    //{
-    //    if (shellEjectParticle != null)
-    //    {
-    //        shellEjectParticle.Play();
-    //        Destroy(shellEjectParticle.gameObject, 5f);
-    //    }
-    //}
-
     public void SetEjectionState(bool shouldBeOn)
     {
         // Shell ejection
@@ -242,50 +300,41 @@ public class WeaponBase : MonoBehaviour, IWeapon
             shellEjectParticle.Stop();
         }
     }
+    #endregion
 
-    private void ApplyFinalTransform()
+    public void Reloading()
     {
-        // Position (aiming handled by weaponRoot, bob is additive)
-        transform.localPosition = _defaultPos + _bobOffset;
-
-        // Rotation (sway additive on top of current local rotation)
-        transform.localRotation = _swayRotation;
+        if(_isReloading) return;
+        StartCoroutine(ReloadingAnimation());
     }
 
-
-    private void SwayWeapon()
+    private IEnumerator ReloadingAnimation()
     {
-        float mouseX = PlayerController.Instance.lookInput.x * swayMultiplier;
-        float mouseY = PlayerController.Instance.lookInput.y * swayMultiplier;
+        _isReloading = true;
+        EnableAnimator();
+        weaponsAnimator.SetBool("isReloading", true);
 
-        mouseX = Mathf.Clamp(mouseX, -swayClamp, swayClamp);
-        mouseY = Mathf.Clamp(mouseY, -swayClamp, swayClamp);
-
-        Quaternion rotX = Quaternion.AngleAxis(-mouseY, Vector3.right);
-        Quaternion rotY = Quaternion.AngleAxis(mouseX, Vector3.up);
-
-        Quaternion targetRot = rotX * rotY;
-        _swayRotation = Quaternion.Slerp(_swayRotation, targetRot, smoothing * Time.deltaTime);
+        yield return new WaitForSeconds(reloadTime);
     }
 
-
-    public void WeaponBobbing()
+    public void FinishReloading()
     {
-        if (PlayerController.Instance.isMoving)
-        {
-            bool isSprinting = PlayerController.Instance.canSprint;
-            float bobSpeed = isSprinting ? sprintBobSpeed : walkBobSpeed;
-            float bobAmount = isSprinting ? sprintBobAmount : walkBobAmount;
-
-            _timer += Time.deltaTime * bobSpeed;
-            _bobOffset = new Vector3(0, Mathf.Sin(_timer) * bobAmount, 0);
-        }
-        else
-        {
-            _timer = 0f;
-            _bobOffset = Vector3.Lerp(_bobOffset, Vector3.zero, Time.deltaTime * 8f);
-        }
+        weaponsAnimator.SetBool("isReloading", false);
+        DisableAnimator();
+        _isReloading = false;
     }
+
+    public void EnableAnimator()
+    {
+        weaponsAnimator.enabled = true;
+        isAiming = false;
+    }
+
+    public void DisableAnimator()
+    {
+        weaponsAnimator.enabled = false;
+    }
+
 
     #region Inputs
 
@@ -317,6 +366,16 @@ public class WeaponBase : MonoBehaviour, IWeapon
             if (_shootAutoCoroutine != null)
                 StopCoroutine(_shootAutoCoroutine);
             SetEjectionState(false);
+        }
+    }
+
+    public void OnReload(InputAction.CallbackContext ctx)
+    {
+        if (!this.gameObject.activeSelf) return; // exit early if weapon is inactive
+
+        if (ctx.started)
+        {
+            Reloading();
         }
     }
 
