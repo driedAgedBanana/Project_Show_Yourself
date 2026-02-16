@@ -47,8 +47,7 @@ public class WeaponBase : MonoBehaviour, IWeapon
     [Space]
     // FOV when ADS
     public int zoomInFOV;
-    public int defaultFOV;
-
+    [HideInInspector] public int defaultFOV;
     public float fovSmoothTime = 0.1f; // How long the transition takes
     private float _fovVelocity = 0f;    // This MUST be private and only used by SmoothDamp
 
@@ -80,6 +79,8 @@ public class WeaponBase : MonoBehaviour, IWeapon
         scopeCorssHair.SetActive(false);
 
         _mainCam = PlayerController.Instance.playerCam;
+
+        defaultFOV = PlayerController.Instance.normalFOV;
 
         _defaultPos = transform.localPosition;
 

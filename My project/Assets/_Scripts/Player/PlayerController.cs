@@ -41,8 +41,8 @@ public class PlayerController : MonoBehaviour
     private bool runHeld;
 
     [Header("FOV")]
-    public float normalFOV = 60f;
-    public float sprintFOV = 80f;
+    public int normalFOV = 60;
+    public int sprintFOV = 80;
 
     [Header("Head Bob")]
     public float walkBobSpeed = 14f;
@@ -157,13 +157,16 @@ public class PlayerController : MonoBehaviour
     {
         float baseY = isCrouching ? crouchCamY : standCamY;
 
-        if (!isMoving)
+        foreach (WeaponBase weapon in weaponBase)
         {
-            bobTimer = 0;
-            Vector3 pos = camHolder.localPosition;
-            pos.y = Mathf.Lerp(pos.y, baseY, Time.deltaTime * 8f);
-            camHolder.localPosition = pos;
-            return;
+            if (weapon.isAiming || !isMoving)
+            {
+                bobTimer = 0;
+                Vector3 pos = camHolder.localPosition;
+                pos.y = Mathf.Lerp(pos.y, baseY, Time.deltaTime * 8f);
+                camHolder.localPosition = pos;
+                return;
+            }
         }
 
         bool sprinting = canSprint;
@@ -192,8 +195,14 @@ public class PlayerController : MonoBehaviour
 
     private void HandleFOV()
     {
-        float target = canSprint ? sprintFOV : normalFOV;
-        playerCam.fieldOfView = Mathf.Lerp(playerCam.fieldOfView, target, Time.deltaTime * 6f);
+        foreach (WeaponBase weapon in weaponBase)
+        {
+            if (weapon.isAiming)
+            {
+                playerCam.fieldOfView = Mathf.Lerp(playerCam.fieldOfView, normalFOV, Time.deltaTime * 6f);
+                return;
+            }
+        }
     }
 
     private void HandleLean()

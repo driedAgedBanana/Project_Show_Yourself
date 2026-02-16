@@ -757,6 +757,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1041242293284270902, guid: a271d79b42c78d546a33b5543674a931, type: 3}
+      propertyPath: fovSmoothTime
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1982049497142310322, guid: a271d79b42c78d546a33b5543674a931, type: 3}
       propertyPath: m_Name
       value: Player
