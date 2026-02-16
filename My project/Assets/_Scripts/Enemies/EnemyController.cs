@@ -660,8 +660,8 @@ public class EnemyController : MonoBehaviour
         enemyMesh.enabled = false;
         ParticleSystem instance = Instantiate(disappearParticle, transform.position, transform.rotation);
         instance.Play();
-        Destroy(instance.gameObject, 3f);
-        Destroy(gameObject, 2f);
+        Destroy(instance.gameObject, 1.5f);
+        Destroy(gameObject, 0.5f);
     }
 
     public void DieImmediately()
