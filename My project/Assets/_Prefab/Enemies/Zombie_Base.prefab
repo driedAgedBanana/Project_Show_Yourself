@@ -3986,7 +3986,7 @@ MonoBehaviour:
   headCollider: {fileID: 220827599005428051}
   isAllowedToLoot: 0
   player: {fileID: 0}
-  visionDegree: 80
+  visionDegree: 90
   isDead: 0
   visionBlockingLayers:
     serializedVersion: 2
@@ -3995,7 +3995,7 @@ MonoBehaviour:
   maxWalkCount: 4
   centerPoint: {fileID: 4243538704547566}
   enemyAnimator: {fileID: 95921630161195528}
-  normalChaseRange: 12
+  normalChaseRange: 15
   _enragedChaseRange: 50
   loseSightRange: 7
   screamDuration: 0.5

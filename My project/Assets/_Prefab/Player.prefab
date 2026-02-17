@@ -554,6 +554,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 4f96aafd-ba70-4773-a338-f7fd96dca672
     m_ActionName: 'Player/ShootAuto[/Mouse/leftButton,/Keyboard/enter]'
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1041242293284270902}
+        m_TargetAssemblyTypeName: WeaponBase, Assembly-CSharp
+        m_MethodName: OnReload
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 0bd96775-2350-4bec-8fab-8f42d74135e1
+    m_ActionName: 'Player/Reload[/Keyboard/r]'
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: Keyboard&Mouse
   m_DefaultActionMap: Player
@@ -6378,9 +6394,17 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 4489145106580141582, guid: cf9491cb58efcbf42b79f8b1a900b693, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4797606109308714718, guid: cf9491cb58efcbf42b79f8b1a900b693, type: 3}
       propertyPath: m_Layer
       value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 5297197387408118824, guid: cf9491cb58efcbf42b79f8b1a900b693, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5496842712831227821, guid: cf9491cb58efcbf42b79f8b1a900b693, type: 3}
       propertyPath: m_Layer
@@ -6434,6 +6458,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 630341572420416615, guid: cf9491cb58efcbf42b79f8b1a900b693, type: 3}
       insertIndex: -1
       addedObject: {fileID: 4269913587632257975}
+    - targetCorrespondingSourceObject: {fileID: 630341572420416615, guid: cf9491cb58efcbf42b79f8b1a900b693, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4057403514303369710}
   m_SourcePrefab: {fileID: 100100000, guid: cf9491cb58efcbf42b79f8b1a900b693, type: 3}
 --- !u!1 &1917646711884344530 stripped
 GameObject:
@@ -6490,7 +6517,7 @@ MonoBehaviour:
   aimTime: 0
   zoomInFOV: 35
   defaultFOV: 80
-  fovSmoothTime: 3
+  fovSmoothTime: 1
   damage: 5
   currentWeaponType: 1
   shootingPoint: {fileID: 2562628699079626653}
@@ -6505,6 +6532,8 @@ MonoBehaviour:
   bulletSpread: 0.07
   aimingBulletSpread: 0.02
   fireRate: 0.1
+  weaponsAnimator: {fileID: 4057403514303369710}
+  reloadTime: 2
 --- !u!120 &4269913587632257975
 LineRenderer:
   serializedVersion: 2
@@ -6613,3 +6642,25 @@ LineRenderer:
   m_UseWorldSpace: 1
   m_Loop: 0
   m_ApplyActiveColorSpace: 1
+--- !u!95 &4057403514303369710
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6803532241251577624}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: fb9c21305fbd1744c8e52a95317e566d, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0

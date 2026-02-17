@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public enum weaponType
+public enum WeaponType
 {
     Pistol,
     Rifle
@@ -55,7 +55,7 @@ public class WeaponBase : MonoBehaviour, IWeapon
     [Header("Shooting and Damages")]
     public int damage;
     [Space]
-    public weaponType currentWeaponType = weaponType.Rifle;
+    public WeaponType currentWeaponType = WeaponType.Rifle;
     public GameObject shootingPoint;
     public LineRenderer bulletTrail;
     public GameObject bulletHitImpact;
@@ -74,9 +74,14 @@ public class WeaponBase : MonoBehaviour, IWeapon
     private Coroutine _shootAutoCoroutine;
 
     [Header("Ammunition and animations")]
+    public WeaponsAmmoData ammoData;
+    private int _currentAmmo;
+    private int _maxAmmo;
+    private int _totalAmountOfCarryAmmo;
+    private bool _isReloading;
+    [Space]
     public Animator weaponsAnimator;
     public float reloadTime = 2f;
-    private bool _isReloading;
     private Vector3 _defaultLocalPos;
     private Quaternion _defaultLocalRot;
 
@@ -101,10 +106,14 @@ public class WeaponBase : MonoBehaviour, IWeapon
         _defaultLocalPos = transform.localPosition;
         _defaultLocalRot = transform.localRotation;
 
-        if(weaponsAnimator != null)
+        if (weaponsAnimator != null)
         {
             DisableAnimator();
         }
+
+        _maxAmmo = ammoData.maxAmmo;
+        _currentAmmo = _maxAmmo;
+        _totalAmountOfCarryAmmo = ammoData.totalAmountOfCarryAmmo;
     }
 
     // Update is called once per frame
@@ -123,6 +132,8 @@ public class WeaponBase : MonoBehaviour, IWeapon
             ApplyFinalTransform();
             WeaponBobbing();
         }
+
+        print(_currentAmmo);
 
     }
 
@@ -274,9 +285,33 @@ public class WeaponBase : MonoBehaviour, IWeapon
     {
         while (_isShootingAuto)
         {
-            Shooting();
-            yield return new WaitForSeconds(fireRate);
+            if (_isReloading || _currentAmmo <= 0)
+            {
+                SetEjectionState(false);
+                _shootAutoCoroutine = null;
+                yield break;
+            }
+
+            if (_currentAmmo > 0)
+            {
+                _currentAmmo--;
+                Shooting();
+                yield return new WaitForSeconds(fireRate);
+            }
+            else if (_totalAmountOfCarryAmmo > 0)
+            {
+                Reloading();
+                _shootAutoCoroutine = null;
+                yield break;
+            }
+            else
+            {
+                yield return null;
+            }
         }
+
+        _shootAutoCoroutine = null;
+        SetEjectionState(false);
     }
 
     private IEnumerator SpawnBulletLine(Vector3 startPoint, Vector3 hitTarget)
@@ -304,7 +339,9 @@ public class WeaponBase : MonoBehaviour, IWeapon
 
     public void Reloading()
     {
-        if(_isReloading) return;
+        if (_isReloading) return;
+        SetEjectionState(false);
+        _isShootingAuto = false;
         StartCoroutine(ReloadingAnimation());
     }
 
@@ -321,7 +358,20 @@ public class WeaponBase : MonoBehaviour, IWeapon
     {
         weaponsAnimator.SetBool("isReloading", false);
         DisableAnimator();
+
+        int missing = ammoData.maxAmmo - _currentAmmo;
+        int toLoad = Mathf.Min(missing, _totalAmountOfCarryAmmo);
+        _currentAmmo += toLoad;
+        _totalAmountOfCarryAmmo -= toLoad;
+
+        Debug.Log("Reload finished, reserve before: " + _totalAmountOfCarryAmmo);
+
         _isReloading = false;
+    }
+
+    public void GainingAmmunition(int refillAmount)
+    {
+        _totalAmountOfCarryAmmo = Mathf.Clamp(_totalAmountOfCarryAmmo + refillAmount, 0, ammoData.totalAmountOfCarryAmmo);
     }
 
     public void EnableAnimator()
@@ -345,15 +395,28 @@ public class WeaponBase : MonoBehaviour, IWeapon
 
     public void OnShoot(InputAction.CallbackContext ctx)
     {
-        if (ctx.started)
+        if (!PlayerController.Instance.playerHealth.isAlive) return;
+
+        if (currentWeaponType != WeaponType.Pistol || !gameObject.activeSelf || _isReloading) return;
+
+        if (ctx.started && _currentAmmo > 0)
         {
+            _currentAmmo--;
             Shooting();
             SetEjectionState(true);
+        }
+
+        if (_currentAmmo == 0 && _totalAmountOfCarryAmmo > 0)
+        {
+            Reloading();
         }
     }
 
     public void OnShootAuto(InputAction.CallbackContext ctx)
     {
+        if (!PlayerController.Instance.playerHealth.isAlive) return;
+        if (currentWeaponType != WeaponType.Rifle || !gameObject.activeSelf || _isReloading) return;
+
         if (ctx.started)
         {
             _isShootingAuto = true;
