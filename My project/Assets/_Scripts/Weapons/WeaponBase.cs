@@ -1,5 +1,6 @@
 using JetBrains.Annotations;
 using System.Collections;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -85,6 +86,10 @@ public class WeaponBase : MonoBehaviour, IWeapon
     private Vector3 _defaultLocalPos;
     private Quaternion _defaultLocalRot;
 
+    [Header("UI")]
+    public TextMeshProUGUI currentAmountAmmo;
+    public TextMeshProUGUI totalAmountAmmo;
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -114,6 +119,8 @@ public class WeaponBase : MonoBehaviour, IWeapon
         _maxAmmo = ammoData.maxAmmo;
         _currentAmmo = _maxAmmo;
         _totalAmountOfCarryAmmo = ammoData.totalAmountOfCarryAmmo;
+
+        UpdateAmmoUI();
     }
 
     // Update is called once per frame
@@ -279,6 +286,8 @@ public class WeaponBase : MonoBehaviour, IWeapon
             Vector3 endPoint = shootingPoint.transform.position + direction * range;
             StartCoroutine(SpawnBulletLine(shootingPoint.transform.position, endPoint));
         }
+
+        UpdateAmmoUI();
     }
 
     private IEnumerator ShootAuto()
@@ -364,7 +373,7 @@ public class WeaponBase : MonoBehaviour, IWeapon
         _currentAmmo += toLoad;
         _totalAmountOfCarryAmmo -= toLoad;
 
-        Debug.Log("Reload finished, reserve before: " + _totalAmountOfCarryAmmo);
+        UpdateAmmoUI();
 
         _isReloading = false;
     }
@@ -383,6 +392,12 @@ public class WeaponBase : MonoBehaviour, IWeapon
     public void DisableAnimator()
     {
         weaponsAnimator.enabled = false;
+    }
+
+    public void UpdateAmmoUI()
+    {
+        currentAmountAmmo.text = _currentAmmo.ToString();
+        totalAmountAmmo.text = _totalAmountOfCarryAmmo.ToString();
     }
 
 
