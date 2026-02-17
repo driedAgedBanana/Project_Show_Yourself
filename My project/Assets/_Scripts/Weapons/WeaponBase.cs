@@ -140,8 +140,6 @@ public class WeaponBase : MonoBehaviour, IWeapon
             WeaponBobbing();
         }
 
-        print(_currentAmmo);
-
     }
 
     #region Weapon moving
