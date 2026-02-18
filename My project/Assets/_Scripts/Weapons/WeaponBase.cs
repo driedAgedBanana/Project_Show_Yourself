@@ -255,7 +255,7 @@ public class WeaponBase : MonoBehaviour, IWeapon
             // Spawn bullet trail
             StartCoroutine(SpawnBulletLine(shootingPoint.transform.position, hit.point));
 
-            print("Hit: " + hit.collider.name);
+            // print("Hit: " + hit.collider.name);
 
             // Spawn hit impact effect
             GameObject bulletImpact = Instantiate(bulletHitImpact, hit.point, Quaternion.LookRotation(hit.normal));

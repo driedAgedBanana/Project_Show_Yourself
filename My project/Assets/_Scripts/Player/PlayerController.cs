@@ -9,6 +9,7 @@ public class PlayerController : MonoBehaviour
     public WeaponBase[] weaponBase;
     public PlayerHealth playerHealth;
     public CameraShakeManager cameraShakeManager;
+    public PlayerInteract playerInteract;
 
     [Header("References")]
     public Rigidbody rb;
@@ -77,6 +78,9 @@ public class PlayerController : MonoBehaviour
         }
 
         Instance = this;
+
+        playerHealth = GetComponent<PlayerHealth>();
+        playerInteract = GetComponent<PlayerInteract>();
     }
 
     private void Start()
