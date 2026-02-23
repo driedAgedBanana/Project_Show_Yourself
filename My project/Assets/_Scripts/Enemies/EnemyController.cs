@@ -1,4 +1,6 @@
+using NUnit.Framework;
 using System.Collections;
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.AI;
@@ -41,8 +43,9 @@ public class EnemyController : MonoBehaviour
     public BoxCollider bodyCollider;
     public Transform headBone;
     public BoxCollider headCollider;
-    [Space]
-    [HideInInspector] public bool isAllowedToLoot = false;
+
+    [Header("Loot after death")]
+    public List<EnemiesDeadLoot> lootTable = new List<EnemiesDeadLoot>();
 
     [Header("Line of sight")]
     public GameObject player;
@@ -649,7 +652,7 @@ public class EnemyController : MonoBehaviour
         //    QuestSystemManager.Instance.OnEnemyKilled(enemyID);
         //}
 
-        isAllowedToLoot = true;
+        CalculateDropLoot();
 
         StartCoroutine(HideBody());
     }
@@ -679,7 +682,7 @@ public class EnemyController : MonoBehaviour
         agent.enabled = false;
         enemyAnimator.enabled = false;
 
-        isAllowedToLoot = false;
+        CalculateDropLoot();
     }
 
 
@@ -688,6 +691,26 @@ public class EnemyController : MonoBehaviour
     //    if (SpawnManager.Instance != null)
     //        SpawnManager.Instance.UnregisterEnemies(gameObject);
     //}
+
+    #endregion
+
+    #region Calculate random chance for looting
+    
+    private void CalculateDropLoot()
+    {
+        foreach(EnemiesDeadLoot loot in lootTable)
+        {
+            if(Random.Range(0f, 100f) <= loot.dropChance)
+            {
+                InstantiateLoot(loot.itemPrefab);
+            }
+        }
+    }
+
+    private void InstantiateLoot(GameObject lootPrefab)
+    {
+        Instantiate(lootPrefab, transform.position, Quaternion.identity);
+    }
 
     #endregion
 }

@@ -41,7 +41,9 @@ MonoBehaviour:
     squareCorners:
     - gameObject: {fileID: 3746928169460061138, guid: 8fd16f9add3b6504a96a92177e5a8142, type: 3}
       name: Square Corner
-    doors: []
+    doors:
+    - gameObject: {fileID: 576438496033134567, guid: 0146b6d76e2723846b05264dc2fec6ca, type: 3}
+      name: Door
     doorsDisplacements: []
     flooring:
     - gameObject: {fileID: 8761019777689142071, guid: 0234e9a5ed8e17845afb71ada7e4676d, type: 3}
@@ -50,8 +52,10 @@ MonoBehaviour:
     minEnemiesPerRoom: 5
     maxEnemiesPerRoom: 12
     enemies:
-    - gameObject: {fileID: 1418193975600942, guid: 84e3fef1a71553848bd28b67adb5a2c3, type: 3}
-      name: Zombie
+    - gameObject: {fileID: 1418193975600942, guid: 184c8d52755e36842934cda8019684e3, type: 3}
+      name: Jock Zombie
+    - gameObject: {fileID: 1418193975600942, guid: 2526165081945504d842d913f7dab6da, type: 3}
+      name: Cop Zombie
     bosses: []
     breakables: []
     staticObjects: []

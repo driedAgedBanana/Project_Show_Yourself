@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6445261298702064857}
   - component: {fileID: 7043140893871451497}
   - component: {fileID: 2304007496082995868}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Wall 2
   m_TagString: Wall
   m_Icon: {fileID: 0}
@@ -67,7 +67,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 32b007922db6e54428bb8d065924a7d0, type: 2}
+  - {fileID: 2100000, guid: 541e068f40f782441a1bdb8ba76e5a5c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -120,7 +120,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2240145463788491058}
-  m_Layer: 0
+  - component: {fileID: -4415519694703364703}
+  m_Layer: 10
   m_Name: Inner Corner
   m_TagString: Wall
   m_Icon: {fileID: 0}
@@ -144,6 +145,22 @@ Transform:
   - {fileID: 7951240583325668403}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!208 &-4415519694703364703
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2240145463788491059}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.5, y: 0.5, z: 0.5}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0, z: 0}
+  m_TimeToStationary: 0.5
 --- !u!1 &3600277833147177171
 GameObject:
   m_ObjectHideFlags: 0
@@ -156,7 +173,7 @@ GameObject:
   - component: {fileID: 5751931065818030890}
   - component: {fileID: 4630017217507384882}
   - component: {fileID: 1978882396205103406}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Wall 1
   m_TagString: Wall
   m_Icon: {fileID: 0}
@@ -211,7 +228,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 32b007922db6e54428bb8d065924a7d0, type: 2}
+  - {fileID: 2100000, guid: 541e068f40f782441a1bdb8ba76e5a5c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

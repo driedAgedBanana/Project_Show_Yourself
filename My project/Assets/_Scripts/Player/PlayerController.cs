@@ -29,6 +29,10 @@ public class PlayerController : MonoBehaviour
     public float slowWalkSpeed = 2f;
     public float sprintSpeed = 10f;
     public float crouchSpeed = 2f;
+    [Space]
+    private Vector2 _currentMoveInput;
+    private Vector2 _moveInputVelocity;
+    public float inputSmoothTime = 0.1f;
 
     private Vector2 moveInput;
     [HideInInspector] public bool isMoving;
@@ -99,6 +103,8 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
+        _currentMoveInput = Vector2.SmoothDamp(_currentMoveInput, moveInput, ref _moveInputVelocity, inputSmoothTime);
+
         HandleLean();
         HandleFOV();
         HandleHeadBob();
@@ -129,30 +135,34 @@ public class PlayerController : MonoBehaviour
 
     private void HandleMovementPhysics()
     {
-        float speed = moveSpeed;
+        float targetSpeed = moveSpeed;
 
         if (isCrouching)
         {
-            speed = crouchSpeed;
+            targetSpeed = crouchSpeed;
         }
         else if (canSprint)
         {
-            speed = sprintSpeed;
+            targetSpeed = sprintSpeed;
         }
         foreach (WeaponBase weapon in weaponBase)
         {
             if (weapon.isAiming)
             {
-                speed = slowWalkSpeed;
+                targetSpeed = slowWalkSpeed;
                 break;
             }
         }
 
-        Vector3 moveDir = transform.right * moveInput.x + transform.forward * moveInput.y;
-        Vector3 velocity = moveDir * speed;
-        velocity.y = rb.linearVelocity.y;
+        Vector3 moveDir = transform.right * _currentMoveInput.x + transform.forward * _currentMoveInput.y;
+        Vector3 targetVelocity = moveDir * targetSpeed;
 
-        rb.linearVelocity = velocity;
+        Vector3 currentVelocity = rb.linearVelocity;
+        Vector3 velocityChange = (targetVelocity - currentVelocity);
+
+        velocityChange.y = 0;
+
+        rb.AddForce(velocityChange, ForceMode.VelocityChange);
 
         isMoving = new Vector3(rb.linearVelocity.x, 0, rb.linearVelocity.z).magnitude > 0.1f;
     }
