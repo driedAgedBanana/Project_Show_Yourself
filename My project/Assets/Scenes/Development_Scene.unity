@@ -150,6 +150,33 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &58933172 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2289149333887379137, guid: a271d79b42c78d546a33b5543674a931, type: 3}
+  m_PrefabInstance: {fileID: 2744262287896443451}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &58933173 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7919992996717164408, guid: a271d79b42c78d546a33b5543674a931, type: 3}
+  m_PrefabInstance: {fileID: 2744262287896443451}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &58933174
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 58933172}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b47fce348cc5c94f9cc2b014530cfd0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WeaponSwapper
+  weaponSlot: {fileID: 58933173}
+  mainWeapon: {fileID: 1923324283}
+  secondWeapon: {fileID: 1945893804}
+  smoothTime: 0.15
+  hiddenOffset: {x: 0, y: -1, z: 0}
 --- !u!1001 &1163675314
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -992,6 +1019,16 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 84e3fef1a71553848bd28b67adb5a2c3, type: 3}
+--- !u!1 &1923324283 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6803532241251577624, guid: a271d79b42c78d546a33b5543674a931, type: 3}
+  m_PrefabInstance: {fileID: 2744262287896443451}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1945893804 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3138050944116757561, guid: a271d79b42c78d546a33b5543674a931, type: 3}
+  m_PrefabInstance: {fileID: 2744262287896443451}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2003455269
 GameObject:
   m_ObjectHideFlags: 0
@@ -1064,6 +1101,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 73810953160420268, guid: a271d79b42c78d546a33b5543674a931, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.15
+      objectReference: {fileID: 0}
+    - target: {fileID: 1102704317023216285, guid: a271d79b42c78d546a33b5543674a931, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.264
+      objectReference: {fileID: 0}
     - target: {fileID: 1982049497142310322, guid: a271d79b42c78d546a33b5543674a931, type: 3}
       propertyPath: m_Name
       value: Player
@@ -1108,10 +1153,61 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3138050944116757561, guid: a271d79b42c78d546a33b5543674a931, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3515111273433383990, guid: a271d79b42c78d546a33b5543674a931, type: 3}
+      propertyPath: m_ActionEvents.Array.size
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 3515111273433383990, guid: a271d79b42c78d546a33b5543674a931, type: 3}
+      propertyPath: m_ActionEvents.Array.data[24].m_ActionId
+      value: ed658129-f9de-421d-8179-91e9a9e59eed
+      objectReference: {fileID: 0}
+    - target: {fileID: 3515111273433383990, guid: a271d79b42c78d546a33b5543674a931, type: 3}
+      propertyPath: m_ActionEvents.Array.data[24].m_ActionName
+      value: 'Player/SwitchingWeapon[/Mouse/scroll]'
+      objectReference: {fileID: 0}
+    - target: {fileID: 3515111273433383990, guid: a271d79b42c78d546a33b5543674a931, type: 3}
+      propertyPath: m_ActionEvents.Array.data[24].m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3515111273433383990, guid: a271d79b42c78d546a33b5543674a931, type: 3}
+      propertyPath: m_ActionEvents.Array.data[24].m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3515111273433383990, guid: a271d79b42c78d546a33b5543674a931, type: 3}
+      propertyPath: m_ActionEvents.Array.data[24].m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 58933174}
+    - target: {fileID: 3515111273433383990, guid: a271d79b42c78d546a33b5543674a931, type: 3}
+      propertyPath: m_ActionEvents.Array.data[24].m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3515111273433383990, guid: a271d79b42c78d546a33b5543674a931, type: 3}
+      propertyPath: m_ActionEvents.Array.data[24].m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnScroll
+      objectReference: {fileID: 0}
+    - target: {fileID: 3515111273433383990, guid: a271d79b42c78d546a33b5543674a931, type: 3}
+      propertyPath: m_ActionEvents.Array.data[24].m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: WeaponSwapper, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 3515111273433383990, guid: a271d79b42c78d546a33b5543674a931, type: 3}
+      propertyPath: m_ActionEvents.Array.data[24].m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 6803532241251577624, guid: a271d79b42c78d546a33b5543674a931, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2289149333887379137, guid: a271d79b42c78d546a33b5543674a931, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 58933174}
   m_SourcePrefab: {fileID: 100100000, guid: a271d79b42c78d546a33b5543674a931, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
