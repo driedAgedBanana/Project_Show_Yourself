@@ -32,7 +32,6 @@ public class WeaponBase : MonoBehaviour, IWeapon
     private Vector3 _bobOffset;
     private Quaternion _swayRotation = Quaternion.identity;
 
-
     private Vector3 _defaultPos;
     private float _timer;
 
@@ -78,7 +77,7 @@ public class WeaponBase : MonoBehaviour, IWeapon
     public WeaponsAmmoData ammoData;
     private int _currentAmmo;
     private int _maxAmmo;
-    private int _totalAmountOfCarryAmmo;
+    [HideInInspector] public int totalAmountOfCarryAmmo;
     private bool _isReloading;
     [Space]
     public Animator weaponsAnimator;
@@ -118,7 +117,7 @@ public class WeaponBase : MonoBehaviour, IWeapon
 
         _maxAmmo = ammoData.maxAmmo;
         _currentAmmo = _maxAmmo;
-        _totalAmountOfCarryAmmo = ammoData.totalAmountOfCarryAmmo;
+        totalAmountOfCarryAmmo = ammoData.totalAmountOfCarryAmmo;
 
         UpdateAmmoUI();
     }
@@ -305,7 +304,7 @@ public class WeaponBase : MonoBehaviour, IWeapon
                 Shooting();
                 yield return new WaitForSeconds(fireRate);
             }
-            else if (_totalAmountOfCarryAmmo > 0)
+            else if (totalAmountOfCarryAmmo > 0)
             {
                 Reloading();
                 _shootAutoCoroutine = null;
@@ -368,9 +367,9 @@ public class WeaponBase : MonoBehaviour, IWeapon
         DisableAnimator();
 
         int missing = ammoData.maxAmmo - _currentAmmo;
-        int toLoad = Mathf.Min(missing, _totalAmountOfCarryAmmo);
+        int toLoad = Mathf.Min(missing, totalAmountOfCarryAmmo);
         _currentAmmo += toLoad;
-        _totalAmountOfCarryAmmo -= toLoad;
+        totalAmountOfCarryAmmo -= toLoad;
 
         UpdateAmmoUI();
 
@@ -379,7 +378,7 @@ public class WeaponBase : MonoBehaviour, IWeapon
 
     public void GainingAmmunition(int refillAmount)
     {
-        _totalAmountOfCarryAmmo = Mathf.Clamp(_totalAmountOfCarryAmmo + refillAmount, 0, ammoData.totalAmountOfCarryAmmo);
+        totalAmountOfCarryAmmo = Mathf.Clamp(totalAmountOfCarryAmmo + refillAmount, 0, ammoData.totalAmountOfCarryAmmo);
     }
 
     public void EnableAnimator()
@@ -396,7 +395,7 @@ public class WeaponBase : MonoBehaviour, IWeapon
     public void UpdateAmmoUI()
     {
         currentAmountAmmo.text = _currentAmmo.ToString();
-        totalAmountAmmo.text = _totalAmountOfCarryAmmo.ToString();
+        totalAmountAmmo.text = totalAmountOfCarryAmmo.ToString();
     }
 
     #endregion
@@ -421,7 +420,7 @@ public class WeaponBase : MonoBehaviour, IWeapon
             SetEjectionState(true);
         }
 
-        if (_currentAmmo == 0 && _totalAmountOfCarryAmmo > 0)
+        if (_currentAmmo == 0 && totalAmountOfCarryAmmo > 0)
         {
             Reloading();
         }
