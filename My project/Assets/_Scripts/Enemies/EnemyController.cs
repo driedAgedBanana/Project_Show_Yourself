@@ -121,7 +121,7 @@ public class EnemyController : MonoBehaviour
         _distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
         agent.stoppingDistance = attackRange - bufferDistance;
 
-        if(disappearParticle != null)
+        if (disappearParticle != null)
         {
             disappearParticle.Stop();
         }
@@ -695,12 +695,12 @@ public class EnemyController : MonoBehaviour
     #endregion
 
     #region Calculate random chance for looting
-    
+
     private void CalculateDropLoot()
     {
-        foreach(EnemiesDeadLoot loot in lootTable)
+        foreach (EnemiesDeadLoot loot in lootTable)
         {
-            if(Random.Range(0f, 100f) <= loot.dropChance)
+            if (Random.Range(0f, 100f) <= loot.dropChance)
             {
                 InstantiateLoot(loot.itemPrefab);
             }
