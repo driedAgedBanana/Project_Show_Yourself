@@ -85,7 +85,11 @@ public class WeaponBase : MonoBehaviour, IWeapon
     private Vector3 _defaultLocalPos;
     private Quaternion _defaultLocalRot;
 
+    [Header("Checking for ammunition")]
+    [HideInInspector] public bool isCheckingForAmmo;
+
     [Header("UI")]
+    public GameObject uiHolder;
     public TextMeshProUGUI currentAmountAmmo;
     public TextMeshProUGUI totalAmountAmmo;
 
@@ -118,6 +122,11 @@ public class WeaponBase : MonoBehaviour, IWeapon
         _maxAmmo = ammoData.maxAmmo;
         _currentAmmo = _maxAmmo;
         totalAmountOfCarryAmmo = ammoData.totalAmountOfCarryAmmo;
+
+        if(uiHolder != null)
+        {
+            uiHolder.SetActive(false);
+        }
 
         UpdateAmmoUI();
     }
@@ -402,17 +411,44 @@ public class WeaponBase : MonoBehaviour, IWeapon
 
     #endregion
 
+    #region Check For Ammo
+
+    private void PlayCheckMagAnimation()
+    {
+        isCheckingForAmmo = true;
+        EnableAnimator();
+        weaponsAnimator.SetBool("isCheckingForAmmo", true);
+        uiHolder.SetActive(true);
+    }
+
+    private void PlayCloseMagAnimation()
+    {
+        uiHolder.SetActive(false);
+        weaponsAnimator.SetBool("isCheckingForAmmo", false);
+    }
+
+    public void FinishCheckingAmmo()
+    {
+        isCheckingForAmmo = false;
+        DisableAnimator();
+    }
+
+    #endregion
+
     #region Inputs
 
     public void OnAim(InputAction.CallbackContext ctx)
     {
         if (!PlayerController.Instance.playerHealth.isAlive) return;
+        if(isCheckingForAmmo) return;
+
         isAiming = ctx.ReadValue<float>() > 0;
     }
 
     public void OnShoot(InputAction.CallbackContext ctx)
     {
         if (!PlayerController.Instance.playerHealth.isAlive) return;
+        if (isCheckingForAmmo) return;
 
         if (currentWeaponType != WeaponType.Pistol || !gameObject.activeSelf || _isReloading) return;
 
@@ -432,6 +468,8 @@ public class WeaponBase : MonoBehaviour, IWeapon
     public void OnShootAuto(InputAction.CallbackContext ctx)
     {
         if (!PlayerController.Instance.playerHealth.isAlive) return;
+
+        if (isCheckingForAmmo) return;
 
         if (currentWeaponType != WeaponType.Rifle || !gameObject.activeSelf || _isReloading) return;
 
@@ -453,11 +491,32 @@ public class WeaponBase : MonoBehaviour, IWeapon
     public void OnReload(InputAction.CallbackContext ctx)
     {
         if (!PlayerController.Instance.playerHealth.isAlive) return;
+
+        if(_currentAmmo >= ammoData.maxAmmo || totalAmountOfCarryAmmo <= 0) return;
+
+        if (isCheckingForAmmo) return;
+
         if (!this.gameObject.activeSelf) return; // exit early if weapon is inactive
 
         if (ctx.started)
         {
             Reloading();
+        }
+    }
+
+    public void OnCheckMagazine(InputAction.CallbackContext ctx)
+    {
+        if (!PlayerController.Instance.playerHealth.isAlive) return;
+        if (!this.gameObject.activeSelf) return;
+
+        if (ctx.started)
+        {
+            PlayCheckMagAnimation();
+        }
+
+        if(ctx.canceled)
+        {
+            PlayCloseMagAnimation();
         }
     }
 
