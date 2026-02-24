@@ -92,7 +92,6 @@ public class PlayerHealth : MonoBehaviour
 
         currentHealth -= damageAmount;
         PlayerController.Instance.cameraShakeManager.ApplyingDamageShake();
-        print(currentHealth);
 
         if (currentHealth <= 0)
         {
