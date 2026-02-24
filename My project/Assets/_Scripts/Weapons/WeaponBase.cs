@@ -125,20 +125,22 @@ public class WeaponBase : MonoBehaviour, IWeapon
     // Update is called once per frame
     void Update()
     {
-        Aiming();
-
-        if (isAiming)
+        if(PlayerController.Instance.playerHealth.isAlive)
         {
-            _swayRotation = Quaternion.identity;
-            return;
-        }
-        else
-        {
-            SwayWeapon();
-            ApplyFinalTransform();
-            WeaponBobbing();
-        }
+            Aiming();
 
+            if (isAiming)
+            {
+                _swayRotation = Quaternion.identity;
+                return;
+            }
+            else
+            {
+                SwayWeapon();
+                ApplyFinalTransform();
+                WeaponBobbing();
+            }
+        }
     }
 
     #region Weapon moving
@@ -404,6 +406,7 @@ public class WeaponBase : MonoBehaviour, IWeapon
 
     public void OnAim(InputAction.CallbackContext ctx)
     {
+        if (!PlayerController.Instance.playerHealth.isAlive) return;
         isAiming = ctx.ReadValue<float>() > 0;
     }
 
@@ -429,6 +432,7 @@ public class WeaponBase : MonoBehaviour, IWeapon
     public void OnShootAuto(InputAction.CallbackContext ctx)
     {
         if (!PlayerController.Instance.playerHealth.isAlive) return;
+
         if (currentWeaponType != WeaponType.Rifle || !gameObject.activeSelf || _isReloading) return;
 
         if (ctx.started)
@@ -448,6 +452,7 @@ public class WeaponBase : MonoBehaviour, IWeapon
 
     public void OnReload(InputAction.CallbackContext ctx)
     {
+        if (!PlayerController.Instance.playerHealth.isAlive) return;
         if (!this.gameObject.activeSelf) return; // exit early if weapon is inactive
 
         if (ctx.started)

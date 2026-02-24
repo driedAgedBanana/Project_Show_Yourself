@@ -8,6 +8,17 @@ public class PlayerHealth : MonoBehaviour
     public float maxHealth = 100f;
     public float currentHealth;
     [HideInInspector] public bool isAlive = true;
+    public GameObject weaponSlot;
+    private Rigidbody _rb;
+
+    [Header("Health UI")]
+    public Slider healthSlider;
+    public float lerpSpeed;
+    [Space]
+    public GameObject gameOverPanel;
+    [SerializeField] private float _waitTime;
+    private float _targetFillAmount;
+
 
     [Header("Radiation Rads")]
     [Range(0f, 100f)] public float currentRads = 0f;
@@ -31,9 +42,21 @@ public class PlayerHealth : MonoBehaviour
 
     private void Start()
     {
+        isAlive = currentHealth >= 0;
         currentHealth = maxHealth;
         isAlive = true;
         currentRads = cleanRads;
+
+        UpdateHealthBarUI();
+
+        _rb = PlayerController.Instance.rb;
+        _rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
+        _rb.constraints = RigidbodyConstraints.FreezeRotation;
+
+        if(gameOverPanel != null)
+        {
+            gameOverPanel.SetActive(false);
+        }
     }
 
     private void Update()
@@ -44,27 +67,42 @@ public class PlayerHealth : MonoBehaviour
         }
 
         currentHealth = Mathf.Clamp(currentHealth, 0f, maxHealth);
+        UpdateHealthBarUI();
     }
+
+    #region Health UI
+
+    public void UpdateHealthBarUI()
+    {
+        if (healthSlider == null) return;
+
+        // Calculate the target (0.0 to 1.0)
+        _targetFillAmount = (float)currentHealth / maxHealth;
+
+        // Smoothly interpolate the current slider value toward the target
+        healthSlider.value = Mathf.Lerp(healthSlider.value, _targetFillAmount, Time.deltaTime * lerpSpeed);
+    }
+
+    #endregion
 
     #region Health Management
     public void TakeDamage(float damageAmount)
     {
-        if(!isAlive || damageAmount <= 0) return;
+        if (!isAlive || damageAmount <= 0) return;
 
         currentHealth -= damageAmount;
         PlayerController.Instance.cameraShakeManager.ApplyingDamageShake();
         print(currentHealth);
 
-        if(currentHealth <= 0)
+        if (currentHealth <= 0)
         {
-            // Die();
-            print("Player is dead!");
+            Die();
         }
     }
 
     public void Heal(float healAmount)
     {
-        if(!isAlive || healAmount <= 0) return;
+        if (!isAlive || healAmount <= 0) return;
         currentHealth = Mathf.Min(currentHealth + healAmount, maxHealth);
 
         // Update UI
@@ -72,11 +110,21 @@ public class PlayerHealth : MonoBehaviour
 
     private void Die()
     {
-        if (!isAlive) return;
-
         isAlive = false;
         currentHealth = 0f;
+        _rb.collisionDetectionMode = CollisionDetectionMode.Discrete;
+        _rb.constraints = RigidbodyConstraints.None;
+        weaponSlot.SetActive(false);
+        StartCoroutine(GameOverSequence());
     }
+
+    private IEnumerator GameOverSequence()
+    {
+        yield return new WaitForSeconds(_waitTime);
+        gameOverPanel.SetActive(true);
+        GameManager.Instance.ShowMouse();
+    }
+
     #endregion
 
     #region Rads API

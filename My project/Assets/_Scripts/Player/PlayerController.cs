@@ -92,23 +92,29 @@ public class PlayerController : MonoBehaviour
         rb.interpolation = RigidbodyInterpolation.Interpolate;
         currentStamina = maxStamina;
         cameraShakeManager = GetComponentInChildren<CameraShakeManager>();
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+
+        GameManager.Instance.HideMouse();
     }
 
     private void LateUpdate()
     {
-        HandleLook();
+        if (playerHealth.isAlive)
+        {
+            HandleLook();
+        }
     }
 
     private void Update()
     {
-        _currentMoveInput = Vector2.SmoothDamp(_currentMoveInput, moveInput, ref _moveInputVelocity, inputSmoothTime);
+        if (playerHealth.isAlive)
+        {
+            _currentMoveInput = Vector2.SmoothDamp(_currentMoveInput, moveInput, ref _moveInputVelocity, inputSmoothTime);
 
-        HandleLean();
-        HandleFOV();
-        HandleHeadBob();
-        HandleStamina();
+            HandleLean();
+            HandleFOV();
+            HandleHeadBob();
+            HandleStamina();
+        }
     }
 
     private void FixedUpdate()
