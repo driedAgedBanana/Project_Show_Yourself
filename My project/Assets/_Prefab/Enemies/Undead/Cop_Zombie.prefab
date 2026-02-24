@@ -1116,9 +1116,11 @@ MonoBehaviour:
   headBone: {fileID: 4854274546089016}
   headCollider: {fileID: 220827599005428051}
   lootTable:
+  - itemPrefab: {fileID: 1495748077833478, guid: f0e4f968d921c9e429e57aa61a766ca2, type: 3}
+    dropChance: 25
   - itemPrefab: {fileID: 1364968598790260, guid: 36c9aa7d916c8e74497bf3d85ab5b785, type: 3}
     dropChance: 25
-  - itemPrefab: {fileID: 1495748077833478, guid: f0e4f968d921c9e429e57aa61a766ca2, type: 3}
+  - itemPrefab: {fileID: 1435410842068634, guid: e408da02bc682274e94d73bbb3429de3, type: 3}
     dropChance: 25
   player: {fileID: 0}
   visionDegree: 100

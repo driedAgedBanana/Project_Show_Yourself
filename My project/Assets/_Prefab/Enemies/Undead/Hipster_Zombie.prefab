@@ -3871,7 +3871,7 @@ GameObject:
   - component: {fileID: 7963796608409310648}
   - component: {fileID: 9071669330773166094}
   m_Layer: 0
-  m_Name: Zombie_Base
+  m_Name: Zombie_Base 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

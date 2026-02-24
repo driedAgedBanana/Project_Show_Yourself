@@ -911,7 +911,7 @@ MonoBehaviour:
   lookInput: {x: 0, y: 0}
   moveSpeed: 5
   slowWalkSpeed: 2
-  sprintSpeed: 10
+  sprintSpeed: 8
   crouchSpeed: 2
   inputSmoothTime: 0.1
   isMoving: 0
@@ -948,7 +948,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37d4a849109938841ac5442e559e12cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerInteract
-  interactRange: 5
+  interactRange: 10
   interactIcon: {fileID: 7102386401210071201}
 --- !u!136 &7165037070988328891
 CapsuleCollider:
@@ -981,7 +981,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1982049497142310322}
   serializedVersion: 5
-  m_Mass: 1
+  m_Mass: 10
   m_LinearDamping: 0
   m_AngularDamping: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -7169,8 +7169,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FlashlightManager
   weaponFlashLight: {fileID: 7176390030702171192}
-  standardIntensity: 40
-  closeRangeIntensity: 7
+  standardIntensity: 25
+  closeRangeIntensity: 10
   switchDuration: 0.5
   rayCheckRange: 3.5
   obstacleLayer:
@@ -13504,8 +13504,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FlashlightManager
   weaponFlashLight: {fileID: 4111538909180571949}
-  standardIntensity: 35
-  closeRangeIntensity: 7
+  standardIntensity: 25
+  closeRangeIntensity: 10
   switchDuration: 0.5
   rayCheckRange: 3.5
   obstacleLayer:
@@ -14557,7 +14557,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 630341572420416615, guid: cf9491cb58efcbf42b79f8b1a900b693, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1338276822204284404, guid: cf9491cb58efcbf42b79f8b1a900b693, type: 3}
       propertyPath: InitialModule.startLifetime.scalar
@@ -14984,7 +14984,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6469243681722169322, guid: d25d56b073c2f5948bcceb1b0652e349, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8844795938345193233, guid: d25d56b073c2f5948bcceb1b0652e349, type: 3}
       propertyPath: m_Layer

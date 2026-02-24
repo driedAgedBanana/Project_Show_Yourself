@@ -32,7 +32,7 @@ Transform:
   - {fileID: 4912670119149956}
   m_Father: {fileID: 4688374947186396}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1003558422624600
+--- !u!1 &1024597680522302
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -40,22 +40,22 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4390152139336576}
-  - component: {fileID: 137112194408232356}
+  - component: {fileID: 4854374757423292}
+  - component: {fileID: 137779497006749832}
   m_Layer: 0
-  m_Name: Zombie_Jock_Male_01
+  m_Name: Zombie_Gangster_Male_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4390152139336576
+--- !u!4 &4854374757423292
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1003558422624600}
+  m_GameObject: {fileID: 1024597680522302}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0, y: 0, z: 0}
@@ -64,13 +64,13 @@ Transform:
   m_Children: []
   m_Father: {fileID: 4243538704547566}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!137 &137112194408232356
+--- !u!137 &137779497006749832
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1003558422624600}
+  m_GameObject: {fileID: 1024597680522302}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -115,7 +115,7 @@ SkinnedMeshRenderer:
   m_Quality: 0
   m_UpdateWhenOffscreen: 0
   m_SkinnedMotionVectors: 1
-  m_Mesh: {fileID: 4300022, guid: b20a3c10714a6ac439af479e3273de65, type: 3}
+  m_Mesh: {fileID: 4300008, guid: b20a3c10714a6ac439af479e3273de65, type: 3}
   m_Bones:
   - {fileID: 4101432036228654}
   - {fileID: 4945729818345072}
@@ -170,8 +170,8 @@ SkinnedMeshRenderer:
   m_BlendShapeWeights: []
   m_RootBone: {fileID: 4101432036228654}
   m_AABB:
-    m_Center: {x: -0.000000059604645, y: 0.867645, z: -0.06539926}
-    m_Extent: {x: 1.0245576, y: 0.9694756, z: 0.28170878}
+    m_Center: {x: 0.0000011324883, y: 0.8707578, z: -0.031837583}
+    m_Extent: {x: 1.0245614, y: 0.97511446, z: 0.25866607}
   m_DirtyAABB: 0
 --- !u!1 &1026027011491460
 GameObject:
@@ -1192,7 +1192,7 @@ GameObject:
   - component: {fileID: 7963796608409310648}
   - component: {fileID: 9071669330773166094}
   m_Layer: 0
-  m_Name: Jock_Zombie
+  m_Name: Gangster_Zombie
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1213,7 +1213,7 @@ Transform:
   m_Children:
   - {fileID: 8393884296098213362}
   - {fileID: 4101432036228654}
-  - {fileID: 4390152139336576}
+  - {fileID: 4854374757423292}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7353150931010406570
@@ -1248,7 +1248,7 @@ MonoBehaviour:
   enemyType: 0
   enemyRB: {fileID: 7963796608409310648}
   disappearParticle: {fileID: 19885060, guid: fe172aea7216ff249ba28a07e47596b1, type: 3}
-  enemyMesh: {fileID: 137112194408232356}
+  enemyMesh: {fileID: 137779497006749832}
   enemyRagdollController: {fileID: 7353150931010406570}
   maxHealth: 100
   currentHealth: 0
@@ -1262,7 +1262,7 @@ MonoBehaviour:
   - itemPrefab: {fileID: 1364968598790260, guid: 36c9aa7d916c8e74497bf3d85ab5b785, type: 3}
     dropChance: 25
   - itemPrefab: {fileID: 1435410842068634, guid: e408da02bc682274e94d73bbb3429de3, type: 3}
-    dropChance: 25
+    dropChance: 20
   player: {fileID: 0}
   visionDegree: 90
   isDead: 0

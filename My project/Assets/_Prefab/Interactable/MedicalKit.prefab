@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &1495748077833478
+--- !u!1 &1435410842068634
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,65 +8,62 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4705198821467490}
-  - component: {fileID: 1638771911549688556}
-  - component: {fileID: 33770607910297426}
-  - component: {fileID: 23942151557866318}
-  - component: {fileID: 8391418610791757404}
+  - component: {fileID: 4682603471150184}
+  - component: {fileID: 1225456409099363403}
+  - component: {fileID: 33686642431113250}
+  - component: {fileID: 23063353853416478}
+  - component: {fileID: 7593951568278191890}
   m_Layer: 0
-  m_Name: SM_Wep_Bullet_Ammo_Box_01
+  m_Name: MedicalKit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4705198821467490
+--- !u!4 &4682603471150184
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1495748077833478}
+  m_GameObject: {fileID: 1435410842068634}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
-  m_ConstrainProportionsScale: 1
+  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1638771911549688556
+--- !u!114 &1225456409099363403
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1495748077833478}
+  m_GameObject: {fileID: 1435410842068634}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4df2235a9a222384caf56b6d37ce1846, type: 3}
+  m_Script: {fileID: 11500000, guid: d2f569adb72a5c043bdf2c293d525849, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::AmmoSupply
-  weaponData: {fileID: 11400000, guid: 2907c4f357a131347a09a435b2bf6c88, type: 2}
-  weaponType: 0
-  minAmmoAmount: 25
-  maxAmmoAmount: 60
-  randomAmount: 0
---- !u!33 &33770607910297426
+  m_EditorClassIdentifier: Assembly-CSharp::MedKit
+  minHealAmount: 15
+  maxHealAmount: 45
+--- !u!33 &33686642431113250
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1495748077833478}
-  m_Mesh: {fileID: 4300000, guid: 488e50edf28e8e848ab9e28e29419088, type: 3}
---- !u!23 &23942151557866318
+  m_GameObject: {fileID: 1435410842068634}
+  m_Mesh: {fileID: 4300000, guid: db9173992e5fa7047a7d51b3da481ffa, type: 3}
+--- !u!23 &23063353853416478
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1495748077833478}
+  m_GameObject: {fileID: 1435410842068634}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -108,13 +105,13 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &8391418610791757404
+--- !u!65 &7593951568278191890
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1495748077833478}
+  m_GameObject: {fileID: 1435410842068634}
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -127,5 +124,5 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.17215072, y: 0.06207652, z: 0.107944876}
-  m_Center: {x: 0, y: 0.03103826, z: 0}
+  m_Size: {x: 0.48161238, y: 0.13283943, z: 0.38596162}
+  m_Center: {x: 0, y: 0.06641971, z: -0.000000014901161}

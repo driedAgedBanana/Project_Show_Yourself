@@ -57,7 +57,7 @@ public class PlayerInteract : MonoBehaviour
         {
             _isInteracting = true;
         }
-        StartCoroutine(InteractionCoolDown(0.3f));
+        StartCoroutine(InteractionCoolDown(0.1f));
     }
 
     private IEnumerator InteractionCoolDown(float time)

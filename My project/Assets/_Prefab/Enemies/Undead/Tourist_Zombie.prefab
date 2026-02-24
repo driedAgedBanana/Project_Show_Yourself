@@ -32,147 +32,6 @@ Transform:
   - {fileID: 4912670119149956}
   m_Father: {fileID: 4688374947186396}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1003558422624600
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 4390152139336576}
-  - component: {fileID: 137112194408232356}
-  m_Layer: 0
-  m_Name: Zombie_Jock_Male_01
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &4390152139336576
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1003558422624600}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 4243538704547566}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!137 &137112194408232356
-SkinnedMeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1003558422624600}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 3
-  m_RayTraceProcedural: 0
-  m_RayTracingAccelStructBuildFlagsOverride: 0
-  m_RayTracingAccelStructBuildFlags: 1
-  m_SmallMeshCulling: 1
-  m_ForceMeshLod: -1
-  m_MeshLodSelectionBias: 0
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: 5545c89bb0a75004bbe217d139a97e89, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  serializedVersion: 2
-  m_Quality: 0
-  m_UpdateWhenOffscreen: 0
-  m_SkinnedMotionVectors: 1
-  m_Mesh: {fileID: 4300022, guid: b20a3c10714a6ac439af479e3273de65, type: 3}
-  m_Bones:
-  - {fileID: 4101432036228654}
-  - {fileID: 4945729818345072}
-  - {fileID: 4150407374466228}
-  - {fileID: 4214900843349232}
-  - {fileID: 4688374947186396}
-  - {fileID: 4094581972157756}
-  - {fileID: 4854274546089016}
-  - {fileID: 4215630084388708}
-  - {fileID: 4521969456146534}
-  - {fileID: 4034558224763226}
-  - {fileID: 4148705078875656}
-  - {fileID: 4912670119149956}
-  - {fileID: 4686408201078064}
-  - {fileID: 4686016831755462}
-  - {fileID: 4453221785647148}
-  - {fileID: 4216687105816788}
-  - {fileID: 4217949899896632}
-  - {fileID: 4748411360754522}
-  - {fileID: 4432047313515098}
-  - {fileID: 4064311336639062}
-  - {fileID: 4373173668995696}
-  - {fileID: 4527152632840008}
-  - {fileID: 4903908254554826}
-  - {fileID: 4881882495593478}
-  - {fileID: 4677139360516890}
-  - {fileID: 4291383144270162}
-  - {fileID: 4143637328076898}
-  - {fileID: 4264194853174020}
-  - {fileID: 4370779388373232}
-  - {fileID: 4848622988887982}
-  - {fileID: 4059434638314088}
-  - {fileID: 4801553726465670}
-  - {fileID: 4142531251596236}
-  - {fileID: 4329053343834602}
-  - {fileID: 4084634869638090}
-  - {fileID: 4730444068416932}
-  - {fileID: 4138235798992448}
-  - {fileID: 4216900129964578}
-  - {fileID: 4911584857156482}
-  - {fileID: 4669116654201016}
-  - {fileID: 4065227947959322}
-  - {fileID: 4091118722080264}
-  - {fileID: 4674680938303918}
-  - {fileID: 4650621990084944}
-  - {fileID: 4307833280457220}
-  - {fileID: 4578384832280114}
-  - {fileID: 4816606428444988}
-  - {fileID: 4182781095953698}
-  - {fileID: 4373174449894724}
-  - {fileID: 4235650673546412}
-  m_BlendShapeWeights: []
-  m_RootBone: {fileID: 4101432036228654}
-  m_AABB:
-    m_Center: {x: -0.000000059604645, y: 0.867645, z: -0.06539926}
-    m_Extent: {x: 1.0245576, y: 0.9694756, z: 0.28170878}
-  m_DirtyAABB: 0
 --- !u!1 &1026027011491460
 GameObject:
   m_ObjectHideFlags: 0
@@ -1192,7 +1051,7 @@ GameObject:
   - component: {fileID: 7963796608409310648}
   - component: {fileID: 9071669330773166094}
   m_Layer: 0
-  m_Name: Jock_Zombie
+  m_Name: Tourist_Zombie
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1213,7 +1072,7 @@ Transform:
   m_Children:
   - {fileID: 8393884296098213362}
   - {fileID: 4101432036228654}
-  - {fileID: 4390152139336576}
+  - {fileID: 4958286426080072}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7353150931010406570
@@ -1248,7 +1107,7 @@ MonoBehaviour:
   enemyType: 0
   enemyRB: {fileID: 7963796608409310648}
   disappearParticle: {fileID: 19885060, guid: fe172aea7216ff249ba28a07e47596b1, type: 3}
-  enemyMesh: {fileID: 137112194408232356}
+  enemyMesh: {fileID: 137818767000630086}
   enemyRagdollController: {fileID: 7353150931010406570}
   maxHealth: 100
   currentHealth: 0
@@ -1262,7 +1121,7 @@ MonoBehaviour:
   - itemPrefab: {fileID: 1364968598790260, guid: 36c9aa7d916c8e74497bf3d85ab5b785, type: 3}
     dropChance: 25
   - itemPrefab: {fileID: 1435410842068634, guid: e408da02bc682274e94d73bbb3429de3, type: 3}
-    dropChance: 25
+    dropChance: 20
   player: {fileID: 0}
   visionDegree: 90
   isDead: 0
@@ -2786,6 +2645,147 @@ CharacterJoint:
   m_EnablePreprocessing: 0
   m_MassScale: 1
   m_ConnectedMassScale: 1
+--- !u!1 &1873974795202244
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4958286426080072}
+  - component: {fileID: 137818767000630086}
+  m_Layer: 0
+  m_Name: Zombie_Tourist_Male_01
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4958286426080072
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1873974795202244}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4243538704547566}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!137 &137818767000630086
+SkinnedMeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1873974795202244}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 3
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 5545c89bb0a75004bbe217d139a97e89, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 0
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  serializedVersion: 2
+  m_Quality: 0
+  m_UpdateWhenOffscreen: 0
+  m_SkinnedMotionVectors: 1
+  m_Mesh: {fileID: 4300036, guid: b20a3c10714a6ac439af479e3273de65, type: 3}
+  m_Bones:
+  - {fileID: 4101432036228654}
+  - {fileID: 4945729818345072}
+  - {fileID: 4150407374466228}
+  - {fileID: 4214900843349232}
+  - {fileID: 4688374947186396}
+  - {fileID: 4094581972157756}
+  - {fileID: 4854274546089016}
+  - {fileID: 4215630084388708}
+  - {fileID: 4521969456146534}
+  - {fileID: 4034558224763226}
+  - {fileID: 4148705078875656}
+  - {fileID: 4912670119149956}
+  - {fileID: 4686408201078064}
+  - {fileID: 4686016831755462}
+  - {fileID: 4453221785647148}
+  - {fileID: 4216687105816788}
+  - {fileID: 4217949899896632}
+  - {fileID: 4748411360754522}
+  - {fileID: 4432047313515098}
+  - {fileID: 4064311336639062}
+  - {fileID: 4373173668995696}
+  - {fileID: 4527152632840008}
+  - {fileID: 4903908254554826}
+  - {fileID: 4881882495593478}
+  - {fileID: 4677139360516890}
+  - {fileID: 4291383144270162}
+  - {fileID: 4143637328076898}
+  - {fileID: 4264194853174020}
+  - {fileID: 4370779388373232}
+  - {fileID: 4848622988887982}
+  - {fileID: 4059434638314088}
+  - {fileID: 4801553726465670}
+  - {fileID: 4142531251596236}
+  - {fileID: 4329053343834602}
+  - {fileID: 4084634869638090}
+  - {fileID: 4730444068416932}
+  - {fileID: 4138235798992448}
+  - {fileID: 4216900129964578}
+  - {fileID: 4911584857156482}
+  - {fileID: 4669116654201016}
+  - {fileID: 4065227947959322}
+  - {fileID: 4091118722080264}
+  - {fileID: 4674680938303918}
+  - {fileID: 4650621990084944}
+  - {fileID: 4307833280457220}
+  - {fileID: 4578384832280114}
+  - {fileID: 4816606428444988}
+  - {fileID: 4182781095953698}
+  - {fileID: 4373174449894724}
+  - {fileID: 4235650673546412}
+  m_BlendShapeWeights: []
+  m_RootBone: {fileID: 4101432036228654}
+  m_AABB:
+    m_Center: {x: 0.0000013113022, y: 0.88120085, z: -0.025646895}
+    m_Extent: {x: 1.0245614, y: 0.98496443, z: 0.31802678}
+  m_DirtyAABB: 0
 --- !u!1 &1874231731847696
 GameObject:
   m_ObjectHideFlags: 0
