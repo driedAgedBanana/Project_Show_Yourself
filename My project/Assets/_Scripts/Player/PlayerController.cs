@@ -245,8 +245,8 @@ public class PlayerController : MonoBehaviour
     public void OnRun(InputAction.CallbackContext ctx) => runHeld = ctx.ReadValueAsButton();
     public void OnLean(InputAction.CallbackContext ctx) => leanInput = ctx.ReadValue<float>();
 
-    public void OnCrouch(InputAction.CallbackContext ctx)
-    {
-        if (ctx.performed) ToggleCrouch();
-    }
+    //public void OnCrouch(InputAction.CallbackContext ctx)
+    //{
+    //    if (ctx.performed) ToggleCrouch();
+    //}
 }

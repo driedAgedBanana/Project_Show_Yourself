@@ -709,7 +709,8 @@ public class EnemyController : MonoBehaviour
 
     private void InstantiateLoot(GameObject lootPrefab)
     {
-        Instantiate(lootPrefab, transform.position, Quaternion.identity);
+        Vector3 spawnPosition = transform.position + Vector3.up * 0.7f; 
+        Instantiate(lootPrefab, spawnPosition, Quaternion.identity);
     }
 
     #endregion
