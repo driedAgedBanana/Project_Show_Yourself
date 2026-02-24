@@ -1105,6 +1105,10 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: 0.15
       objectReference: {fileID: 0}
+    - target: {fileID: 991668759858422310, guid: a271d79b42c78d546a33b5543674a931, type: 3}
+      propertyPath: playOnAwake
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1102704317023216285, guid: a271d79b42c78d546a33b5543674a931, type: 3}
       propertyPath: m_LocalPosition.z
       value: 0.264
@@ -1196,6 +1200,18 @@ PrefabInstance:
     - target: {fileID: 3515111273433383990, guid: a271d79b42c78d546a33b5543674a931, type: 3}
       propertyPath: m_ActionEvents.Array.data[24].m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 5866035066981708936, guid: a271d79b42c78d546a33b5543674a931, type: 3}
+      propertyPath: looping
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5866035066981708936, guid: a271d79b42c78d546a33b5543674a931, type: 3}
+      propertyPath: lengthInSec
+      value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 5866035066981708936, guid: a271d79b42c78d546a33b5543674a931, type: 3}
+      propertyPath: playOnAwake
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6803532241251577624, guid: a271d79b42c78d546a33b5543674a931, type: 3}
       propertyPath: m_IsActive

@@ -344,6 +344,7 @@ public class WeaponBase : MonoBehaviour, IWeapon
     }
     #endregion
 
+    #region Reloading
     public void Reloading()
     {
         if (_isReloading) return;
@@ -398,6 +399,7 @@ public class WeaponBase : MonoBehaviour, IWeapon
         totalAmountAmmo.text = _totalAmountOfCarryAmmo.ToString();
     }
 
+    #endregion
 
     #region Inputs
 
