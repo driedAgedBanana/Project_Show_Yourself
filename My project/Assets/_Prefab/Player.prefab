@@ -907,7 +907,7 @@ MonoBehaviour:
   camHolder: {fileID: 2371788299209342651}
   playerCollider: {fileID: 7165037070988328891}
   sensitivity: 0.05
-  xClamp: 50
+  xClamp: 75
   lookInput: {x: 0, y: 0}
   moveSpeed: 3
   slowWalkSpeed: 1

@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
@@ -18,8 +19,11 @@ public class MazeGenerator : MonoBehaviour
 
     [Header("Enemies")]
     [SerializeField] private List<GameObject> _enemyPrefabs;
-    [SerializeField] private int minTotalEnemies = 5; // Minimum total in the maze
-    [SerializeField] private int maxTotalEnemies = 15; // Maximum total in the maze
+    private List<GameObject> _activeEnemies = new List<GameObject>();
+    [SerializeField] private int _minTotalEnemies = 5; // Minimum total in the maze
+    [SerializeField] private int _maxTotalEnemies = 15; // Maximum total in the maze
+    private Transform _playerTransform; // Store this when you spawn the player
+    [SerializeField] private float _minSpawnDistance = 10f; // Don't spawn closer than 10 units
 
     private Vector2Int _currentCell; // Represent the cell the player is currently looking at
 
@@ -37,7 +41,6 @@ public class MazeGenerator : MonoBehaviour
         }
 
         CarvePath(startX, startY);
-
         return maze;
     }
 
@@ -187,13 +190,9 @@ public class MazeGenerator : MonoBehaviour
     {
         if (_playerPrefab != null)
         {
-            // Spawning in the player at the start position
-            Vector3 spawnPosition = new Vector3(startX, 1f, startY); // Assuming the player should be slightly above the ground
-            Instantiate(_playerPrefab, spawnPosition, Quaternion.identity);
-        }
-        else
-        {
-            Debug.LogWarning("Player Prefab is not assigned in the MazeGenerator.");
+            Vector3 spawnPos = new Vector3(startX, 0f, startY);
+            GameObject p = Instantiate(_playerPrefab, spawnPos, Quaternion.identity);
+            _playerTransform = p.transform; // Save the reference!
         }
     }
 
@@ -201,48 +200,88 @@ public class MazeGenerator : MonoBehaviour
     {
         if (_enemyPrefabs == null || _enemyPrefabs.Count == 0) return;
 
-        // 1. Find all valid walkable spots (visited cells)
-        List<Vector2Int> walkableCells = new List<Vector2Int>();
-        for (int x = 0; x < mazeWidth; x++)
-        {
-            for (int y = 0; y < mazeHeight; y++)
-            {
-                // Avoid spawning an enemy exactly on top of the player's start position
-                if (maze[x, y].visited && (x != startX || y != startY))
-                {
-                    walkableCells.Add(new Vector2Int(x, y));
-                }
-            }
-        }
+        // 1. Clean list of dead enemies
+        _activeEnemies.RemoveAll(item => item == null);
 
-        // 2. Determine total number of enemies to spawn
-        int totalToSpawn = Random.Range(minTotalEnemies, maxTotalEnemies + 1);
+        // 2. Decide how many to spawn to reach your max
+        int targetCount = Random.Range(_minTotalEnemies, _maxTotalEnemies + 1);
+        int amountToSpawn = targetCount - _activeEnemies.Count;
 
-        // 3. Spawn until the count is met or we run out of space
-        for (int i = 0; i < totalToSpawn; i++)
+        if (amountToSpawn <= 0) return;
+
+        List<Vector2Int> walkableCells = GetWalkableCells();
+
+        for (int i = 0; i < amountToSpawn; i++)
         {
             if (walkableCells.Count == 0) break;
 
             int randomIndex = Random.Range(0, walkableCells.Count);
             Vector2Int coords = walkableCells[randomIndex];
-            GameObject prefab = _enemyPrefabs[Random.Range(0, _enemyPrefabs.Count)];
-
-            // Calculate world position
             Vector3 worldPos = new Vector3(coords.x, 0f, coords.y);
 
-            // SNAP TO NAVMESH: Look for a valid surface within 2 units of the point
+            // 3. SAFETY CHECK: Is this spot too close to the player?
+            if (_playerTransform != null)
+            {
+                if (Vector3.Distance(worldPos, _playerTransform.position) < _minSpawnDistance)
+                {
+                    // Skip this coordinate and try again
+                    walkableCells.RemoveAt(randomIndex);
+                    i--; // Decrement i so we don't lose a spawn count
+                    continue;
+                }
+            }
+
+            // 4. Actual Spawning
             NavMeshHit hit;
             if (NavMesh.SamplePosition(worldPos, out hit, 2.0f, NavMesh.AllAreas))
             {
-                Instantiate(prefab, hit.position, Quaternion.identity);
+                GameObject enemy = Instantiate(_enemyPrefabs[Random.Range(0, _enemyPrefabs.Count)], hit.position, Quaternion.identity);
+                _activeEnemies.Add(enemy);
             }
 
             walkableCells.RemoveAt(randomIndex);
         }
     }
+
+    private List<Vector2Int> GetWalkableCells()
+    {
+        List<Vector2Int> walkable = new List<Vector2Int>();
+        for (int x = 0; x < mazeWidth; x++)
+        {
+            for (int y = 0; y < mazeHeight; y++)
+            {
+                if (maze[x, y].visited)
+                {
+                    walkable.Add(new Vector2Int(x, y));
+                }
+            }
+        }
+        return walkable;
+    }
+
+    // Change the subscriber to call a "Delay" version
+    private void OnEnable()
+    {
+        EnemyController.OnEnemyKilled += HandleEnemyDeath;
+    }
+
+    private void HandleEnemyDeath()
+    {
+        // Wait 3 seconds, then replenish
+        StartCoroutine(WaitAndReplenish(3f));
+    }
+
+    private IEnumerator WaitAndReplenish(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        SpawnEnemies();
+    }
+
+    public void OnDisable()
+    {
+        EnemyController.OnEnemyKilled -= SpawnEnemies; // Unsubscribe from the event when the object is disabled to prevent memory leaks
+    }
 }
-
-
 
 public enum Direction
 {

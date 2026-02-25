@@ -1,7 +1,6 @@
-using NUnit.Framework;
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -23,6 +22,8 @@ public class EnemyController : MonoBehaviour
     }
 
     [SerializeField] private EnemyState _currentState;
+
+    public static event Action OnEnemyKilled;
 
     [Header("Basic setup")]
     public string enemyID; // For quest system
@@ -229,7 +230,7 @@ public class EnemyController : MonoBehaviour
         // Only pick a new point if the agent is idle or reached the target
         if (!agent.hasPath || agent.remainingDistance <= agent.stoppingDistance)
         {
-            float range = Random.Range(6f, 20f);
+            float range = UnityEngine.Random.Range(6f, 20f);
             if (RandomPoint(centerPoint.position, range, out _point))
             {
                 agent.SetDestination(_point);
@@ -296,7 +297,7 @@ public class EnemyController : MonoBehaviour
 
     private bool RandomPoint(Vector3 center, float range, out Vector3 result)
     {
-        Vector3 randomPoint = center + Random.insideUnitSphere * range; // Random point in a shpere
+        Vector3 randomPoint = center + UnityEngine.Random.insideUnitSphere * range; // Random point in a shpere
         NavMeshHit hit;
         if (NavMesh.SamplePosition(randomPoint, out hit, 1.0f, NavMesh.AllAreas))
         {
@@ -310,12 +311,12 @@ public class EnemyController : MonoBehaviour
 
     private IEnumerator WaitBeforePatrol()
     {
-        float waitTime = Random.Range(3f, 10f);
+        float waitTime = UnityEngine.Random.Range(3f, 10f);
 
         // Debug.Log("Enemy will be waiting for " + waitTime + " seconds!");
         yield return new WaitForSeconds(waitTime);
 
-        _randomWalkCount = Random.Range(3, 10);
+        _randomWalkCount = UnityEngine.Random.Range(3, 10);
         maxWalkCount = _randomWalkCount;
 
         // Debug.Log("Enemy will walk for " + _randomWalkCount + " times!");
@@ -504,7 +505,7 @@ public class EnemyController : MonoBehaviour
         while (_isPlayerInAttackZone)
         {
             // Trigger attack animation
-            int atkIndex = Random.Range(0, 3); // 0 to 2
+            int atkIndex = UnityEngine.Random.Range(0, 3); // 0 to 2
 
             if (enemyAnimator != null)
             {
@@ -524,7 +525,7 @@ public class EnemyController : MonoBehaviour
     {
         if (PlayerController.Instance != null && _distanceToPlayer <= attackRange)
         {
-            PlayerController.Instance.playerHealth.TakeDamage(Random.Range(minDamageAmount, maxDamageAmount));
+            PlayerController.Instance.playerHealth.TakeDamage(UnityEngine.Random.Range(minDamageAmount, maxDamageAmount));
         }
     }
 
@@ -652,6 +653,8 @@ public class EnemyController : MonoBehaviour
         //    QuestSystemManager.Instance.OnEnemyKilled(enemyID);
         //}
 
+        OnEnemyKilled?.Invoke();
+
         CalculateDropLoot();
 
         StartCoroutine(HideBody());
@@ -700,7 +703,7 @@ public class EnemyController : MonoBehaviour
     {
         foreach (EnemiesDeadLoot loot in lootTable)
         {
-            if (Random.Range(0f, 100f) <= loot.dropChance)
+            if (UnityEngine.Random.Range(0f, 100f) <= loot.dropChance)
             {
                 InstantiateLoot(loot.itemPrefab);
             }

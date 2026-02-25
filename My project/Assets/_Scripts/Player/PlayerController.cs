@@ -103,6 +103,8 @@ public class PlayerController : MonoBehaviour
 
         GameManager.Instance.HideMouse();
 
+        playerVFX = FindFirstObjectByType<Volume>();
+
         if (playerVFX.profile.TryGet<Vignette>(out _vignette))
         {
             _vignette.intensity.value = 0.3f;
