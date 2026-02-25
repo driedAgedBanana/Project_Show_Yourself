@@ -260,7 +260,7 @@ public class PlayerController : MonoBehaviour
 
         if(_depthOfField != null)
         {
-            float targetFocalLength = Mathf.Lerp(1f, 100f, tiredness);
+            float targetFocalLength = Mathf.Lerp(1f, 50f, tiredness);
             _depthOfField.focalLength.value = Mathf.MoveTowards(_depthOfField.focalLength.value, targetFocalLength, Time.deltaTime * 10f);
         }
     }

@@ -1,6 +1,8 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 
 public class PlayerHealth : MonoBehaviour
 {
@@ -66,8 +68,9 @@ public class PlayerHealth : MonoBehaviour
             radImmunityTimer -= Time.deltaTime;
         }
 
-        currentHealth = Mathf.Clamp(currentHealth, 0f, maxHealth);
         UpdateHealthBarUI();
+
+        currentHealth = Mathf.Clamp(currentHealth, 0f, maxHealth);
     }
 
     #region Health UI
@@ -103,8 +106,6 @@ public class PlayerHealth : MonoBehaviour
     {
         if (!isAlive || healAmount <= 0) return;
         currentHealth = Mathf.Min(currentHealth + healAmount, maxHealth);
-
-        // Update UI
     }
 
     private void Die()

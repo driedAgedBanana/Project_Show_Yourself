@@ -917,7 +917,7 @@ MonoBehaviour:
   isMoving: 0
   maxStamina: 100
   staminaDrainRate: 30
-  staminaRecoverRate: 0.5
+  staminaRecoverRate: 7
   canSprint: 0
   normalFOV: 80
   sprintFOV: 95

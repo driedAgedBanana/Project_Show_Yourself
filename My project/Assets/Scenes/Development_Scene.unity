@@ -1435,10 +1435,6 @@ PrefabInstance:
       propertyPath: playerVFX
       value: 
       objectReference: {fileID: 525715479}
-    - target: {fileID: 1652456138511553687, guid: a271d79b42c78d546a33b5543674a931, type: 3}
-      propertyPath: staminaRecoverRate
-      value: 7
-      objectReference: {fileID: 0}
     - target: {fileID: 1982049497142310322, guid: a271d79b42c78d546a33b5543674a931, type: 3}
       propertyPath: m_Name
       value: Player
