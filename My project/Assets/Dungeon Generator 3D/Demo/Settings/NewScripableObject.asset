@@ -27,15 +27,27 @@ MonoBehaviour:
     areaWidth: 50
     areaHeight: 50
     minDistanceBetweenRooms: 1
-    walls: []
-    outerCorners: []
-    innerCorners: []
+    walls:
+    - gameObject: {fileID: 4725644372996588504, guid: 149a4fa0a96e08148aab0a113d1ccef5, type: 3}
+      name: Wall
+    outerCorners:
+    - gameObject: {fileID: 696436432277967871, guid: 881baa43cd1560949b04dfde26893747, type: 3}
+      name: Outer corner
+    innerCorners:
+    - gameObject: {fileID: 2240145463788491059, guid: fd770588a67da344f9d4af1e6137a5cb, type: 3}
+      name: Inner corner
     deleteInnerCorners: 0
-    uCorners: []
-    squareCorners: []
+    uCorners:
+    - gameObject: {fileID: 3197583449942763538, guid: aef390dd402b4da4dbc932f7685a0125, type: 3}
+      name: U corner
+    squareCorners:
+    - gameObject: {fileID: 3746928169460061138, guid: 8fd16f9add3b6504a96a92177e5a8142, type: 3}
+      name: Square corner
     doors: []
     doorsDisplacements: []
-    flooring: []
+    flooring:
+    - gameObject: {fileID: 8761019777689142071, guid: 0234e9a5ed8e17845afb71ada7e4676d, type: 3}
+      name: Floor
     player: {fileID: 0}
     minEnemiesPerRoom: 0
     maxEnemiesPerRoom: 0
