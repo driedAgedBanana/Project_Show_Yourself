@@ -12,8 +12,8 @@ public class MazeRenderer : MonoBehaviour
 
     private void Start()
     {
+        // 1. Generate the maze and instantiate the cell prefabs
         MazeCell[,] maze = _mazeGenerator.GetMaze();
-
         for (int x = 0; x < maze.GetLength(0); x++)
         {
             for (int y = 0; y < maze.GetLength(1); y++)
@@ -39,13 +39,19 @@ public class MazeRenderer : MonoBehaviour
             }
         }
 
-        // 2. Bake the NavMesh now that the floor exists
+        // 2. Spawn Moving Walls (Do this BEFORE baking so NavMesh sees them)
+        // Note: If they have NavMeshObstacle + Carve, they can be spawned after, 
+        // but it's safer to have them ready now.
+        _mazeGenerator.SpawnMovingWalls();
+
+        // 3. BAKE THE NAVMESH
+        // This creates the floor that SamplePosition needs to work!
         if (navMeshSurface != null)
         {
             navMeshSurface.BuildNavMesh();
         }
 
-        // 3. Now it is safe to spawn agents
+        // 4. NOW spawn the entities
         _mazeGenerator.SpawnPlayer();
         _mazeGenerator.SpawnEnemies();
     }

@@ -14,6 +14,11 @@ public class MazeGenerator : MonoBehaviour
     public int startX = 0, startY = 0;
     MazeCell[,] maze;
 
+    [Header("Hazards")]
+    [SerializeField] private GameObject _movingWallPrefab;
+    [Range(0f, 1f)]
+    [SerializeField] private float _movingWallChance = 0.2f; // 20% chance to spawn a moving wall in a cell with a wall
+
     [Header("Player")]
     [SerializeField] private GameObject _playerPrefab;
 
@@ -279,7 +284,33 @@ public class MazeGenerator : MonoBehaviour
 
     public void OnDisable()
     {
-        EnemyController.OnEnemyKilled -= SpawnEnemies; // Unsubscribe from the event when the object is disabled to prevent memory leaks
+        // Match the method used in OnEnable
+        EnemyController.OnEnemyKilled -= HandleEnemyDeath;
+    }
+
+    public void SpawnMovingWalls()
+    {
+        for(int x = 0; x < mazeWidth; x++)
+        {
+            for (int y = 0; y < mazeHeight; y++)
+            {
+                // If the cell has a top wall and not on the egde of the map
+                if (maze[x, y].topWall && y < mazeHeight - 1)
+                {
+                    if(Random.value < _movingWallChance)
+                    {
+                        // If CellSize is not 1, multiply x and y
+                        float cellSize = 1f; // Ideally, pass this from MazeRenderer or store it
+                        Vector3 position = new Vector3(x * cellSize, 1f, (y + 0.5f) * cellSize);
+                        Instantiate(_movingWallPrefab, position, Quaternion.Euler(0, 0, 0));
+
+                        // IMPORTANT: Tell the cell the wall is now "gone" so the 
+                        // Renderer doesn't spawn a static wall on top of it
+                        maze[x, y].topWall = false;
+                    }
+                }
+            }
+        }
     }
 }
 
