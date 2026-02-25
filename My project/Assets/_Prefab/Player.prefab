@@ -909,14 +909,14 @@ MonoBehaviour:
   sensitivity: 0.05
   xClamp: 50
   lookInput: {x: 0, y: 0}
-  moveSpeed: 5
-  slowWalkSpeed: 2
-  sprintSpeed: 8
+  moveSpeed: 3
+  slowWalkSpeed: 1
+  sprintSpeed: 5
   crouchSpeed: 2
   inputSmoothTime: 0.1
   isMoving: 0
   maxStamina: 100
-  staminaDrainRate: 15
+  staminaDrainRate: 30
   staminaRecoverRate: 0.5
   canSprint: 0
   normalFOV: 80
@@ -936,6 +936,7 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 128
+  playerVFX: {fileID: 0}
 --- !u!114 &1505736158503705557
 MonoBehaviour:
   m_ObjectHideFlags: 0

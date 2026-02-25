@@ -1,5 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 
 public class PlayerController : MonoBehaviour
 {
@@ -73,6 +75,12 @@ public class PlayerController : MonoBehaviour
     public float groundCheckDistance = 0.2f;
     public LayerMask groundLayer;
 
+    [Header("Effects")]
+    public Volume playerVFX;
+    private Vignette _vignette;
+    private ChromaticAberration _chromaticAberration;
+    private DepthOfField _depthOfField;
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -94,6 +102,21 @@ public class PlayerController : MonoBehaviour
         cameraShakeManager = GetComponentInChildren<CameraShakeManager>();
 
         GameManager.Instance.HideMouse();
+
+        if (playerVFX.profile.TryGet<Vignette>(out _vignette))
+        {
+            _vignette.intensity.value = 0.3f;
+        }
+
+        if(playerVFX.profile.TryGet<ChromaticAberration>(out _chromaticAberration))
+        {
+            _chromaticAberration.intensity.value = 0f;
+        }
+
+        if(playerVFX.profile.TryGet<DepthOfField>(out _depthOfField))
+        {
+            _depthOfField.focalLength.value = 0f;
+        }
     }
 
     private void LateUpdate()
@@ -114,6 +137,8 @@ public class PlayerController : MonoBehaviour
             HandleFOV();
             HandleHeadBob();
             HandleStamina();
+
+            print(currentStamina);
         }
     }
 
@@ -206,11 +231,38 @@ public class PlayerController : MonoBehaviour
         canSprint = runHeld && isMoving && !isCrouching && currentStamina > 0;
 
         if (canSprint)
+        {
             currentStamina -= staminaDrainRate * Time.deltaTime;
+        }
         else
+        {
             currentStamina += staminaRecoverRate * Time.deltaTime;
+        }
 
         currentStamina = Mathf.Clamp(currentStamina, 0, maxStamina);
+
+        // Calculate the "Tiredness" (0 when full stamina, 1 when empty)
+        float tiredness = 1f - (currentStamina / maxStamina);
+
+        // Apply the intensity. 
+        // This will go from 0.1f (resting) to 0.5f (exhausted)
+        if (_vignette != null)
+        {
+            float targetIntensity = Mathf.Lerp(0.1f, 0.5f, tiredness);
+            _vignette.intensity.value = Mathf.MoveTowards(_vignette.intensity.value, targetIntensity, Time.deltaTime);
+        }
+
+        if(_chromaticAberration != null)
+        {
+            float targetIntensity = Mathf.Lerp(0f, 1f, tiredness);
+            _chromaticAberration.intensity.value = Mathf.MoveTowards(_chromaticAberration.intensity.value, targetIntensity, Time.deltaTime);
+        }
+
+        if(_depthOfField != null)
+        {
+            float targetFocalLength = Mathf.Lerp(1f, 100f, tiredness);
+            _depthOfField.focalLength.value = Mathf.MoveTowards(_depthOfField.focalLength.value, targetFocalLength, Time.deltaTime * 10f);
+        }
     }
 
     private void HandleFOV()

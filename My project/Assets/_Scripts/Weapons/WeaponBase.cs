@@ -486,6 +486,11 @@ public class WeaponBase : MonoBehaviour, IWeapon
                 StopCoroutine(_shootAutoCoroutine);
             SetEjectionState(false);
         }
+
+        if (_currentAmmo == 0 && totalAmountOfCarryAmmo > 0)
+        {
+            Reloading();
+        }
     }
 
     public void OnReload(InputAction.CallbackContext ctx)
