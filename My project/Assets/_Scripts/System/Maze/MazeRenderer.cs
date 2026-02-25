@@ -1,0 +1,52 @@
+using UnityEngine;
+using Unity.AI.Navigation;
+
+public class MazeRenderer : MonoBehaviour
+{
+    [SerializeField] private MazeGenerator _mazeGenerator;
+    [SerializeField] private GameObject _mazeCellPrefab;
+    [SerializeField] private NavMeshSurface navMeshSurface;
+
+    // Physical size of each cell in the maze, used to position the cells correctly in the world
+    public float CellSize = 1f;
+
+    private void Start()
+    {
+        MazeCell[,] maze = _mazeGenerator.GetMaze();
+
+        for (int x = 0; x < maze.GetLength(0); x++)
+        {
+            for (int y = 0; y < maze.GetLength(1); y++)
+            {
+                // Instantiate a new maze cell prefab at the correct position based on its coordinates in the maze array
+                GameObject newCell = Instantiate(_mazeCellPrefab, new Vector3((float)x * CellSize, 0f, (float)y * CellSize), Quaternion.identity, transform);
+
+                // Get a reference to the MazeCellObject
+                MazeCellObject mazeCell = newCell.GetComponent<MazeCellObject>();
+
+                // Decide which walls to activate based on the properties of the maze cell
+                bool topWall = maze[x, y].topWall;
+                bool leftWall = maze[x, y].leftWall;
+
+                // Bottom and right walls are deactivated by default
+                bool rightWall = false;
+                bool bottomWall = false;
+
+                if (x == _mazeGenerator.mazeWidth - 1) rightWall = true;
+                if(y == 0) bottomWall = true;
+
+                mazeCell.Initialize(topWall, bottomWall, rightWall, leftWall);
+            }
+        }
+
+        // 2. Bake the NavMesh now that the floor exists
+        if (navMeshSurface != null)
+        {
+            navMeshSurface.BuildNavMesh();
+        }
+
+        // 3. Now it is safe to spawn agents
+        _mazeGenerator.SpawnPlayer();
+        _mazeGenerator.SpawnEnemies();
+    }
+}
