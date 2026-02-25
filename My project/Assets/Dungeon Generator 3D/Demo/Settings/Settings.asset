@@ -56,18 +56,8 @@ MonoBehaviour:
       name: Cop Zombie
     - gameObject: {fileID: 1418193975600942, guid: 366a1fabd1ba6944fa2cb1ed719cd013, type: 3}
       name: Tourist Zombie
-    - gameObject: {fileID: 1418193975600942, guid: 63f3425de0112444ba01b796244ac3d8, type: 3}
-      name: Hipster Zombie
-    - gameObject: {fileID: 1418193975600942, guid: 20db4c55a7910774f918b2c75bbe8a2c, type: 3}
-      name: Gangster Zombie
     bosses: []
-    breakables:
-    - gameObject: {fileID: 1495748077833478, guid: f0e4f968d921c9e429e57aa61a766ca2, type: 3}
-      name: Pistol ammo box
-    - gameObject: {fileID: 1364968598790260, guid: 36c9aa7d916c8e74497bf3d85ab5b785, type: 3}
-      name: Rifle ammo box
-    - gameObject: {fileID: 1435410842068634, guid: e408da02bc682274e94d73bbb3429de3, type: 3}
-      name: Medical kit
+    breakables: []
     staticObjects: []
     wallObjects: []
     wallObjConsequitiveDistance: 0
