@@ -34,6 +34,11 @@ public class EnemyController : MonoBehaviour
     public EnemyType enemyType;
     public Rigidbody enemyRB;
 
+    [Header("Advanced Memory")]
+    private Vector3 _lastKnownPlayerPosition;
+    private bool _hasLastKnownPosition;
+    [SerializeField] private float _searchAtLastKnownTime = 5f;
+
     [Header("Health and ragdoll system")]
     public ParticleSystem disappearParticle;
     public SkinnedMeshRenderer enemyMesh;
@@ -297,15 +302,21 @@ public class EnemyController : MonoBehaviour
 
     private bool RandomPoint(Vector3 center, float range, out Vector3 result)
     {
-        Vector3 randomPoint = center + UnityEngine.Random.insideUnitSphere * range; // Random point in a shpere
-        NavMeshHit hit;
-        if (NavMesh.SamplePosition(randomPoint, out hit, 1.0f, NavMesh.AllAreas))
+        // Try to find a point further along the NavMesh 
+        // rather than just a random circle
+        for (int i = 0; i < 5; i++) // Try 5 times to find a valid spot
         {
-            result = hit.position;
-            return true;
-        }
+            Vector3 randomDir = UnityEngine.Random.insideUnitSphere * range;
+            randomDir += transform.forward * (range / 2); // Bias it to look forward
+            Vector3 finalPoint = center + randomDir;
 
-        result = Vector3.zero;
+            if (NavMesh.SamplePosition(finalPoint, out NavMeshHit hit, 2.0f, NavMesh.AllAreas))
+            {
+                result = hit.position;
+                return true;
+            }
+        }
+        result = center;
         return false;
     }
 
@@ -385,23 +396,24 @@ public class EnemyController : MonoBehaviour
 
     private IEnumerator ScreamThenRunTowardsPlayer()
     {
-        if (isDead || agent == null || !agent.isActiveAndEnabled || !agent.isOnNavMesh)
-        {
-            yield break;
-        }
+        if (isDead || agent == null) yield break;
 
         _isScreaming = true;
+        _hasScreamed = true; // Mark as screamed
         agent.isStopped = true;
+        agent.velocity = Vector3.zero; // Stop momentum
 
         enemyAnimator.SetTrigger("isScreaming 0");
 
-        if (agent != null && agent.isActiveAndEnabled && agent.isOnNavMesh)
+        // Wait for the animation length (adjust 2f to your actual clip length)
+        yield return new WaitForSeconds(screamDuration);
+
+        if (!isDead && agent != null && agent.isOnNavMesh)
         {
             agent.isStopped = false;
         }
 
         _isScreaming = false;
-        _hasScreamed = false;
     }
 
     #endregion
