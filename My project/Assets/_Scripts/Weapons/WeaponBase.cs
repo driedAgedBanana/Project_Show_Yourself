@@ -161,14 +161,29 @@ public class WeaponBase : MonoBehaviour, IWeapon
 
     private void OnDisable()
     {
-        // Reset states so the weapon isn't "broken" when you switch back to it
-        _isReloading = false;
+        // 1. Stop the shooting logic immediately
         _isShootingAuto = false;
-        isCheckingForAmmo = false;
-        if (_shootAutoCoroutine != null) StopCoroutine(_shootAutoCoroutine);
+        if (_shootAutoCoroutine != null)
+        {
+            StopCoroutine(_shootAutoCoroutine);
+            _shootAutoCoroutine = null;
+        }
 
-        // Ensure the animator doesn't stay on
-        DisableAnimator();
+        // 2. Reset status booleans so the weapon doesn't "lock up"
+        _isReloading = false;
+        isCheckingForAmmo = false;
+        isAiming = false;
+
+        // 3. Clean up visual/audio states
+        SetEjectionState(false);
+        if (uiHolder != null) uiHolder.SetActive(false);
+
+        // 4. Ensure the animator doesn't stay stuck in a specific frame
+        if (weaponsAnimator != null)
+        {
+            weaponsAnimator.Rebind(); // Resets animator parameters and states
+            DisableAnimator();
+        }
     }
 
     #region Weapon moving

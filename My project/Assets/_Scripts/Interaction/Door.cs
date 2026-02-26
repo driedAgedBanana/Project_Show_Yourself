@@ -1,13 +1,32 @@
 using UnityEngine;
 using System.Collections;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 
 public class Door : MonoBehaviour, IPlayerInteract
 {
     public GameObject door;
     public BoxCollider doorCollider;
     public float moveTime = 1f;
-
     private Vector3 _newPosition;
+    public Volume doorVFX;
+
+
+    public GameObject player;
+
+    [Space]
+    public AudioSource doorAudioSource;
+    public AudioClip staticNoise;
+
+    [Space]
+    [SerializeField] private float referenceDistance = 5f;
+    private Transform _playerListener;
+    private float _distance;
+
+    private void Awake()
+    {
+        player = GameObject.FindGameObjectWithTag("Player");
+    }
 
     private void Start()
     {
@@ -16,27 +35,54 @@ public class Door : MonoBehaviour, IPlayerInteract
         {
             doorCollider.isTrigger = false;
         }
+
+        doorVFX = GetComponentInChildren<Volume>();
+
+        doorAudioSource = GetComponent<AudioSource>();
+        
+    }
+
+    private void Update()
+    {
+        UpdateProximityEffects();
     }
 
     public void Interact()
     {
-        StartCoroutine(MoveDoor());
+        print("Do something!");
     }
 
-    private IEnumerator MoveDoor()
+    public void PlayStaticAudio()
     {
-        float elapsedTime = 0f;
-        Vector3 startingPosition = transform.position;
-        doorCollider.isTrigger = false;
-        _newPosition = new Vector3(transform.position.x, transform.position.y - 3f, transform.position.z); // Move the door 3 units down
-
-        while (elapsedTime < moveTime)
+        if (doorAudioSource != null && staticNoise != null && !doorAudioSource.isPlaying)
         {
-            transform.position = Vector3.Lerp(startingPosition, _newPosition, elapsedTime / moveTime);
-            elapsedTime += Time.deltaTime;
-            yield return null;
+            doorAudioSource.clip = staticNoise;
+            doorAudioSource.loop = true;
+            doorAudioSource.Play();
         }
-        transform.position = _newPosition;
-        door.SetActive(false); // Deactivate the door after moving
+    }
+
+    public void StopStaticAudio()
+    {
+        if (doorAudioSource != null && doorAudioSource.isPlaying)
+        {
+            doorAudioSource.Stop();
+        }
+    }
+
+    private void UpdateProximityEffects()
+    {
+        if (player == null || doorAudioSource == null) return;
+
+        _distance = Vector3.Distance(transform.position, player.transform.position);
+
+        float intensity = 1f - Mathf.Clamp01(_distance / referenceDistance);
+
+        doorAudioSource.volume = intensity;
+
+        if (doorVFX != null && doorVFX.profile != null)
+        {
+            doorVFX.weight = intensity;
+        }
     }
 }

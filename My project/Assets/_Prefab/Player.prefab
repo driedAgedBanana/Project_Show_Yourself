@@ -936,7 +936,7 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 128
-  playerVFX: {fileID: 0}
+  playerVFX: {fileID: 3812064463070966149, guid: f160ef41031c9984488f4aed3563bba2, type: 3}
   footstepSounds: {fileID: 11400000, guid: 620fd9fffd30fe74397d898bb24d383a, type: 2}
 --- !u!114 &1505736158503705557
 MonoBehaviour:

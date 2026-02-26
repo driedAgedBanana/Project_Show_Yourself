@@ -14,6 +14,8 @@ public class MazeRenderer : MonoBehaviour
     {
         // 1. Generate the maze and instantiate the cell prefabs
         MazeCell[,] maze = _mazeGenerator.GetMaze();
+        Vector2Int exitCoords = _mazeGenerator.GetExitCoordinates();
+
         for (int x = 0; x < maze.GetLength(0); x++)
         {
             for (int y = 0; y < maze.GetLength(1); y++)
@@ -35,7 +37,10 @@ public class MazeRenderer : MonoBehaviour
                 if (x == _mazeGenerator.mazeWidth - 1) rightWall = true;
                 if(y == 0) bottomWall = true;
 
-                mazeCell.Initialize(topWall, bottomWall, rightWall, leftWall);
+                // Check if this specific cell is the exit
+                bool isThisTheExit = (x == exitCoords.x && y == exitCoords.y);
+
+                mazeCell.Initialize(topWall, bottomWall, rightWall, leftWall, isThisTheExit);
             }
         }
 

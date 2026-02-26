@@ -107,8 +107,6 @@ public class PlayerController : MonoBehaviour
 
         GameManager.Instance.HideMouse();
 
-        playerVFX = FindFirstObjectByType<Volume>();
-
         if (playerVFX.profile.TryGet<Vignette>(out _vignette))
         {
             _vignette.intensity.value = 0.3f;
@@ -143,8 +141,6 @@ public class PlayerController : MonoBehaviour
             HandleFOV();
             HandleHeadBob();
             HandleStamina();
-
-            print(currentStamina);
         }
     }
 
@@ -310,6 +306,22 @@ public class PlayerController : MonoBehaviour
     {
         isCrouching = !isCrouching;
         playerCollider.height = isCrouching ? crouchHeight : standHeight;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.TryGetComponent(out Door door))
+        {
+            door.PlayStaticAudio();
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if(other.TryGetComponent(out Door door))
+        {
+            door.doorAudioSource.Stop();
+        }
     }
 
 

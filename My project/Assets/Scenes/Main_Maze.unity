@@ -290,7 +290,7 @@ MonoBehaviour:
   startX: 0
   startY: 0
   _movingWallPrefab: {fileID: 4725644372996588504, guid: 0167ce69ef16d464494f07da13098ff6, type: 3}
-  _movingWallChance: 0.1
+  _movingWallChance: 0.03
   _playerPrefab: {fileID: 1982049497142310322, guid: a271d79b42c78d546a33b5543674a931, type: 3}
   _enemyPrefabs:
   - {fileID: 1418193975600942, guid: 2526165081945504d842d913f7dab6da, type: 3}

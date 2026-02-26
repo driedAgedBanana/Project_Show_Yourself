@@ -312,6 +312,31 @@ public class MazeGenerator : MonoBehaviour
             }
         }
     }
+
+    public Vector2Int GetExitCoordinates()
+    {
+        // For simplicity, let's define the "best" exit as the one farthest from the starting point.
+        Vector2Int bestExit = new Vector2Int(startX, startY);
+        float maxDistance = 0f;
+
+        // Loop through all cells in the maze and check the distance from the starting point. If it's farther than the current max, update the bestExit.
+        for (int x = 0; x < mazeWidth; x++)
+        {
+            for(int y = 0; y < mazeHeight; y++)
+            {
+                if (maze[x, y].visited)
+                {
+                    float distance = Vector3.Distance(new Vector3(x, 0, y), new Vector3(startX, 0, startY));
+                    if (distance > maxDistance)
+                    {
+                        maxDistance = distance;
+                        bestExit = new Vector2Int(x, y);
+                    }
+                }
+            }
+        }
+        return bestExit;
+    }
 }
 
 public enum Direction
