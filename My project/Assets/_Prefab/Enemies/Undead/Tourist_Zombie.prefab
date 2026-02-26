@@ -1139,6 +1139,10 @@ MonoBehaviour:
   _atkInterval: 1
   minDamageAmount: 10
   maxDamageAmount: 15
+  idleSFX: {fileID: 11400000, guid: b93aea387df4c3442b544c3bc4882eb7, type: 2}
+  screamSFX: {fileID: 11400000, guid: 7fc5b45ebdbbdda419adff80a4dc85f1, type: 2}
+  attackSFX: {fileID: 11400000, guid: 55f8a8096b14d8b459c63bf31075bbbd, type: 2}
+  deathSFX: {fileID: 11400000, guid: 58efbd214dd98f3419bc473143af60e8, type: 2}
 --- !u!195 &1490317310310934104
 NavMeshAgent:
   m_ObjectHideFlags: 0

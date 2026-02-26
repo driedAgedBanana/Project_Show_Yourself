@@ -285,12 +285,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a22c1e27711e7441a4c324b90740c6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MazeGenerator
-  mazeWidth: 15
-  mazeHeight: 15
+  mazeWidth: 20
+  mazeHeight: 20
   startX: 0
   startY: 0
   _movingWallPrefab: {fileID: 4725644372996588504, guid: 0167ce69ef16d464494f07da13098ff6, type: 3}
-  _movingWallChance: 0.2
+  _movingWallChance: 0.1
   _playerPrefab: {fileID: 1982049497142310322, guid: a271d79b42c78d546a33b5543674a931, type: 3}
   _enemyPrefabs:
   - {fileID: 1418193975600942, guid: 2526165081945504d842d913f7dab6da, type: 3}
@@ -298,8 +298,8 @@ MonoBehaviour:
   - {fileID: 1418193975600942, guid: 63f3425de0112444ba01b796244ac3d8, type: 3}
   - {fileID: 1418193975600942, guid: 184c8d52755e36842934cda8019684e3, type: 3}
   - {fileID: 1418193975600942, guid: 366a1fabd1ba6944fa2cb1ed719cd013, type: 3}
-  _minTotalEnemies: 15
-  _maxTotalEnemies: 35
+  _minTotalEnemies: 10
+  _maxTotalEnemies: 25
   _minSpawnDistance: 7
 --- !u!114 &1037290600
 MonoBehaviour:

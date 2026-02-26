@@ -3975,6 +3975,7 @@ MonoBehaviour:
   targetSpeed: 5
   enemyType: 0
   enemyRB: {fileID: 7963796608409310648}
+  _searchAtLastKnownTime: 5
   disappearParticle: {fileID: 19885060, guid: fe172aea7216ff249ba28a07e47596b1, type: 3}
   enemyMesh: {fileID: 137694054147993012}
   enemyRagdollController: {fileID: 7353150931010406570}
@@ -3986,11 +3987,11 @@ MonoBehaviour:
   headCollider: {fileID: 220827599005428051}
   lootTable:
   - itemPrefab: {fileID: 1495748077833478, guid: f0e4f968d921c9e429e57aa61a766ca2, type: 3}
-    dropChance: 25
+    dropChance: 100
   - itemPrefab: {fileID: 1364968598790260, guid: 36c9aa7d916c8e74497bf3d85ab5b785, type: 3}
-    dropChance: 25
+    dropChance: 100
   - itemPrefab: {fileID: 1435410842068634, guid: e408da02bc682274e94d73bbb3429de3, type: 3}
-    dropChance: 20
+    dropChance: 100
   player: {fileID: 0}
   visionDegree: 90
   isDead: 0
@@ -4011,6 +4012,10 @@ MonoBehaviour:
   _atkInterval: 1
   minDamageAmount: 10
   maxDamageAmount: 15
+  idleSFX: {fileID: 11400000, guid: b93aea387df4c3442b544c3bc4882eb7, type: 2}
+  screamSFX: {fileID: 11400000, guid: 7fc5b45ebdbbdda419adff80a4dc85f1, type: 2}
+  attackSFX: {fileID: 11400000, guid: 55f8a8096b14d8b459c63bf31075bbbd, type: 2}
+  deathSFX: {fileID: 11400000, guid: 58efbd214dd98f3419bc473143af60e8, type: 2}
 --- !u!195 &1490317310310934104
 NavMeshAgent:
   m_ObjectHideFlags: 0

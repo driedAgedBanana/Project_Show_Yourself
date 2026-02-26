@@ -96,7 +96,7 @@ public class EnemyController : MonoBehaviour
     public AudioList idleSFX;
     public AudioList screamSFX;
     public AudioList attackSFX;
-    public AudioList hitSFX;
+    // public AudioList hitSFX;
     public AudioList deathSFX;
 
     private void Awake()
@@ -585,9 +585,9 @@ public class EnemyController : MonoBehaviour
         currentHealth -= damageAmount;
         _isBeingAttacked = true;
 
-        // --- PLAY HIT SFX ---
-        if (hitSFX != null)
-            AudioManager.Instance.PlaySounds(hitSFX, hitPoint); 
+        //// --- PLAY HIT SFX ---
+        //if (hitSFX != null)
+        //    AudioManager.Instance.PlaySounds(hitSFX, hitPoint); 
 
         enemyAnimator.SetTrigger("GetHit");
 

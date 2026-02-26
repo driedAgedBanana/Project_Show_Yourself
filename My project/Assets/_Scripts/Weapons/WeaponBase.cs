@@ -159,6 +159,18 @@ public class WeaponBase : MonoBehaviour, IWeapon
         }
     }
 
+    private void OnDisable()
+    {
+        // Reset states so the weapon isn't "broken" when you switch back to it
+        _isReloading = false;
+        _isShootingAuto = false;
+        isCheckingForAmmo = false;
+        if (_shootAutoCoroutine != null) StopCoroutine(_shootAutoCoroutine);
+
+        // Ensure the animator doesn't stay on
+        DisableAnimator();
+    }
+
     #region Weapon moving
 
     private void SwayWeapon()
@@ -307,33 +319,19 @@ public class WeaponBase : MonoBehaviour, IWeapon
     {
         while (_isShootingAuto)
         {
-            if (_isReloading || _currentAmmo <= 0)
+            // Add a check for isCheckingForAmmo here too
+            if (_isReloading || _currentAmmo <= 0 || isCheckingForAmmo)
             {
                 SetEjectionState(false);
-                _shootAutoCoroutine = null;
                 yield break;
             }
 
-            if (_currentAmmo > 0)
-            {
-                _currentAmmo--;
-                Shooting();
-                AudioManager.Instance.PlaySounds(shootAudio, transform.position);
-                yield return new WaitForSeconds(fireRate);
-            }
-            else if (totalAmountOfCarryAmmo > 0)
-            {
-                Reloading();
-                _shootAutoCoroutine = null;
-                yield break;
-            }
-            else
-            {
-                yield return null;
-            }
+            _currentAmmo--;
+            Shooting();
+            AudioManager.Instance.PlaySounds(shootAudio, transform.position);
+
+            yield return new WaitForSeconds(fireRate);
         }
-
-        _shootAutoCoroutine = null;
         SetEjectionState(false);
     }
 
@@ -477,29 +475,20 @@ public class WeaponBase : MonoBehaviour, IWeapon
 
     public void OnShootAuto(InputAction.CallbackContext ctx)
     {
-        if (!PlayerController.Instance.playerHealth.isAlive) return;
-
-        if (isCheckingForAmmo) return;
-
-        if (currentWeaponType != WeaponType.Rifle || !gameObject.activeSelf || _isReloading) return;
+        if (!PlayerController.Instance.playerHealth.isAlive || isCheckingForAmmo || _isReloading) return;
 
         if (ctx.started)
         {
             _isShootingAuto = true;
+            if (_shootAutoCoroutine != null) StopCoroutine(_shootAutoCoroutine); // Safety
             _shootAutoCoroutine = StartCoroutine(ShootAuto());
             SetEjectionState(true);
         }
         else if (ctx.canceled)
         {
             _isShootingAuto = false;
-            if (_shootAutoCoroutine != null)
-                StopCoroutine(_shootAutoCoroutine);
-            SetEjectionState(false);
-        }
-
-        if (_currentAmmo == 0 && totalAmountOfCarryAmmo > 0)
-        {
-            Reloading();
+            // Don't stop it immediately if you want the last shot to finish, 
+            // but for responsiveness, stopping it is usually fine.
         }
     }
 

@@ -35,9 +35,9 @@ public class WeaponSwapper : MonoBehaviour
         // Drop the weapon
         _targetPos = hiddenOffset;
 
+        AudioManager.Instance.PlaySounds(swapSound, transform.position);
         // Wait until the weapon is hidden
         yield return new WaitUntil(() => Vector3.Distance(weaponSlot.localPosition, _targetPos) < 0.1f);
-        AudioManager.Instance.PlaySounds(swapSound, transform.position);
 
         // Toggle logic
         _isMainWeaponActive = !_isMainWeaponActive;

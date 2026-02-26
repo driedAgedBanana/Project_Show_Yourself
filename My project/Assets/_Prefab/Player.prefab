@@ -500,11 +500,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 50588d02f5655924d9d1b0a691826923, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CameraShakeManager
-  _recoilX: -10
-  _recoilY: 5
+  _recoilX: -15
+  _recoilY: 7
   resetSpeed: 5
-  _shakeX: -25
-  _shakeY: 15
+  _shakeX: -35
+  _shakeY: 25
   recoverSpeed: 7
 --- !u!20 &5011732459806026594
 Camera:
@@ -929,7 +929,7 @@ MonoBehaviour:
   crouchHeight: 0.5
   standCamY: 0.4
   crouchCamY: 0.3
-  leanAngle: 20
+  leanAngle: 25
   leanSpeed: 10
   groundChecker: {fileID: 3620633590476733297}
   groundCheckDistance: 0.2
@@ -937,6 +937,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   playerVFX: {fileID: 0}
+  footstepSounds: {fileID: 11400000, guid: 620fd9fffd30fe74397d898bb24d383a, type: 2}
 --- !u!114 &1505736158503705557
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1390,6 +1391,7 @@ MonoBehaviour:
   secondWeapon: {fileID: 3138050944116757561}
   smoothTime: 0.15
   hiddenOffset: {x: 0, y: -1, z: 0}
+  swapSound: {fileID: 11400000, guid: c29fa31317f965d4eb6f72337bf9333e, type: 2}
 --- !u!1 &2533086108232597084
 GameObject:
   m_ObjectHideFlags: 0
@@ -14757,6 +14759,10 @@ MonoBehaviour:
   uiHolder: {fileID: 8343553385138273894}
   currentAmountAmmo: {fileID: 4873508735858068631}
   totalAmountAmmo: {fileID: 3404699500637575108}
+  shootAudio: {fileID: 11400000, guid: 53bf93c7191142d4d8e59042681e99a0, type: 2}
+  reloadAudio: {fileID: 11400000, guid: d4107a454ff788f4a8eb3b017aec5354, type: 2}
+  openMagInspectionAudio: {fileID: 11400000, guid: 4dc9b6db307f4804c95b0cca68ad4e8e, type: 2}
+  closeMagInspectionAudio: {fileID: 11400000, guid: e1e7e847ea9564d43b939b5f537944d4, type: 2}
 --- !u!120 &4269913587632257975
 LineRenderer:
   serializedVersion: 2
@@ -15083,6 +15089,10 @@ MonoBehaviour:
   uiHolder: {fileID: 6281295439917349366}
   currentAmountAmmo: {fileID: 5752463144692681929}
   totalAmountAmmo: {fileID: 1299326378557689831}
+  shootAudio: {fileID: 11400000, guid: 268c014a97938ee4e88cddbcb3266b52, type: 2}
+  reloadAudio: {fileID: 11400000, guid: b51ed4b7707036e499509ba94a73d1ff, type: 2}
+  openMagInspectionAudio: {fileID: 11400000, guid: 0187dca0471f8494d90e86213bfcad8b, type: 2}
+  closeMagInspectionAudio: {fileID: 11400000, guid: 717ad448ced1fd4429a7c34c32f7dad4, type: 2}
 --- !u!120 &5679551264856711526
 LineRenderer:
   serializedVersion: 2
