@@ -10,10 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: da24b4839cc7f6a4e956f58b6adfb707, type: 3}
-  m_Name: Movement
+  m_Name: Enemy_SFX
   m_EditorClassIdentifier: Assembly-CSharp::AudioList
   audioClip:
-  - {fileID: 8300000, guid: e228ded165d4db6499b00fe15064339f, type: 3}
-  - {fileID: 8300000, guid: 1c9955b116a9be0498079c7c09a393f5, type: 3}
-  volume: 0.4
-  pitchRange: 0.2
+  - {fileID: 8300000, guid: 31c01a0e4916f4d449258ddad633081f, type: 3}
+  volume: 1.5
+  pitchRange: 0.3

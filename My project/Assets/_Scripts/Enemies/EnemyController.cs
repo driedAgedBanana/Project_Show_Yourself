@@ -59,7 +59,6 @@ public class EnemyController : MonoBehaviour
     [HideInInspector] public bool isDead = false;
     [SerializeField] private LayerMask visionBlockingLayers;
 
-
     [Header("Patrolling")]
     public float stopSafeDistance;
     public int maxWalkCount;
@@ -92,6 +91,13 @@ public class EnemyController : MonoBehaviour
 
     public int minDamageAmount = 10;
     public int maxDamageAmount = 15;
+
+    [Header("SFX")]
+    public AudioList idleSFX;
+    public AudioList screamSFX;
+    public AudioList attackSFX;
+    public AudioList hitSFX;
+    public AudioList deathSFX;
 
     private void Awake()
     {
@@ -239,6 +245,7 @@ public class EnemyController : MonoBehaviour
             if (RandomPoint(centerPoint.position, range, out _point))
             {
                 agent.SetDestination(_point);
+                AudioManager.Instance.PlaySounds(idleSFX, transform.position);
                 _walkTimeCount++;
 
                 if (_walkTimeCount >= _randomWalkCount)
@@ -337,6 +344,7 @@ public class EnemyController : MonoBehaviour
         {
             _isAllowedToWalk = true;
             Patrolling();
+            AudioManager.Instance.PlaySounds(idleSFX, transform.position);
         }
 
     }
@@ -402,6 +410,10 @@ public class EnemyController : MonoBehaviour
         _hasScreamed = true; // Mark as screamed
         agent.isStopped = true;
         agent.velocity = Vector3.zero; // Stop momentum
+
+        // --- PLAY SCREAM SFX ---
+        if (screamSFX != null)
+            AudioManager.Instance.PlaySounds(screamSFX, transform.position);
 
         enemyAnimator.SetTrigger("isScreaming 0");
 
@@ -521,6 +533,10 @@ public class EnemyController : MonoBehaviour
 
             if (enemyAnimator != null)
             {
+                // --- PLAY ATTACK SFX ---
+                if (attackSFX != null)
+                    AudioManager.Instance.PlaySounds(attackSFX, transform.position);
+
                 enemyAnimator.SetBool("isAttackingPlayer", true);
                 enemyAnimator.SetInteger("attackIndex", atkIndex);
             }
@@ -568,6 +584,11 @@ public class EnemyController : MonoBehaviour
     {
         currentHealth -= damageAmount;
         _isBeingAttacked = true;
+
+        // --- PLAY HIT SFX ---
+        if (hitSFX != null)
+            AudioManager.Instance.PlaySounds(hitSFX, hitPoint); 
+
         enemyAnimator.SetTrigger("GetHit");
 
         if (_isBeingAttacked && _currentState != EnemyState.Dead)
@@ -635,6 +656,10 @@ public class EnemyController : MonoBehaviour
         // SpawnManager.Instance.UnregisterEnemies(gameObject);
         if (_currentState == EnemyState.Dead) return;
         _currentState = EnemyState.Dead;
+
+        // --- PLAY DEATH SFX ---
+        if (deathSFX != null)
+            AudioManager.Instance.PlaySounds(deathSFX, transform.position);
 
         StopAllCoroutines();
 
