@@ -1403,11 +1403,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 436444231019303425, guid: a271d79b42c78d546a33b5543674a931, type: 3}
       propertyPath: _recoilX
-      value: -20
+      value: -15
       objectReference: {fileID: 0}
     - target: {fileID: 436444231019303425, guid: a271d79b42c78d546a33b5543674a931, type: 3}
       propertyPath: _recoilY
-      value: 10
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 497703325832627231, guid: a271d79b42c78d546a33b5543674a931, type: 3}
       propertyPath: m_AnchorMax.y
@@ -1441,6 +1441,14 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1041242293284270902, guid: a271d79b42c78d546a33b5543674a931, type: 3}
+      propertyPath: shootAudio
+      value: 
+      objectReference: {fileID: 11400000, guid: 53bf93c7191142d4d8e59042681e99a0, type: 2}
+    - target: {fileID: 1041242293284270902, guid: a271d79b42c78d546a33b5543674a931, type: 3}
+      propertyPath: reloadAudio
+      value: 
+      objectReference: {fileID: 11400000, guid: d4107a454ff788f4a8eb3b017aec5354, type: 2}
     - target: {fileID: 1652456138511553687, guid: a271d79b42c78d546a33b5543674a931, type: 3}
       propertyPath: leanAngle
       value: 25
@@ -1499,9 +1507,6 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 6803532241251577624, guid: a271d79b42c78d546a33b5543674a931, type: 3}
       insertIndex: 2
-      addedObject: {fileID: 2744262287896443454}
-    - targetCorrespondingSourceObject: {fileID: 6803532241251577624, guid: a271d79b42c78d546a33b5543674a931, type: 3}
-      insertIndex: 3
       addedObject: {fileID: 2744262287896443453}
   m_SourcePrefab: {fileID: 100100000, guid: a271d79b42c78d546a33b5543674a931, type: 3}
 --- !u!82 &2744262287896443453
@@ -1601,19 +1606,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &2744262287896443454
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 920344578}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7b154dbdf0f75bf41a109a9afd130ac7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::AudioList
-  source: {fileID: 2744262287896443453}
 --- !u!1001 &3733571119323198842
 PrefabInstance:
   m_ObjectHideFlags: 0

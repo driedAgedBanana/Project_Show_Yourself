@@ -93,6 +93,10 @@ public class WeaponBase : MonoBehaviour, IWeapon
     public TextMeshProUGUI currentAmountAmmo;
     public TextMeshProUGUI totalAmountAmmo;
 
+    [Header("Audio")]
+    public AudioList shootAudio;
+    public AudioList reloadAudio;
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -313,6 +317,7 @@ public class WeaponBase : MonoBehaviour, IWeapon
             {
                 _currentAmmo--;
                 Shooting();
+                AudioManager.Instance.PlaySounds(shootAudio, transform.position);
                 yield return new WaitForSeconds(fireRate);
             }
             else if (totalAmountOfCarryAmmo > 0)
@@ -368,6 +373,7 @@ public class WeaponBase : MonoBehaviour, IWeapon
         _isReloading = true;
         EnableAnimator();
         weaponsAnimator.SetBool("isReloading", true);
+        AudioManager.Instance.PlaySounds(reloadAudio, transform.position);
 
         yield return new WaitForSeconds(reloadTime);
     }
@@ -506,6 +512,7 @@ public class WeaponBase : MonoBehaviour, IWeapon
         if (ctx.started)
         {
             Reloading();
+            AudioManager.Instance.PlaySounds(reloadAudio, transform.position);
         }
     }
 
