@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: da24b4839cc7f6a4e956f58b6adfb707, type: 3}
-  m_Name: Reload
+  m_Name: Shoot
   m_EditorClassIdentifier: Assembly-CSharp::AudioList
   audioClip:
-  - {fileID: 8300000, guid: 6cbb8c5108f5892419dbfd1df846c860, type: 3}
-  volume: 0.7
+  - {fileID: 8300000, guid: d1b52ad70b631d643a815deca60e28df, type: 3}
+  volume: 0.6
   pitchRange: 0.1

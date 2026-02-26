@@ -18,6 +18,9 @@ public class WeaponSwapper : MonoBehaviour
     private bool _isMainWeaponActive = true;
     private bool _isSwapping = false;
 
+    [Header("SFX")]
+    public AudioList swapSound;
+
     // Update is called once per frame
     void Update()
     {
@@ -34,6 +37,7 @@ public class WeaponSwapper : MonoBehaviour
 
         // Wait until the weapon is hidden
         yield return new WaitUntil(() => Vector3.Distance(weaponSlot.localPosition, _targetPos) < 0.1f);
+        AudioManager.Instance.PlaySounds(swapSound, transform.position);
 
         // Toggle logic
         _isMainWeaponActive = !_isMainWeaponActive;

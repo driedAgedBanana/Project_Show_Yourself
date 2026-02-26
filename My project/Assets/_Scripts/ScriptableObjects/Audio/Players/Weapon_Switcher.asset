@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: da24b4839cc7f6a4e956f58b6adfb707, type: 3}
-  m_Name: Reload
+  m_Name: Weapon_Switcher
   m_EditorClassIdentifier: Assembly-CSharp::AudioList
   audioClip:
-  - {fileID: 8300000, guid: 6cbb8c5108f5892419dbfd1df846c860, type: 3}
-  volume: 0.7
+  - {fileID: 8300000, guid: 8f07e7c87f25b164cba18f5c4dc8d445, type: 3}
+  volume: 1
   pitchRange: 0.1

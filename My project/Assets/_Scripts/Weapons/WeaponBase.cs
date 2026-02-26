@@ -96,6 +96,9 @@ public class WeaponBase : MonoBehaviour, IWeapon
     [Header("Audio")]
     public AudioList shootAudio;
     public AudioList reloadAudio;
+    [Space]
+    public AudioList openMagInspectionAudio;
+    public AudioList closeMagInspectionAudio;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -262,8 +265,6 @@ public class WeaponBase : MonoBehaviour, IWeapon
             direction += _mainCam.transform.up * Random.Range(-aimingBulletSpread, aimingBulletSpread);
         }
 
-        // Sounds later on
-
         if (Physics.Raycast(_mainCam.transform.position, direction, out hit, range, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore))
         {
             // Spawn bullet trail
@@ -366,6 +367,7 @@ public class WeaponBase : MonoBehaviour, IWeapon
         SetEjectionState(false);
         _isShootingAuto = false;
         StartCoroutine(ReloadingAnimation());
+        AudioManager.Instance.PlaySounds(reloadAudio, transform.position);
     }
 
     private IEnumerator ReloadingAnimation()
@@ -373,7 +375,6 @@ public class WeaponBase : MonoBehaviour, IWeapon
         _isReloading = true;
         EnableAnimator();
         weaponsAnimator.SetBool("isReloading", true);
-        AudioManager.Instance.PlaySounds(reloadAudio, transform.position);
 
         yield return new WaitForSeconds(reloadTime);
     }
@@ -423,6 +424,7 @@ public class WeaponBase : MonoBehaviour, IWeapon
     {
         isCheckingForAmmo = true;
         EnableAnimator();
+        AudioManager.Instance.PlaySounds(openMagInspectionAudio, transform.position);
         weaponsAnimator.SetBool("isCheckingForAmmo", true);
         uiHolder.SetActive(true);
     }
@@ -431,6 +433,7 @@ public class WeaponBase : MonoBehaviour, IWeapon
     {
         uiHolder.SetActive(false);
         weaponsAnimator.SetBool("isCheckingForAmmo", false);
+        AudioManager.Instance.PlaySounds(closeMagInspectionAudio, transform.position);
     }
 
     public void FinishCheckingAmmo()
@@ -463,6 +466,7 @@ public class WeaponBase : MonoBehaviour, IWeapon
             _currentAmmo--;
             Shooting();
             SetEjectionState(true);
+            AudioManager.Instance.PlaySounds(shootAudio, transform.position);
         }
 
         if (_currentAmmo == 0 && totalAmountOfCarryAmmo > 0)
@@ -512,7 +516,6 @@ public class WeaponBase : MonoBehaviour, IWeapon
         if (ctx.started)
         {
             Reloading();
-            AudioManager.Instance.PlaySounds(reloadAudio, transform.position);
         }
     }
 

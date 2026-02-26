@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Shoot
   m_EditorClassIdentifier: Assembly-CSharp::AudioList
   audioClip:
-  - {fileID: 8300000, guid: f0523eb6553621844b2f7e79115d19d5, type: 3}
+  - {fileID: 8300000, guid: d600e37c8b5698f4fa9ab76307bd6207, type: 3}
   volume: 1
   pitchRange: 0.1
