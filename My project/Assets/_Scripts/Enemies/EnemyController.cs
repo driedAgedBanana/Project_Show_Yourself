@@ -652,14 +652,15 @@ public class EnemyController : MonoBehaviour
 
     public void Die(Vector3 hitPoint, Vector3 hitForce)
     {
+        // --- PLAY DEATH SFX ---
+        if (deathSFX != null)
+            AudioManager.Instance.PlaySounds(deathSFX, transform.position);
+
         isDead = true;
         // SpawnManager.Instance.UnregisterEnemies(gameObject);
         if (_currentState == EnemyState.Dead) return;
         _currentState = EnemyState.Dead;
 
-        // --- PLAY DEATH SFX ---
-        if (deathSFX != null)
-            AudioManager.Instance.PlaySounds(deathSFX, transform.position);
 
         StopAllCoroutines();
 
