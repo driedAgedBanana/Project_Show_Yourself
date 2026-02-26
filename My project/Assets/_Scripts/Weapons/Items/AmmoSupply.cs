@@ -9,6 +9,9 @@ public class AmmoSupply : MonoBehaviour, IPlayerInteract
     public int maxAmmoAmount = 60;
     [HideInInspector] public int randomAmount;
 
+    public AudioList collectItem;
+    public AudioList denySFX;
+
     public void Interact()
     {
         WeaponSwapper swapper = FindFirstObjectByType<WeaponSwapper>();
@@ -39,7 +42,7 @@ public class AmmoSupply : MonoBehaviour, IPlayerInteract
         int maxAllowed = targetWeapon.ammoData.totalAmountOfCarryAmmo;
         if (targetWeapon.totalAmountOfCarryAmmo >= maxAllowed)
         {
-            Debug.Log($"{weaponType} ammo is already full.");
+            AudioManager.Instance.PlaySounds(denySFX, transform.position);
             return;
         }
 
@@ -51,6 +54,7 @@ public class AmmoSupply : MonoBehaviour, IPlayerInteract
         {
             targetWeapon.GainingAmmunition(amountToAdd);
             targetWeapon.UpdateAmmoUI();
+            AudioManager.Instance.PlaySounds(collectItem, transform.position);
             Destroy(gameObject);
         }
     }

@@ -50,6 +50,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MedKit
   minHealAmount: 15
   maxHealAmount: 45
+  healingSFX: {fileID: 11400000, guid: 2b79446d014551441ac94a59b823386f, type: 2}
+  denySFX: {fileID: 11400000, guid: c2922bc4fbe9ef54491f140d07214f8d, type: 2}
 --- !u!33 &33686642431113250
 MeshFilter:
   m_ObjectHideFlags: 0
