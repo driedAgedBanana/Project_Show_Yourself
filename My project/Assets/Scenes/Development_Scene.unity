@@ -1472,6 +1472,10 @@ PrefabInstance:
       propertyPath: leanAngle
       value: 25
       objectReference: {fileID: 0}
+    - target: {fileID: 1652456138511553687, guid: a271d79b42c78d546a33b5543674a931, type: 3}
+      propertyPath: footstepSounds
+      value: 
+      objectReference: {fileID: 11400000, guid: 620fd9fffd30fe74397d898bb24d383a, type: 2}
     - target: {fileID: 1982049497142310322, guid: a271d79b42c78d546a33b5543674a931, type: 3}
       propertyPath: m_Name
       value: Player

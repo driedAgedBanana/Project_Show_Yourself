@@ -81,6 +81,10 @@ public class PlayerController : MonoBehaviour
     private ChromaticAberration _chromaticAberration;
     private DepthOfField _depthOfField;
 
+    [Header("SFX")]
+    public AudioList footstepSounds;
+    private bool _hasStepped; // Prevents the sound from playing every frame at the bottom of the curve
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -110,12 +114,12 @@ public class PlayerController : MonoBehaviour
             _vignette.intensity.value = 0.3f;
         }
 
-        if(playerVFX.profile.TryGet<ChromaticAberration>(out _chromaticAberration))
+        if (playerVFX.profile.TryGet<ChromaticAberration>(out _chromaticAberration))
         {
             _chromaticAberration.intensity.value = 0f;
         }
 
-        if(playerVFX.profile.TryGet<DepthOfField>(out _depthOfField))
+        if (playerVFX.profile.TryGet<DepthOfField>(out _depthOfField))
         {
             _depthOfField.focalLength.value = 0f;
         }
@@ -221,7 +225,22 @@ public class PlayerController : MonoBehaviour
         float amount = sprinting ? sprintBobAmount : walkBobAmount;
 
         bobTimer += Time.deltaTime * speed;
-        float offset = Mathf.Sin(bobTimer) * amount;
+        float sinValue = Mathf.Sin(bobTimer); // Get the raw sine value (-1 to 1)
+        float offset = sinValue * amount;
+
+        // --- FOOTSTEP LOGIC START ---
+        // If the sine wave is at the bottom (approaching -1)
+        if (sinValue < -0.9f && !_hasStepped)
+        {
+            AudioManager.Instance.PlaySounds(footstepSounds, transform.position);
+            _hasStepped = true; // Mark that we've played the sound for this "dip"
+        }
+        // Reset the flag when the head starts moving back up
+        else if (sinValue > 0)
+        {
+            _hasStepped = false;
+        }
+        // --- FOOTSTEP LOGIC END ---
 
         Vector3 newPos = camHolder.localPosition;
         newPos.y = baseY + offset;
@@ -254,13 +273,13 @@ public class PlayerController : MonoBehaviour
             _vignette.intensity.value = Mathf.MoveTowards(_vignette.intensity.value, targetIntensity, Time.deltaTime);
         }
 
-        if(_chromaticAberration != null)
+        if (_chromaticAberration != null)
         {
             float targetIntensity = Mathf.Lerp(0f, 1f, tiredness);
             _chromaticAberration.intensity.value = Mathf.MoveTowards(_chromaticAberration.intensity.value, targetIntensity, Time.deltaTime);
         }
 
-        if(_depthOfField != null)
+        if (_depthOfField != null)
         {
             float targetFocalLength = Mathf.Lerp(1f, 50f, tiredness);
             _depthOfField.focalLength.value = Mathf.MoveTowards(_depthOfField.focalLength.value, targetFocalLength, Time.deltaTime * 10f);
@@ -294,7 +313,11 @@ public class PlayerController : MonoBehaviour
     }
 
 
-    public void OnMove(InputAction.CallbackContext ctx) => moveInput = ctx.ReadValue<Vector2>();
+    public void OnMove(InputAction.CallbackContext ctx)
+    {
+        moveInput = ctx.ReadValue<Vector2>();
+    }
+
     public void OnLook(InputAction.CallbackContext ctx) => lookInput = ctx.ReadValue<Vector2>();
     public void OnRun(InputAction.CallbackContext ctx) => runHeld = ctx.ReadValueAsButton();
     public void OnLean(InputAction.CallbackContext ctx) => leanInput = ctx.ReadValue<float>();
