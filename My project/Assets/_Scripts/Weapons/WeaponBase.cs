@@ -252,7 +252,7 @@ public class WeaponBase : MonoBehaviour, IWeapon
     #region Aiming
     public void Aiming()
     {
-        if (weaponSwapper.isSwapping) 
+        if (!weaponSwapper.isSwapping) 
         {
             Transform targetPosition = isAiming ? aimingPosition : defaultPosition;
             float targetFOV = isAiming ? zoomInFOV : defaultFOV;
@@ -521,6 +521,8 @@ public class WeaponBase : MonoBehaviour, IWeapon
 
     public void OnShootAuto(InputAction.CallbackContext ctx)
     {
+        if (!gameObject.activeInHierarchy) return;
+
         if (!PlayerController.Instance.playerHealth.isAlive || isCheckingForAmmo || _isReloading) return;
 
         if (ctx.started)

@@ -1392,6 +1392,8 @@ MonoBehaviour:
   secondWeapon: {fileID: 3138050944116757561}
   smoothTime: 0.15
   hiddenOffset: {x: 0, y: -1, z: 0}
+  isMainWeaponActive: 1
+  isSwapping: 0
   swapSound: {fileID: 11400000, guid: c29fa31317f965d4eb6f72337bf9333e, type: 2}
 --- !u!1 &2533086108232597084
 GameObject:
@@ -14866,6 +14868,8 @@ MonoBehaviour:
   reloadAudio: {fileID: 11400000, guid: d4107a454ff788f4a8eb3b017aec5354, type: 2}
   openMagInspectionAudio: {fileID: 11400000, guid: 4dc9b6db307f4804c95b0cca68ad4e8e, type: 2}
   closeMagInspectionAudio: {fileID: 11400000, guid: e1e7e847ea9564d43b939b5f537944d4, type: 2}
+  noiseCollider: {fileID: 0}
+  weaponSwapper: {fileID: 0}
 --- !u!120 &4269913587632257975
 LineRenderer:
   serializedVersion: 2
@@ -15196,6 +15200,8 @@ MonoBehaviour:
   reloadAudio: {fileID: 11400000, guid: b51ed4b7707036e499509ba94a73d1ff, type: 2}
   openMagInspectionAudio: {fileID: 11400000, guid: 0187dca0471f8494d90e86213bfcad8b, type: 2}
   closeMagInspectionAudio: {fileID: 11400000, guid: 717ad448ced1fd4429a7c34c32f7dad4, type: 2}
+  noiseCollider: {fileID: 0}
+  weaponSwapper: {fileID: 0}
 --- !u!120 &5679551264856711526
 LineRenderer:
   serializedVersion: 2

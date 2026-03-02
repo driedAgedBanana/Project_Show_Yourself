@@ -100,12 +100,10 @@ public class PlayerController : MonoBehaviour
         playerHealth = GetComponent<PlayerHealth>();
         playerInteract = GetComponent<PlayerInteract>();
 
-        GameObject volumeObject = GameObject.Find("Global_Volume");
-
         if (globalVolume != null)
         {
             // 1. Create the object and store a reference to the instance
-            GameObject spawnedVolume = Instantiate(globalVolume.gameObject, Vector3.zero, Quaternion.identity);
+            spawnedVolume = Instantiate(globalVolume.gameObject, Vector3.zero, Quaternion.identity);
 
             // 2. Assign the specific component of that new instance back to your variable
             globalVolume = spawnedVolume.GetComponent<Volume>().gameObject;
