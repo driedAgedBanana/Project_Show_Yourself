@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using Pathfinding;
 
 public class EnemyController : MonoBehaviour
 {
@@ -27,8 +28,9 @@ public class EnemyController : MonoBehaviour
 
     [Header("Basic setup")]
     public string enemyID; // For quest system
+    public AIPath agent;
+    public Seeker seeker;
     [Space]
-    public NavMeshAgent agent;
     public float targetSpeed;
     private float _distanceToPlayer;
     public EnemyType enemyType;
@@ -105,14 +107,14 @@ public class EnemyController : MonoBehaviour
 
     private void Awake()
     {
-        agent = GetComponent<NavMeshAgent>();
+        agent = GetComponent<AIPath>();
+        seeker = GetComponent<Seeker>();
         enemyAnimator = GetComponent<Animator>();
 
         // Disable agent auto-movement, use root motion instead
-        agent.updatePosition = false;
+        agent.canMove = false;
         agent.updateRotation = false;
-
-        agent.stoppingDistance = stopSafeDistance;
+        agent.endReachedDistance = stopSafeDistance;
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -135,7 +137,6 @@ public class EnemyController : MonoBehaviour
         player = GameObject.FindGameObjectWithTag("Player"); // ?
 
         _distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
-        agent.stoppingDistance = attackRange - bufferDistance;
 
         if (disappearParticle != null)
         {
@@ -156,7 +157,7 @@ public class EnemyController : MonoBehaviour
     {
         if (isDead) return;
 
-        agent.speed = targetSpeed;
+        agent.maxSpeed = targetSpeed;
 
         switch (_currentState)
         {
@@ -169,10 +170,6 @@ public class EnemyController : MonoBehaviour
                 CheckForAttack();
                 ChasingPlayer();
                 CheckForPlayer();
-                break;
-
-            case EnemyState.Control:
-                // Reserved for future use
                 break;
 
             case EnemyState.Attack:
@@ -199,7 +196,7 @@ public class EnemyController : MonoBehaviour
         Vector3 origin = transform.position + Vector3.up * 0.5f; // eye height
         Vector3 direction = (player.transform.position - origin).normalized;
 
-        _distanceToPlayer = agent.remainingDistance; // Use the actual walking distance!
+        _distanceToPlayer = agent.remainingDistance;
 
         // If the agent hasn't calculated the path yet, fall back to straight line
         if (float.IsInfinity(_distanceToPlayer) || _distanceToPlayer == 0)
@@ -213,7 +210,7 @@ public class EnemyController : MonoBehaviour
             // If we are in Chase state, don't stop until we actually reach the destination
             if (_currentState == EnemyState.Chase)
             {
-                if (agent.remainingDistance <= agent.stoppingDistance)
+                if (agent.reachedDestination)
                 {
                     StopChasing();
                 }
@@ -237,16 +234,13 @@ public class EnemyController : MonoBehaviour
                 enemyAnimator.SetBool("isChasingPlayer", true);
                 _currentState = EnemyState.Chase;
             }
-            else
+            else if (_currentState != EnemyState.Chase)
             {
                 // We LOST sight of the player (hit a wall)
                 // If we were patrolling, stay patrolling.
                 // If we were chasing, DON'T stop yet. Let ChasingPlayer() drive us to the last spot.
-                if (_currentState != EnemyState.Chase)
-                {
-                    enemyAnimator.SetBool("isChasingPlayer", false);
-                    _currentState = EnemyState.Patrol;
-                }
+                enemyAnimator.SetBool("isChasingPlayer", false);
+                _currentState = EnemyState.Patrol;
             }
         }
     }
@@ -264,17 +258,15 @@ public class EnemyController : MonoBehaviour
     private void Patrolling()
     {
         _hasScreamed = false;
-        if (!_isAllowedToWalk) return;
-
-        if (agent == null || !agent.isOnNavMesh || isDead || !_isAllowedToWalk) return;
+        if (!_isAllowedToWalk || isDead) return;
 
         // Only pick a new point if the agent is idle or reached the target
-        if (!agent.hasPath || agent.remainingDistance <= agent.stoppingDistance)
+        if (!agent.pathPending && (agent.reachedDestination || !agent.hasPath))
         {
             float range = UnityEngine.Random.Range(6f, 20f);
             if (RandomPoint(centerPoint.position, range, out _point))
             {
-                agent.SetDestination(_point);
+                agent.destination = _point;
                 AudioManager.Instance.PlaySounds(idleSFX, transform.position);
                 _walkTimeCount++;
 
@@ -287,54 +279,38 @@ public class EnemyController : MonoBehaviour
             }
         }
 
-        // Calculate velocity and set animator
-        Vector3 velocity = agent.desiredVelocity;
-        float speedPercentage = agent.velocity.magnitude / agent.speed;
+        // Calculate velocity and set 
+        float speedPercentage = agent.velocity.magnitude / agent.maxSpeed;
         enemyAnimator.speed = Mathf.Max(0.5f, speedPercentage); // Prevent the animation from stopping entirely
 
         // Smooth rotation toward agent desired velocity
-        if (velocity.sqrMagnitude > 0.01f)
+        if (agent.velocity.sqrMagnitude > 0.01f)
         {
-            Quaternion targetRot = Quaternion.LookRotation(velocity.normalized);
+            Quaternion targetRot = Quaternion.LookRotation(agent.velocity.normalized);
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRot, Time.deltaTime * 10f);
         }
     }
 
     private void OnAnimatorMove()
     {
-        if (enemyAnimator == null || agent == null) return;
+        if (enemyAnimator == null || agent == null || isDead) return;
 
-        // Calculate desired movement from root motion
-        Vector3 rootMotion = enemyAnimator.deltaPosition;
-        Vector3 nextPosition = transform.position + rootMotion;
+        // 1. Get the movement from the animation
+        Vector3 nextPos = transform.position + enemyAnimator.deltaPosition;
 
-        // Make sure the agent stays on the NavMesh
-        if (NavMesh.SamplePosition(nextPosition, out NavMeshHit hit, 0.3f, NavMesh.AllAreas))
+        // 2. Ask A* Pathfinding if this position is valid/walkable
+        NNInfo hit = AstarPath.active.GetNearest(nextPos, NNConstraint.Default);
+
+        if (hit.node != null && hit.node.Walkable)
         {
-            // Move toward the sampled position, staying constrained to the NavMesh
-            agent.nextPosition = hit.position;
-            transform.position = agent.nextPosition;
-        }
-        else
-        {
-            // If we drift off the NavMesh, snap back to a safe position
-            if (NavMesh.SamplePosition(transform.position, out NavMeshHit safeHit, 1.0f, NavMesh.AllAreas))
-            {
-                agent.Warp(safeHit.position);
-                transform.position = safeHit.position;
-            }
+            // Only move if the node is walkable and close enough to the intended position
+            transform.position = nextPos;
         }
 
-        // Apply animator’s root rotation smoothly
         transform.rotation *= enemyAnimator.deltaRotation;
 
-        // Ensure Y height always matches the NavMesh
-        Vector3 pos = transform.position;
-        pos.y = agent.nextPosition.y;
-        transform.position = pos;
-
-        // Keep the NavMeshAgent and transform perfectly synced
-        agent.nextPosition = transform.position;
+        // 3. Keep the agent synced so it doesn't think it's "lost"
+        agent.MovementUpdate(Time.deltaTime, out Vector3 _, out Quaternion _);
     }
 
     private bool RandomPoint(Vector3 center, float range, out Vector3 result)
@@ -347,9 +323,11 @@ public class EnemyController : MonoBehaviour
             randomDir += transform.forward * (range / 2); // Bias it to look forward
             Vector3 finalPoint = center + randomDir;
 
-            if (NavMesh.SamplePosition(finalPoint, out NavMeshHit hit, 2.0f, NavMesh.AllAreas))
+            // A* check for the nearest walkable node
+            NNInfo hit = AstarPath.active.GetNearest(finalPoint, NNConstraint.Default);
+            if(hit.node != null && hit.node.Walkable)
             {
-                result = hit.position;
+                result = (Vector3)hit.node.position;
                 return true;
             }
         }
@@ -394,61 +372,43 @@ public class EnemyController : MonoBehaviour
 
     private void ChasingPlayer()
     {
-        if (isDead || agent == null || !agent.isOnNavMesh) return;
+        if (isDead || agent == null) return;
 
-        // 1. Check Line of Sight to decide if we should "Predict" or "Follow Path"
         Vector3 directionToPlayer = (player.transform.position - transform.position).normalized;
-        bool hasLineOfSight = !Physics.Raycast(transform.position + Vector3.up, directionToPlayer, out RaycastHit hit, _currentChaseRange, visionBlockingLayers) || hit.transform.TryGetComponent<PlayerController>(out PlayerController controller);
+        bool hasLineOfSight = !Physics.Raycast(transform.position + Vector3.up, directionToPlayer, out RaycastHit hit, _currentChaseRange, visionBlockingLayers);
 
         if (hasLineOfSight)
         {
-            // IN OPEN SPACE: Aim where the player is going (Prediction)
-            float distance = Vector3.Distance(transform.position, player.transform.position);
-            float lookAheadTime = distance / agent.speed;
-
-            // Safety check for Rigidbody
-            Vector3 targetVelocity = Vector3.zero;
-            if (player.GetComponent<Rigidbody>() != null)
-                targetVelocity = player.GetComponent<Rigidbody>().linearVelocity;
-
-            Vector3 predictedPos = player.transform.position + targetVelocity * lookAheadTime;
-            agent.SetDestination(predictedPos);
+            agent.destination = player.transform.position;
         }
-        else
+        else if (agent.reachedDestination || !agent.hasPath)
         {
-            // IN A MAZE: Just follow the exact player position so we don't try to "cut" through walls
-            if (agent.isPathStale || !agent.hasPath || agent.remainingDistance < 1f)
-            {
-                agent.SetDestination(player.transform.position);
-            }
+            agent.destination = player.transform.position;
         }
 
-        // 2. Smooth Rotation (Crucial for Mazes so they don't snap into walls)
-        if (agent.desiredVelocity.sqrMagnitude > 0.1f)
+        if (agent.velocity.sqrMagnitude > 0.1f)
         {
-            Quaternion lookRotation = Quaternion.LookRotation(agent.desiredVelocity);
+            Quaternion lookRotation = Quaternion.LookRotation(agent.velocity);
             transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 7f);
         }
 
-        // 3. Scream Logic (Keep your existing logic here)
         if (!_isScreaming && !_hasScreamed)
         {
-            _distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
-            if (_distanceToPlayer <= _currentChaseRange && _distanceToPlayer > attackRange)
+            float dist = Vector3.Distance(transform.position, player.transform.position);
+            if (dist <= _currentChaseRange && dist > attackRange)
             {
-                TryScream();
-                return;
+                if (Time.time > _lastScreamTime + screamCooldown)
+                {
+                    _lastScreamTime = Time.time;
+                    StartCoroutine(ScreamThenRunTowardsPlayer());
+                }
             }
         }
 
-        // 4. Movement Execution
         if (!_isScreaming)
         {
-            agent.isStopped = false;
-
-            // Speed scaling for Animator
-            float speedPercentage = agent.velocity.magnitude / agent.speed;
-            enemyAnimator.SetFloat("speed", speedPercentage); // Ensure your animator has a "speed" float
+            float speedPercentage = agent.velocity.magnitude / agent.maxSpeed;
+            enemyAnimator.SetFloat("speed", speedPercentage);
         }
     }
 
@@ -459,7 +419,6 @@ public class EnemyController : MonoBehaviour
         _isScreaming = true;
         _hasScreamed = true; // Mark as screamed
         agent.isStopped = true;
-        agent.velocity = Vector3.zero; // Stop momentum
 
         // --- PLAY SCREAM SFX ---
         if (screamSFX != null)
@@ -470,7 +429,7 @@ public class EnemyController : MonoBehaviour
         // Wait for the animation length (adjust 2f to your actual clip length)
         yield return new WaitForSeconds(screamDuration);
 
-        if (!isDead && agent != null && agent.isOnNavMesh)
+        if (!isDead && agent != null)
         {
             agent.isStopped = false;
         }
@@ -492,10 +451,10 @@ public class EnemyController : MonoBehaviour
 
     private void MoveTowardsMarker()
     {
-        if (player == null || isDead || agent == null || !agent.isActiveAndEnabled || !agent.isOnNavMesh) return;
+        if (player == null || isDead || agent == null || !agent.isActiveAndEnabled) return;
         _currentState = EnemyState.Chase;
         agent.isStopped = false;
-        agent.SetDestination(player.transform.position);
+        agent.destination = player.transform.position;
 
         enemyAnimator.SetBool("isChasingPlayer", true);
     }
@@ -512,8 +471,8 @@ public class EnemyController : MonoBehaviour
         {
             if (_currentState != EnemyState.Attack)
             {
-                agent.isStopped = true;
-                agent.ResetPath();
+                agent.canMove = false;
+                agent.SetPath(null);
                 _currentState = EnemyState.Attack;
                 _isPlayerInAttackZone = true;
             }
@@ -678,11 +637,11 @@ public class EnemyController : MonoBehaviour
     public void BecomeAggresive()
     {
         if (isDead || player == null) return;
-        if (agent == null || !agent.isActiveAndEnabled || !agent.isOnNavMesh) return;
+        if (agent == null || !agent.isActiveAndEnabled) return;
 
         _currentState = EnemyState.Chase;
         agent.isStopped = false;
-        agent.SetDestination(player.transform.position);
+        agent.destination = player.transform.position;
     }
 
     private IEnumerator EnragedVision()

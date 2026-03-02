@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using Pathfinding;
 
 public class MazeGenerator : MonoBehaviour
 {
@@ -236,11 +237,18 @@ public class MazeGenerator : MonoBehaviour
                 }
             }
 
-            // 4. Actual Spawning
-            NavMeshHit hit;
-            if (NavMesh.SamplePosition(worldPos, out hit, 2.0f, NavMesh.AllAreas))
+            // 4. Actual Spawning using A*
+            NNInfo nearestInfo = AstarPath.active.GetNearest(worldPos, NNConstraint.Default);
+
+            // Check if the node found is valid and walkable
+            if(nearestInfo.node != null && nearestInfo.node.Walkable)
             {
-                GameObject enemy = Instantiate(_enemyPrefabs[Random.Range(0, _enemyPrefabs.Count)], hit.position, Quaternion.identity);
+                // Use the position of the node center to ensure the enemy is aligned with the pathfinding grid of the maze
+                Vector3 spawnPosition = (Vector3)nearestInfo.node.position;
+
+                GameObject enemyPrefab = _enemyPrefabs[Random.Range(0, _enemyPrefabs.Count)];
+                GameObject enemy = Instantiate(enemyPrefab, spawnPosition, Quaternion.identity);
+
                 _activeEnemies.Add(enemy);
             }
 

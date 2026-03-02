@@ -1046,10 +1046,11 @@ GameObject:
   - component: {fileID: 4243538704547566}
   - component: {fileID: 7353150931010406570}
   - component: {fileID: 3517141529484782431}
-  - component: {fileID: 1490317310310934104}
   - component: {fileID: 95921630161195528}
   - component: {fileID: 7963796608409310648}
   - component: {fileID: 9071669330773166094}
+  - component: {fileID: -7976634337081771040}
+  - component: {fileID: -7195758595560423616}
   m_Layer: 0
   m_Name: Tourist_Zombie
   m_TagString: Untagged
@@ -1102,7 +1103,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyController
   _currentState: 0
   enemyID: 
-  agent: {fileID: 1490317310310934104}
+  agent: {fileID: -7195758595560423616}
+  seeker: {fileID: -7976634337081771040}
   targetSpeed: 5
   enemyType: 0
   enemyRB: {fileID: 7963796608409310648}
@@ -1133,6 +1135,8 @@ MonoBehaviour:
   _enragedChaseRange: 50
   loseSightRange: 7
   screamDuration: 0.5
+  isGhostMode: 0
+  ghostSpeedMultiplier: 0.5
   screamCooldown: 1
   bufferDistance: 0.03
   attackRange: 1.8
@@ -1143,28 +1147,6 @@ MonoBehaviour:
   screamSFX: {fileID: 11400000, guid: 7fc5b45ebdbbdda419adff80a4dc85f1, type: 2}
   attackSFX: {fileID: 11400000, guid: 55f8a8096b14d8b459c63bf31075bbbd, type: 2}
   deathSFX: {fileID: 11400000, guid: 58efbd214dd98f3419bc473143af60e8, type: 2}
---- !u!195 &1490317310310934104
-NavMeshAgent:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1418193975600942}
-  m_Enabled: 1
-  m_AgentTypeID: 0
-  m_Radius: 0.2
-  m_Speed: 3.5
-  m_Acceleration: 8
-  avoidancePriority: 50
-  m_AngularSpeed: 120
-  m_StoppingDistance: 0
-  m_AutoTraverseOffMeshLink: 1
-  m_AutoBraking: 1
-  m_AutoRepath: 1
-  m_Height: 1.46
-  m_BaseOffset: 0
-  m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 4
 --- !u!95 &95921630161195528
 Animator:
   serializedVersion: 7
@@ -1235,6 +1217,76 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.5, y: 1.8, z: 0.45}
   m_Center: {x: 0, y: 0.9, z: 0}
+--- !u!114 &-7976634337081771040
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1418193975600942}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 373b52eb9bf8c40f785bb6947a1aee66, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: AstarPathfindingProject::Pathfinding.Seeker
+  version: 1
+  drawGizmos: 1
+  detailedGizmos: 0
+  startEndModifier:
+    addPoints: 0
+    exactStartPoint: 3
+    exactEndPoint: 3
+    useRaycasting: 0
+    mask:
+      serializedVersion: 2
+      m_Bits: 4294967295
+    useGraphRaycasting: 0
+  traversableTags: -1
+  tagPenalties: 0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+  graphMask:
+    value: -1
+--- !u!114 &-7195758595560423616
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1418193975600942}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6eb1402c17e84a9282a7f0f62eb584f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: AstarPathfindingProject::Pathfinding.AIPath
+  version: 5
+  radius: 0.2
+  height: 1.8
+  canMove: 1
+  maxSpeed: 5
+  gravity: {x: NaN, y: NaN, z: NaN}
+  groundMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  centerOffsetCompatibility: NaN
+  repathRateCompatibility: NaN
+  canSearchCompability: 0
+  orientation: 0
+  enableRotation: 1
+  autoRepath:
+    mode: 2
+    interval: 0.5
+    sensitivity: 10
+    maximumInterval: 2
+    visualizeSensitivity: 0
+  targetCompatibility: {fileID: 0}
+  maxAcceleration: -2.5
+  rotationSpeed: 360
+  slowdownDistance: 0.6
+  pickNextWaypointDist: 2
+  endReachedDistance: 0.2
+  alwaysDrawGizmos: 0
+  slowWhenNotFacingTarget: 1
+  whenCloseToDestination: 0
+  constrainInsideGraph: 0
 --- !u!1 &1423411692011380
 GameObject:
   m_ObjectHideFlags: 0

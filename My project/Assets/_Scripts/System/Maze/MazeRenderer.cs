@@ -6,15 +6,10 @@ public class MazeRenderer : MonoBehaviour
 {
     [SerializeField] private MazeGenerator _mazeGenerator;
     [SerializeField] private GameObject _mazeCellPrefab;
-    [SerializeField] private NavMeshSurface navMeshSurface;
+    // [SerializeField] private NavMeshSurface navMeshSurface;
 
     // Physical size of each cell in the maze, used to position the cells correctly in the world
     public float CellSize = 1f;
-
-    private void Awake()
-    {
-
-    }
 
     private void Start()
     {
@@ -56,12 +51,12 @@ public class MazeRenderer : MonoBehaviour
         // but it's safer to have them ready now.
         _mazeGenerator.SpawnMovingWalls();
 
-        // 3. BAKE THE NAVMESH
-        // This creates the floor that SamplePosition needs to work!
-        if (navMeshSurface != null)
-        {
-            navMeshSurface.BuildNavMesh();
-        }
+        //// 3. BAKE THE NAVMESH
+        //// This creates the floor that SamplePosition needs to work!
+        //if (navMeshSurface != null)
+        //{
+        //    navMeshSurface.BuildNavMesh();
+        //}
 
         // 4. NOW spawn the entities
         _mazeGenerator.SpawnPlayer();
