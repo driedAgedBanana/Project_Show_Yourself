@@ -197,35 +197,55 @@ public class EnemyController : MonoBehaviour
 
         _distanceToPlayer = Vector3.Distance(origin, player.transform.position);
 
-        // Angle check first (cheap)
-        if (Vector3.Angle(transform.forward, direction) > visionDegree)
-            return;
-
-        // Distance check
+        // 1. IMPROVED DISTANCE CHECK
         if (_distanceToPlayer > _currentChaseRange)
         {
-            enemyAnimator.SetBool("isChasingPlayer", false);
-            _currentState = EnemyState.Patrol;
+            // If we are in Chase state, don't stop until we actually reach the destination
+            if (_currentState == EnemyState.Chase)
+            {
+                if (agent.remainingDistance <= agent.stoppingDistance)
+                {
+                    StopChasing();
+                }
+            }
+            else
+            {
+                _currentState = EnemyState.Patrol;
+            }
             return;
         }
 
-        // Line of sight check (IMPORTANT)
+        // 2. IMPROVED LINE OF SIGHT CHECK
         if (Physics.Raycast(origin, direction, out RaycastHit hit, _currentChaseRange, visionBlockingLayers))
         {
             if (hit.transform.CompareTag("Player"))
             {
+                // We see the player! Update memory and chase.
+                _hasLastKnownPosition = true;
+                _lastKnownPlayerPosition = player.transform.position;
+
                 enemyAnimator.SetBool("isChasingPlayer", true);
                 _currentState = EnemyState.Chase;
             }
             else
             {
-                // Hit wall or obstacle
-                enemyAnimator.SetBool("isChasingPlayer", false);
-                _currentState = EnemyState.Patrol;
+                // We LOST sight of the player (hit a wall)
+                // If we were patrolling, stay patrolling.
+                // If we were chasing, DON'T stop yet. Let ChasingPlayer() drive us to the last spot.
+                if (_currentState != EnemyState.Chase)
+                {
+                    enemyAnimator.SetBool("isChasingPlayer", false);
+                    _currentState = EnemyState.Patrol;
+                }
             }
-
-            Debug.DrawRay(origin, direction * _currentChaseRange, Color.red);
         }
+    }
+
+    private void StopChasing()
+    {
+        enemyAnimator.SetBool("isChasingPlayer", false);
+        _currentState = EnemyState.Patrol;
+        _hasLastKnownPosition = false;
     }
     #endregion
 
@@ -259,8 +279,8 @@ public class EnemyController : MonoBehaviour
 
         // Calculate velocity and set animator
         Vector3 velocity = agent.desiredVelocity;
-        float speed = velocity.magnitude;
-        enemyAnimator.SetFloat("Speed", speed);
+        float speedPercentage = agent.velocity.magnitude / agent.speed;
+        enemyAnimator.speed = Mathf.Max(0.5f, speedPercentage); // Prevent the animation from stopping entirely
 
         // Smooth rotation toward agent desired velocity
         if (velocity.sqrMagnitude > 0.01f)
@@ -366,10 +386,18 @@ public class EnemyController : MonoBehaviour
     {
         if (isDead) return;
 
-        Vector3 targetPos = player.transform.position;
-        targetPos.y = transform.position.y;
+        float distance = Vector3.Distance(transform.position, player.transform.position);
+        float lookAheadTime = distance / agent.speed;
+        Vector3 targetVelocity = player.GetComponent<Rigidbody>().linearVelocity;
+        Vector3 predictedPos = player.transform.position + targetVelocity * lookAheadTime;
 
-        transform.LookAt(targetPos);
+        agent.SetDestination(predictedPos);
+
+        if (agent.desiredVelocity.sqrMagnitude > 0.1f)
+        {
+            Quaternion lookRotation = Quaternion.LookRotation(agent.desiredVelocity);
+            transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5f);
+        }
 
         // Only scream ONCE in its lifetime
         if (!_isScreaming && !_hasScreamed && !isDead)
@@ -387,7 +415,10 @@ public class EnemyController : MonoBehaviour
             agent.isStopped = false;
             if (!isDead && agent != null && agent.isActiveAndEnabled && agent.isOnNavMesh)
             {
-                agent.SetDestination(player.transform.position);
+                if (agent.isPathStale || !agent.hasPath)
+                {
+                    agent.SetDestination(player.transform.position);
+                }
             }
 
             Vector3 velocity = agent.desiredVelocity;
@@ -434,26 +465,9 @@ public class EnemyController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        //if (other.CompareTag("WeaponNoise"))
-        //{
-        //    BecomeAggresive();
-        //    StartCoroutine(EnragedVision());
-        //    if (!_hasScreamed)
-        //    {
-        //        MoveTowardsMarker();
-        //        _hasScreamed = true;
-        //    }
-        //}
-
         if (other.gameObject.TryGetComponent<WeaponBase>(out WeaponBase weapon))
         {
-            BecomeAggresive();
-            StartCoroutine(EnragedVision());
-            if (!_hasScreamed)
-            {
-                MoveTowardsMarker();
-                _hasScreamed = true;
-            }
+            MoveTowardsMarker();
         }
     }
 
@@ -463,6 +477,8 @@ public class EnemyController : MonoBehaviour
         _currentState = EnemyState.Chase;
         agent.isStopped = false;
         agent.SetDestination(player.transform.position);
+
+        enemyAnimator.SetBool("isChasingPlayer", true);
     }
 
     #endregion
@@ -642,7 +658,8 @@ public class EnemyController : MonoBehaviour
 
     public void BecomeAggresive()
     {
-        if (player == null || !isDead || agent != null || agent.isActiveAndEnabled || agent.isOnNavMesh) return;
+        if (isDead || player == null) return;
+        if (agent == null || !agent.isActiveAndEnabled || !agent.isOnNavMesh) return;
 
         _currentState = EnemyState.Chase;
         agent.isStopped = false;
@@ -761,7 +778,7 @@ public class EnemyController : MonoBehaviour
 
     private void InstantiateLoot(GameObject lootPrefab)
     {
-        Vector3 spawnPosition = transform.position + Vector3.up * 0.7f; 
+        Vector3 spawnPosition = transform.position + Vector3.up * 0.7f;
         Instantiate(lootPrefab, spawnPosition, Quaternion.identity);
     }
 

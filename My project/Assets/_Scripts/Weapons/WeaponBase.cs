@@ -398,7 +398,7 @@ public class WeaponBase : MonoBehaviour, IWeapon
     private IEnumerator ActivateNoiseCollider()
     {
         noiseCollider.enabled = true;
-        yield return new WaitForSeconds(0.2f); // Noise lasts for 0.2 seconds, adjust as needed
+        yield return new WaitForSeconds(0.5f); // Noise lasts for 0.2 seconds, adjust as needed
         noiseCollider.enabled = false;
     }
 
