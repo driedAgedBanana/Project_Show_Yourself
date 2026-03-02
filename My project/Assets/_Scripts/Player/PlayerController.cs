@@ -76,7 +76,9 @@ public class PlayerController : MonoBehaviour
     public LayerMask groundLayer;
 
     [Header("Effects")]
-    public Volume playerVFX;
+    public GameObject globalVolume;
+    private GameObject spawnedVolume;
+    [SerializeField] private Volume _playerVFX;
     private Vignette _vignette;
     private ChromaticAberration _chromaticAberration;
     private DepthOfField _depthOfField;
@@ -97,6 +99,20 @@ public class PlayerController : MonoBehaviour
 
         playerHealth = GetComponent<PlayerHealth>();
         playerInteract = GetComponent<PlayerInteract>();
+
+        GameObject volumeObject = GameObject.Find("Global_Volume");
+
+        if (globalVolume != null)
+        {
+            // 1. Create the object and store a reference to the instance
+            GameObject spawnedVolume = Instantiate(globalVolume.gameObject, Vector3.zero, Quaternion.identity);
+
+            // 2. Assign the specific component of that new instance back to your variable
+            globalVolume = spawnedVolume.GetComponent<Volume>().gameObject;
+
+            // 3. Now safely get the Volume component from the newly spawned object
+            _playerVFX = globalVolume.GetComponent<Volume>();
+        }
     }
 
     private void Start()
@@ -107,17 +123,17 @@ public class PlayerController : MonoBehaviour
 
         GameManager.Instance.HideMouse();
 
-        if (playerVFX.profile.TryGet<Vignette>(out _vignette))
+        if (_playerVFX.profile.TryGet<Vignette>(out _vignette))
         {
             _vignette.intensity.value = 0.3f;
         }
 
-        if (playerVFX.profile.TryGet<ChromaticAberration>(out _chromaticAberration))
+        if (_playerVFX.profile.TryGet<ChromaticAberration>(out _chromaticAberration))
         {
             _chromaticAberration.intensity.value = 0f;
         }
 
-        if (playerVFX.profile.TryGet<DepthOfField>(out _depthOfField))
+        if (_playerVFX.profile.TryGet<DepthOfField>(out _depthOfField))
         {
             _depthOfField.focalLength.value = 0f;
         }
@@ -310,7 +326,7 @@ public class PlayerController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.TryGetComponent(out Door door))
+        if (other.TryGetComponent(out Door door))
         {
             door.PlayStaticAudio();
         }
@@ -318,7 +334,7 @@ public class PlayerController : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if(other.TryGetComponent(out Door door))
+        if (other.TryGetComponent(out Door door))
         {
             door.doorAudioSource.Stop();
         }

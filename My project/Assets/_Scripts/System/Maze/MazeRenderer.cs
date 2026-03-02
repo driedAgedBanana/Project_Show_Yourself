@@ -10,6 +10,12 @@ public class MazeRenderer : MonoBehaviour
     // Physical size of each cell in the maze, used to position the cells correctly in the world
     public float CellSize = 1f;
 
+    private void Awake()
+    {
+        // 0. Spawn in global volume first
+        _mazeGenerator.SpawnGlobalVolume();
+    }
+
     private void Start()
     {
         // 1. Generate the maze and instantiate the cell prefabs

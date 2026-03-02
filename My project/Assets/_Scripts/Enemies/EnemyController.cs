@@ -392,7 +392,7 @@ public class EnemyController : MonoBehaviour
 
             Vector3 velocity = agent.desiredVelocity;
             float speed = velocity.magnitude;
-            enemyAnimator.SetFloat("chaseSpeed", speed);
+            // enemyAnimator.SetFloat("chaseSpeed", speed);
 
             if (velocity.sqrMagnitude > 0.01f)
             {
