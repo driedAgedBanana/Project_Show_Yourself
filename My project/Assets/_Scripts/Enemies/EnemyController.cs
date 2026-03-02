@@ -78,6 +78,10 @@ public class EnemyController : MonoBehaviour
     private bool _hasScreamed = false;
     public float screamDuration = 2f;
 
+    [Header("Ghost Feature")]
+    public bool isGhostMode = false;
+    public float ghostSpeedMultiplier = 0.5f; // Maybe they move slower through walls?
+
     private float _lastScreamTime;
     [SerializeField] private float screamCooldown = 10f;
 
@@ -195,7 +199,13 @@ public class EnemyController : MonoBehaviour
         Vector3 origin = transform.position + Vector3.up * 0.5f; // eye height
         Vector3 direction = (player.transform.position - origin).normalized;
 
-        _distanceToPlayer = Vector3.Distance(origin, player.transform.position);
+        _distanceToPlayer = agent.remainingDistance; // Use the actual walking distance!
+
+        // If the agent hasn't calculated the path yet, fall back to straight line
+        if (float.IsInfinity(_distanceToPlayer) || _distanceToPlayer == 0)
+        {
+            _distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
+        }
 
         // 1. IMPROVED DISTANCE CHECK
         if (_distanceToPlayer > _currentChaseRange)
@@ -384,24 +394,46 @@ public class EnemyController : MonoBehaviour
 
     private void ChasingPlayer()
     {
-        if (isDead) return;
+        if (isDead || agent == null || !agent.isOnNavMesh) return;
 
-        float distance = Vector3.Distance(transform.position, player.transform.position);
-        float lookAheadTime = distance / agent.speed;
-        Vector3 targetVelocity = player.GetComponent<Rigidbody>().linearVelocity;
-        Vector3 predictedPos = player.transform.position + targetVelocity * lookAheadTime;
+        // 1. Check Line of Sight to decide if we should "Predict" or "Follow Path"
+        Vector3 directionToPlayer = (player.transform.position - transform.position).normalized;
+        bool hasLineOfSight = !Physics.Raycast(transform.position + Vector3.up, directionToPlayer, out RaycastHit hit, _currentChaseRange, visionBlockingLayers) || hit.transform.TryGetComponent<PlayerController>(out PlayerController controller);
 
-        agent.SetDestination(predictedPos);
+        if (hasLineOfSight)
+        {
+            // IN OPEN SPACE: Aim where the player is going (Prediction)
+            float distance = Vector3.Distance(transform.position, player.transform.position);
+            float lookAheadTime = distance / agent.speed;
 
+            // Safety check for Rigidbody
+            Vector3 targetVelocity = Vector3.zero;
+            if (player.GetComponent<Rigidbody>() != null)
+                targetVelocity = player.GetComponent<Rigidbody>().linearVelocity;
+
+            Vector3 predictedPos = player.transform.position + targetVelocity * lookAheadTime;
+            agent.SetDestination(predictedPos);
+        }
+        else
+        {
+            // IN A MAZE: Just follow the exact player position so we don't try to "cut" through walls
+            if (agent.isPathStale || !agent.hasPath || agent.remainingDistance < 1f)
+            {
+                agent.SetDestination(player.transform.position);
+            }
+        }
+
+        // 2. Smooth Rotation (Crucial for Mazes so they don't snap into walls)
         if (agent.desiredVelocity.sqrMagnitude > 0.1f)
         {
             Quaternion lookRotation = Quaternion.LookRotation(agent.desiredVelocity);
-            transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5f);
+            transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 7f);
         }
 
-        // Only scream ONCE in its lifetime
-        if (!_isScreaming && !_hasScreamed && !isDead)
+        // 3. Scream Logic (Keep your existing logic here)
+        if (!_isScreaming && !_hasScreamed)
         {
+            _distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
             if (_distanceToPlayer <= _currentChaseRange && _distanceToPlayer > attackRange)
             {
                 TryScream();
@@ -409,27 +441,14 @@ public class EnemyController : MonoBehaviour
             }
         }
 
-        // Only chase if not screaming
+        // 4. Movement Execution
         if (!_isScreaming)
         {
             agent.isStopped = false;
-            if (!isDead && agent != null && agent.isActiveAndEnabled && agent.isOnNavMesh)
-            {
-                if (agent.isPathStale || !agent.hasPath)
-                {
-                    agent.SetDestination(player.transform.position);
-                }
-            }
 
-            Vector3 velocity = agent.desiredVelocity;
-            float speed = velocity.magnitude;
-            // enemyAnimator.SetFloat("chaseSpeed", speed);
-
-            if (velocity.sqrMagnitude > 0.01f)
-            {
-                Quaternion targetRot = Quaternion.LookRotation(velocity.normalized);
-                transform.rotation = Quaternion.Slerp(transform.rotation, targetRot, Time.deltaTime * 10f);
-            }
+            // Speed scaling for Animator
+            float speedPercentage = agent.velocity.magnitude / agent.speed;
+            enemyAnimator.SetFloat("speed", speedPercentage); // Ensure your animator has a "speed" float
         }
     }
 

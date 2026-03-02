@@ -1,5 +1,6 @@
 using UnityEngine;
 using Unity.AI.Navigation;
+using Pathfinding;
 
 public class MazeRenderer : MonoBehaviour
 {
@@ -12,8 +13,7 @@ public class MazeRenderer : MonoBehaviour
 
     private void Awake()
     {
-        // 0. Spawn in global volume first
-        _mazeGenerator.SpawnGlobalVolume();
+
     }
 
     private void Start()
@@ -47,6 +47,7 @@ public class MazeRenderer : MonoBehaviour
                 bool isThisTheExit = (x == exitCoords.x && y == exitCoords.y);
 
                 mazeCell.Initialize(topWall, bottomWall, rightWall, leftWall, isThisTheExit);
+                AstarPath.active.Scan();
             }
         }
 

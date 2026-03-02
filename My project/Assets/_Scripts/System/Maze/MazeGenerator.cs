@@ -22,9 +22,6 @@ public class MazeGenerator : MonoBehaviour
     [Header("Player")]
     [SerializeField] private GameObject _playerPrefab;
 
-    [Header("Global Volume")]
-    [SerializeField] private GameObject _globalVolumePrefab;
-
     [Header("Enemies")]
     [SerializeField] private List<GameObject> _enemyPrefabs;
     private List<GameObject> _activeEnemies = new List<GameObject>();
@@ -201,14 +198,6 @@ public class MazeGenerator : MonoBehaviour
             Vector3 spawnPos = new Vector3(startX, 0f, startY);
             GameObject p = Instantiate(_playerPrefab, spawnPos, Quaternion.identity);
             _playerTransform = p.transform; // Save the reference!
-        }
-    }
-
-    public void SpawnGlobalVolume()
-    {
-        if(_globalVolumePrefab != null)
-        {
-            Instantiate(_globalVolumePrefab, Vector3.zero, Quaternion.identity);
         }
     }
 

@@ -30,8 +30,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0.5, z: 0.5}
-  m_LocalScale: {x: 1, y: 1, z: 0.05}
-  m_ConstrainProportionsScale: 1
+  m_LocalScale: {x: 1, y: 1, z: 0.08}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 123915072464220508}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -110,7 +110,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
+  m_Size: {x: 1, y: 1, z: 0.2}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!208 &6461716244895991578
 NavMeshObstacle:
@@ -122,12 +122,12 @@ NavMeshObstacle:
   m_Enabled: 1
   serializedVersion: 3
   m_Shape: 1
-  m_Extents: {x: 0.5, y: 0.5, z: 0.5}
+  m_Extents: {x: 0.5, y: 0.5, z: 0.1}
   m_MoveThreshold: 0.1
   m_Carve: 1
-  m_CarveOnlyStationary: 1
+  m_CarveOnlyStationary: 0
   m_Center: {x: 0, y: 0, z: 0}
-  m_TimeToStationary: 0.5
+  m_TimeToStationary: 0.01
 --- !u!1 &1426808248133946901
 GameObject:
   m_ObjectHideFlags: 0
@@ -158,8 +158,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.5, y: 0.5, z: 0}
-  m_LocalScale: {x: 0.05, y: 1, z: 1}
-  m_ConstrainProportionsScale: 1
+  m_LocalScale: {x: 0.08, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 123915072464220508}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -238,7 +238,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
+  m_Size: {x: 0.2, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!208 &3670570961161777348
 NavMeshObstacle:
@@ -250,12 +250,12 @@ NavMeshObstacle:
   m_Enabled: 1
   serializedVersion: 3
   m_Shape: 1
-  m_Extents: {x: 0.5, y: 0.5, z: 0.5}
+  m_Extents: {x: 0.1, y: 0.5, z: 0.5}
   m_MoveThreshold: 0.1
   m_Carve: 1
   m_CarveOnlyStationary: 1
   m_Center: {x: 0, y: 0, z: 0}
-  m_TimeToStationary: 0.5
+  m_TimeToStationary: 0.01
 --- !u!1 &2466896703417805810
 GameObject:
   m_ObjectHideFlags: 0
@@ -429,8 +429,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0.5, z: -0.5}
-  m_LocalScale: {x: 1, y: 1, z: 0.05}
-  m_ConstrainProportionsScale: 1
+  m_LocalScale: {x: 1, y: 1, z: 0.08}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 123915072464220508}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -509,7 +509,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
+  m_Size: {x: 1, y: 1, z: 0.2}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!208 &9177199332638975131
 NavMeshObstacle:
@@ -521,12 +521,12 @@ NavMeshObstacle:
   m_Enabled: 1
   serializedVersion: 3
   m_Shape: 1
-  m_Extents: {x: 0.5, y: 0.5, z: 0.5}
+  m_Extents: {x: 0.5, y: 0.5, z: 0.1}
   m_MoveThreshold: 0.1
   m_Carve: 1
-  m_CarveOnlyStationary: 1
+  m_CarveOnlyStationary: 0
   m_Center: {x: 0, y: 0, z: 0}
-  m_TimeToStationary: 0.5
+  m_TimeToStationary: 0.01
 --- !u!1 &8810132797189885914
 GameObject:
   m_ObjectHideFlags: 0
@@ -614,8 +614,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.5, y: 0.5, z: 0}
-  m_LocalScale: {x: 0.05, y: 1, z: 1}
-  m_ConstrainProportionsScale: 1
+  m_LocalScale: {x: 0.08, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 123915072464220508}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -694,7 +694,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
+  m_Size: {x: 0.2, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!208 &6242897952164273647
 NavMeshObstacle:
@@ -706,12 +706,12 @@ NavMeshObstacle:
   m_Enabled: 1
   serializedVersion: 3
   m_Shape: 1
-  m_Extents: {x: 0.5, y: 0.5, z: 0.5}
+  m_Extents: {x: 0.1, y: 0.5, z: 0.5}
   m_MoveThreshold: 0.1
   m_Carve: 1
   m_CarveOnlyStationary: 1
   m_Center: {x: 0, y: 0, z: 0}
-  m_TimeToStationary: 0.5
+  m_TimeToStationary: 0.01
 --- !u!1001 &4637851623433086801
 PrefabInstance:
   m_ObjectHideFlags: 0
