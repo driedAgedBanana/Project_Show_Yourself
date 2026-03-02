@@ -112,8 +112,8 @@ public class EnemyController : MonoBehaviour
         enemyAnimator = GetComponent<Animator>();
 
         // Disable agent auto-movement, use root motion instead
-        agent.canMove = false;
-        agent.updateRotation = false;
+        agent.canMove = true;
+        agent.updateRotation = true;
         agent.endReachedDistance = stopSafeDistance;
     }
 
@@ -282,6 +282,7 @@ public class EnemyController : MonoBehaviour
         // Calculate velocity and set 
         float speedPercentage = agent.velocity.magnitude / agent.maxSpeed;
         enemyAnimator.speed = Mathf.Max(0.5f, speedPercentage); // Prevent the animation from stopping entirely
+        enemyAnimator.SetFloat("speed", agent.velocity.magnitude);
 
         // Smooth rotation toward agent desired velocity
         if (agent.velocity.sqrMagnitude > 0.01f)

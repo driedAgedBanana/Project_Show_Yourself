@@ -322,13 +322,13 @@ public class WeaponBase : MonoBehaviour, IWeapon
             Destroy(bulletImpact, 0.5f);
 
             // Deal damage on the enemy
-            EnemyController enemy = hit.transform.GetComponentInParent<EnemyController>();
+            EnemyHealth enemy = hit.transform.GetComponentInParent<EnemyHealth>();
             if (enemy != null)
             {
                 if (hit.collider.CompareTag("Head"))
                 {
                     int criticalDamage = Random.Range(25, 250);
-                    enemy.TakeHeadShot(criticalDamage, hit.point, force);
+                    enemy.TakeDamage(criticalDamage, hit.point, force);
                 }
                 else
                 {
