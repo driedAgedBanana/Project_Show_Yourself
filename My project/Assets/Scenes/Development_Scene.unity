@@ -927,7 +927,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4063173299238248689, guid: 84e3fef1a71553848bd28b67adb5a2c3, type: 3}
       propertyPath: rotationSpeed
-      value: 180
+      value: 90
       objectReference: {fileID: 0}
     - target: {fileID: 4063173299238248689, guid: 84e3fef1a71553848bd28b67adb5a2c3, type: 3}
       propertyPath: enableRotation

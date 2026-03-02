@@ -77,9 +77,16 @@ public class EnemyMovement : MonoBehaviour
     {
         if (agent == null) return;
 
+        // 1. Let the animator handle the position shift (Root Motion)
         transform.position += enemyAnimator.deltaPosition;
 
+        // 2. Ask the AI agent where it wants to be and how it wants to face
         agent.MovementUpdate(Time.deltaTime, out Vector3 nextPosition, out Quaternion nextRotation);
+
+        // 3. APPLY the rotation to the transform so the enemy actually turns
+        transform.rotation = nextRotation;
+
+        // 4. Finalize the internal state of the agent
         agent.FinalizeMovement(nextPosition, nextRotation);
     }
 
