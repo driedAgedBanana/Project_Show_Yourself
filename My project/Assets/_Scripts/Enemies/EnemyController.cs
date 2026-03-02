@@ -444,6 +444,17 @@ public class EnemyController : MonoBehaviour
         //        _hasScreamed = true;
         //    }
         //}
+
+        if (other.gameObject.TryGetComponent<WeaponBase>(out WeaponBase weapon))
+        {
+            BecomeAggresive();
+            StartCoroutine(EnragedVision());
+            if (!_hasScreamed)
+            {
+                MoveTowardsMarker();
+                _hasScreamed = true;
+            }
+        }
     }
 
     private void MoveTowardsMarker()

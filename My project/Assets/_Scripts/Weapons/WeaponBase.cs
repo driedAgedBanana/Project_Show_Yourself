@@ -99,6 +99,11 @@ public class WeaponBase : MonoBehaviour, IWeapon
     [Space]
     public AudioList openMagInspectionAudio;
     public AudioList closeMagInspectionAudio;
+    [Space]
+    public SphereCollider noiseCollider;
+
+    [Header("Weapon Swapper")]
+    public WeaponSwapper weaponSwapper;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -133,6 +138,17 @@ public class WeaponBase : MonoBehaviour, IWeapon
         if(uiHolder != null)
         {
             uiHolder.SetActive(false);
+        }
+
+        if(noiseCollider == null)
+        {
+            noiseCollider = GetComponent<SphereCollider>();
+            noiseCollider.enabled = false;
+        }
+
+        if (weaponSwapper == null)
+        {
+            weaponSwapper = GetComponentInParent<WeaponSwapper>();
         }
 
         UpdateAmmoUI();
@@ -186,7 +202,7 @@ public class WeaponBase : MonoBehaviour, IWeapon
         }
     }
 
-    #region Weapon moving
+    #region Weapon bobbing and swaying
 
     private void SwayWeapon()
     {
@@ -236,7 +252,7 @@ public class WeaponBase : MonoBehaviour, IWeapon
     #region Aiming
     public void Aiming()
     {
-        if (true) // Replace 'true' with WeaponManager in the future
+        if (weaponSwapper.isSwapping) 
         {
             Transform targetPosition = isAiming ? aimingPosition : defaultPosition;
             float targetFOV = isAiming ? zoomInFOV : defaultFOV;
@@ -291,6 +307,8 @@ public class WeaponBase : MonoBehaviour, IWeapon
             direction += _mainCam.transform.right * Random.Range(-aimingBulletSpread, aimingBulletSpread);
             direction += _mainCam.transform.up * Random.Range(-aimingBulletSpread, aimingBulletSpread);
         }
+
+        ActivateNoise();
 
         if (Physics.Raycast(_mainCam.transform.position, direction, out hit, range, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore))
         {
@@ -371,6 +389,19 @@ public class WeaponBase : MonoBehaviour, IWeapon
             shellEjectParticle.Stop();
         }
     }
+
+    public void ActivateNoise()
+    {
+        StartCoroutine(ActivateNoiseCollider());
+    }
+
+    private IEnumerator ActivateNoiseCollider()
+    {
+        noiseCollider.enabled = true;
+        yield return new WaitForSeconds(0.2f); // Noise lasts for 0.2 seconds, adjust as needed
+        noiseCollider.enabled = false;
+    }
+
     #endregion
 
     #region Reloading

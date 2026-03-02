@@ -15,8 +15,8 @@ public class WeaponSwapper : MonoBehaviour
 
     private Vector3 _targetPos;
     private Vector3 _velocity = Vector3.zero;
-    private bool _isMainWeaponActive = true;
-    private bool _isSwapping = false;
+    [HideInInspector] public bool isMainWeaponActive = true;
+    [HideInInspector] public bool isSwapping = false;
 
     [Header("SFX")]
     public AudioList swapSound;
@@ -30,7 +30,7 @@ public class WeaponSwapper : MonoBehaviour
 
     private IEnumerator SwapWeaponSequence()
     {
-        _isSwapping = true;
+        isSwapping = true;
 
         // Drop the weapon
         _targetPos = hiddenOffset;
@@ -40,26 +40,26 @@ public class WeaponSwapper : MonoBehaviour
         yield return new WaitUntil(() => Vector3.Distance(weaponSlot.localPosition, _targetPos) < 0.1f);
 
         // Toggle logic
-        _isMainWeaponActive = !_isMainWeaponActive;
-        mainWeapon.SetActive(_isMainWeaponActive);
-        secondWeapon.SetActive(!_isMainWeaponActive);
+        isMainWeaponActive = !isMainWeaponActive;
+        mainWeapon.SetActive(isMainWeaponActive);
+        secondWeapon.SetActive(!isMainWeaponActive);
 
         // Bring the new weapon up
         _targetPos = Vector3.zero;
 
         // Wait until the new weapon is in position
         yield return new WaitUntil(() => Vector3.Distance(weaponSlot.localPosition, _targetPos) < 0.01f);
-        _isSwapping = false;
+        isSwapping = false;
     }
 
     public void OnScroll(InputAction.CallbackContext ctx)
     {
         // Prevent swapping if we're already in the middle of a swap
-        if (_isSwapping || !ctx.performed) return;
+        if (isSwapping || !ctx.performed) return;
 
         Vector2 scrollInput = ctx.ReadValue<Vector2>();
 
-        if (Mathf.Abs(scrollInput.y) > 0.1f && !_isSwapping)
+        if (Mathf.Abs(scrollInput.y) > 0.1f && !isSwapping)
         {
             StartCoroutine(SwapWeaponSequence());
         }
