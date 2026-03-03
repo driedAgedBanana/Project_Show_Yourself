@@ -5,6 +5,7 @@ public class EnemyHealth : MonoBehaviour
     public int maxHealth = 100;
     public GameObject bloodHitParticle;
     public RagdollController ragdollController;
+    public Rigidbody rb;
 
     private int _currentHealth;
     public bool isDead { get; private set; }
@@ -14,6 +15,9 @@ public class EnemyHealth : MonoBehaviour
     {
         _currentHealth = maxHealth;
         ragdollController = GetComponent<RagdollController>();
+        rb = GetComponent<Rigidbody>();
+
+        rb.isKinematic = true;
 
         ragdollController.SetRagdoll(false);
     }
@@ -38,6 +42,7 @@ public class EnemyHealth : MonoBehaviour
     private void Die(Vector3 hitPoint, Vector3 hitForce)
     {
         isDead = true;
+        rb.isKinematic = false;
 
         if (bloodHitParticle != null)
         {

@@ -6,6 +6,7 @@ public class EnemyStateBehaviour : MonoBehaviour
     public enum EnemyState
     {
         Patrol,
+        Scream,
         Chase,
         Attack,
         Dead
@@ -22,6 +23,9 @@ public class EnemyStateBehaviour : MonoBehaviour
 
     public AIPath agent;
     public Seeker seeker;
+
+    private float _screamTimer = 0f;
+    public float screamDuration = 1.5f;
 
     private void Awake()
     {
@@ -56,6 +60,14 @@ public class EnemyStateBehaviour : MonoBehaviour
                 _movement.Patrol();
 
                 if (_vision.CanSeePlayer())
+                    ChangeState(EnemyState.Scream);
+                break;
+
+            case EnemyState.Scream:
+                _movement.Stop();
+                _screamTimer -= Time.deltaTime;
+
+                if (_screamTimer <= 0f)
                     ChangeState(EnemyState.Chase);
                 break;
 
@@ -85,6 +97,25 @@ public class EnemyStateBehaviour : MonoBehaviour
     private void ChangeState(EnemyState newState)
     {
         if (currentState == newState) return;
+
         currentState = newState;
+
+        switch (newState)
+        {
+            case EnemyState.Scream:
+                _screamTimer = screamDuration;
+                _movement.Stop();
+                _movement.patrolCenter.transform.LookAt(target: _vision.player);
+                _movement.enemyAnimator.SetTrigger("isScreaming");
+                break;
+
+            case EnemyState.Chase:
+                _movement.enemyAnimator.SetBool("isChasingPlayer", true);
+                break;
+
+            case EnemyState.Patrol:
+                _movement.enemyAnimator.SetBool("isChasingPlayer", false);
+                break;
+        }
     }
 }

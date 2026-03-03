@@ -14,6 +14,8 @@ public class EnemyMovement : MonoBehaviour
     private int _maxWalkCount;
     private bool _isAllowedToWalk = true;
 
+    private bool _isScreaming = false;
+
     private void Awake()
     {
         agent = GetComponent<AIPath>();
@@ -40,7 +42,7 @@ public class EnemyMovement : MonoBehaviour
 
     public void Patrol()
     {
-        if (!_isAllowedToWalk) return;
+        if (!_isAllowedToWalk || _isScreaming) return;
 
         agent.isStopped = false;
 
@@ -121,6 +123,8 @@ public class EnemyMovement : MonoBehaviour
         _isAllowedToWalk = true;
     }
 
+    #region Chasing player
+
     public void ChasingPlayer(Transform target)
     {
         if (target == null) return;
@@ -133,4 +137,6 @@ public class EnemyMovement : MonoBehaviour
     {
         agent.isStopped = true;
     }
+
+    #endregion
 }
