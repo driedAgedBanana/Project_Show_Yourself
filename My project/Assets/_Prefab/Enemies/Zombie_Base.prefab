@@ -3976,6 +3976,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyStateBehaviour
   agent: {fileID: 0}
   seeker: {fileID: 0}
+  screamDuration: 1.25
 --- !u!114 &258575116026677042
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4023,7 +4024,9 @@ MonoBehaviour:
   player: {fileID: 0}
   attackRange: 2
   attackCooldown: 1
-  damage: 15
+  minDamageAmount: 5
+  maxDamageAmount: 15
+  atkInterval: 2
 --- !u!114 &7487162938459201719
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4039,6 +4042,9 @@ MonoBehaviour:
   maxHealth: 100
   bloodHitParticle: {fileID: 194062, guid: 8b81f2bc17dd06346b0d4cb5d1249404, type: 3}
   ragdollController: {fileID: 0}
+  rb: {fileID: 0}
+  headCollider: {fileID: 220827599005428051}
+  headBone: {fileID: 4854274546089016}
 --- !u!95 &95921630161195528
 Animator:
   serializedVersion: 7
@@ -4086,7 +4092,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 1
   m_Interpolate: 0
-  m_Constraints: 112
+  m_Constraints: 116
   m_CollisionDetection: 1
 --- !u!65 &9071669330773166094
 BoxCollider:
@@ -4150,7 +4156,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: AstarPathfindingProject::Pathfinding.AIPath
   version: 5
-  radius: 0.5
+  radius: 0.3
   height: 2
   canMove: 1
   maxSpeed: 1
@@ -4166,15 +4172,15 @@ MonoBehaviour:
   autoRepath:
     mode: 2
     interval: 0.5
-    sensitivity: 10
-    maximumInterval: 2
+    sensitivity: 15
+    maximumInterval: 0.9
     visualizeSensitivity: 0
   targetCompatibility: {fileID: 0}
   maxAcceleration: -2.5
-  rotationSpeed: 90
-  slowdownDistance: 0.6
-  pickNextWaypointDist: 2
-  endReachedDistance: 0.2
+  rotationSpeed: 360
+  slowdownDistance: 0.7
+  pickNextWaypointDist: 3
+  endReachedDistance: 1
   alwaysDrawGizmos: 0
   slowWhenNotFacingTarget: 1
   whenCloseToDestination: 0

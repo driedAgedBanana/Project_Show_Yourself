@@ -843,14 +843,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4063173299238248689, guid: 84e3fef1a71553848bd28b67adb5a2c3, type: 3}
-      propertyPath: rotationSpeed
-      value: 360
-      objectReference: {fileID: 0}
-    - target: {fileID: 5747772408216830560, guid: 84e3fef1a71553848bd28b67adb5a2c3, type: 3}
-      propertyPath: screamDuration
-      value: 1.25
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

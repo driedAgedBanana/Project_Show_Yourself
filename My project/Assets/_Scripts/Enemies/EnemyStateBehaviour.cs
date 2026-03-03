@@ -1,4 +1,7 @@
+using NUnit.Framework.Constraints;
 using Pathfinding;
+using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class EnemyStateBehaviour : MonoBehaviour
@@ -26,6 +29,8 @@ public class EnemyStateBehaviour : MonoBehaviour
 
     private float _screamTimer = 0f;
     public float screamDuration = 1.5f;
+
+    private Coroutine _attackRoutine;
 
     private void Awake()
     {
@@ -82,7 +87,6 @@ public class EnemyStateBehaviour : MonoBehaviour
                 break;
 
             case EnemyState.Attack:
-                _attack.Attack();
 
                 if (!_attack.InAttackRange())
                     ChangeState(EnemyState.Chase);
@@ -97,6 +101,16 @@ public class EnemyStateBehaviour : MonoBehaviour
     private void ChangeState(EnemyState newState)
     {
         if (currentState == newState) return;
+
+        // --- EXIT LOGIC (Clean up old state) ---
+        if (_attackRoutine != null)
+        {
+            StopCoroutine(_attackRoutine);
+            _attackRoutine = null;
+        }
+
+        // Reset triggers/bools so they don't get stuck
+        _movement.enemyAnimator.SetBool("isAttackingPlayer", false);
 
         currentState = newState;
 
@@ -116,6 +130,30 @@ public class EnemyStateBehaviour : MonoBehaviour
             case EnemyState.Patrol:
                 _movement.enemyAnimator.SetBool("isChasingPlayer", false);
                 break;
+
+            case EnemyState.Attack:
+                _movement.Stop();
+                _attackRoutine = StartCoroutine(AttackCoroutine());
+                break;
+        }
+    }
+
+    private IEnumerator AttackCoroutine()
+    {
+        // The Update loop handles the state CHANGE, 
+        // the Coroutine ONLY handles the attack ACTIONS.
+        while (currentState == EnemyState.Attack)
+        {
+            _movement.Stop();
+            Vector3 targetPos = new Vector3(_vision.player.position.x, transform.position.y, _vision.player.position.z);
+            transform.LookAt(targetPos);
+
+            int attackIndex = Random.Range(0, 3);
+            _movement.enemyAnimator.SetInteger("attackIndex", attackIndex);
+            _movement.enemyAnimator.SetBool("isAttackingPlayer", true);
+
+            // Wait for the next swing
+            yield return new WaitForSeconds(_attack.atkInterval);
         }
     }
 }

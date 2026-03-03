@@ -5,7 +5,8 @@ public class EnemyAttack : MonoBehaviour
     public Transform player;
     public float attackRange = 2f;
     public float attackCooldown = 1f;
-    public int damage = 15;
+    public int minDamageAmount, maxDamageAmount;
+    [HideInInspector] public float atkInterval = 2f;
 
     private float _lastAttackTime;
     private void Start()
@@ -22,13 +23,13 @@ public class EnemyAttack : MonoBehaviour
 
     public void Attack()
     {
-        if(Time.time < _lastAttackTime + attackCooldown) return;
-
-        _lastAttackTime = Time.time;
-
-        if(InAttackRange())
+        if (!InAttackRange())
         {
-            PlayerController.Instance.playerHealth.TakeDamage(damage);
+            return;
+        }
+        else
+        {
+            PlayerController.Instance.playerHealth.TakeDamage(Random.Range(minDamageAmount, maxDamageAmount));
         }
     }
 }

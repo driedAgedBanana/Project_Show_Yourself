@@ -7,6 +7,9 @@ public class EnemyHealth : MonoBehaviour
     public RagdollController ragdollController;
     public Rigidbody rb;
 
+    public BoxCollider headCollider;
+    public Transform headBone;
+
     private int _currentHealth;
     public bool isDead { get; private set; }
 
@@ -20,6 +23,12 @@ public class EnemyHealth : MonoBehaviour
         rb.isKinematic = true;
 
         ragdollController.SetRagdoll(false);
+    }
+
+    private void FixedUpdate()
+    {
+        headCollider.transform.position = headBone.position;
+        headCollider.transform.rotation = headBone.rotation;
     }
 
     public void TakeDamage(int damage, Vector3 hitPoint, Vector3 hitForce)
