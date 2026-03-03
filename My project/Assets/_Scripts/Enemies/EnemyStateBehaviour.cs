@@ -11,6 +11,7 @@ public class EnemyStateBehaviour : MonoBehaviour
         Patrol,
         Scream,
         Chase,
+        GetHit,
         Investigate,
         Attack,
         Dead
@@ -56,6 +57,11 @@ public class EnemyStateBehaviour : MonoBehaviour
         if (_health.isDead)
         {
             ChangeState(EnemyState.Dead);
+            _movement.Stop();
+            agent.maxSpeed = 0f;
+            agent.destination = transform.position; // Stop movement immediately
+            agent.SetPath(null);
+            agent.canSearch = false;
             agent.enabled = false;
             seeker.enabled = false;
             return;
@@ -78,6 +84,10 @@ public class EnemyStateBehaviour : MonoBehaviour
                     ChangeState(EnemyState.Chase);
                 break;
 
+            case EnemyState.GetHit:
+                ChangeState(EnemyState.Chase);
+                break;
+
             case EnemyState.Chase:
                 _movement.ChasingPlayer(_vision.player);
 
@@ -95,6 +105,9 @@ public class EnemyStateBehaviour : MonoBehaviour
                 break;
 
             case EnemyState.Dead:
+                agent.enabled = false;
+                agent.canMove = false;
+                seeker.enabled = false;
                 _movement.Stop();
                 break;
         }
@@ -104,7 +117,6 @@ public class EnemyStateBehaviour : MonoBehaviour
     {
         if (currentState == newState) return;
 
-        // --- EXIT LOGIC (Clean up old state) ---
         if (_attackRoutine != null)
         {
             StopCoroutine(_attackRoutine);
@@ -133,10 +145,22 @@ public class EnemyStateBehaviour : MonoBehaviour
                 _movement.enemyAnimator.SetBool("isChasingPlayer", false);
                 break;
 
+            case EnemyState.GetHit:
+                _movement.enemyAnimator.SetTrigger("GetHit");
+                break; 
+
             case EnemyState.Attack:
                 _movement.Stop();
                 _attackRoutine = StartCoroutine(AttackCoroutine());
                 break;
+        }
+    }
+
+    public void TriggerGetHit()
+    {
+        if(currentState != EnemyState.Dead)
+        {
+            ChangeState(EnemyState.GetHit);
         }
     }
 

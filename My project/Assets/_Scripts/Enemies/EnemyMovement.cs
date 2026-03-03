@@ -92,6 +92,12 @@ public class EnemyMovement : MonoBehaviour
         agent.FinalizeMovement(nextPosition, nextRotation);
     }
 
+    public void DisableRootMotionMovement()
+    {
+        agent.updatePosition = false;
+        agent.updateRotation = false;
+    }
+
     private bool TryGetRandomPointOnGraph(Vector3 center, float radius, out Vector3 result)
     {
         for (int i = 0; i < 10; i++)

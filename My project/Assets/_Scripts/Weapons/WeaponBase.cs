@@ -470,8 +470,14 @@ public class WeaponBase : MonoBehaviour, IWeapon
         EnableAnimator();
         AudioManager.Instance.PlaySounds(openMagInspectionAudio, transform.position);
         weaponsAnimator.SetBool("isCheckingForAmmo", true);
+        Invoke(nameof(ShowUIHolder), 1f); // Show the UI after a short delay to sync with the animation
+    }
+
+    private void ShowUIHolder()
+    {
         uiHolder.SetActive(true);
     }
+
 
     private void PlayCloseMagAnimation()
     {
