@@ -3974,9 +3974,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63f369f1773ac4b49a83c9dfc66410d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyStateBehaviour
-  agent: {fileID: 0}
-  seeker: {fileID: 0}
+  agent: {fileID: 4063173299238248689}
+  seeker: {fileID: 7759306354274811935}
   screamDuration: 1.25
+  idle: {fileID: 11400000, guid: b93aea387df4c3442b544c3bc4882eb7, type: 2}
+  screamSound: {fileID: 11400000, guid: 7fc5b45ebdbbdda419adff80a4dc85f1, type: 2}
+  attack: {fileID: 11400000, guid: 55f8a8096b14d8b459c63bf31075bbbd, type: 2}
+  dead: {fileID: 11400000, guid: 58efbd214dd98f3419bc473143af60e8, type: 2}
 --- !u!114 &258575116026677042
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3989,9 +3993,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e688ecbb3bf6797419fe6b81e99bdb8c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyMovement
-  patrolCenter: {fileID: 0}
+  patrolCenter: {fileID: 4243538704547566}
   patrolRadius: 10
-  enemyAnimator: {fileID: 0}
+  enemyAnimator: {fileID: 95921630161195528}
 --- !u!114 &6676737870124174592
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4006,6 +4010,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyVision
   player: {fileID: 0}
   visionDistance: 15
+  visionDegree: 180
   blockingLayers:
     serializedVersion: 2
     m_Bits: 1280
@@ -4022,7 +4027,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyAttack
   player: {fileID: 0}
-  attackRange: 2
+  attackRange: 3
   attackCooldown: 1
   minDamageAmount: 5
   maxDamageAmount: 15
@@ -4041,10 +4046,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyHealth
   maxHealth: 100
   bloodHitParticle: {fileID: 194062, guid: 8b81f2bc17dd06346b0d4cb5d1249404, type: 3}
-  ragdollController: {fileID: 0}
-  rb: {fileID: 0}
+  disappearParticle: {fileID: 19885060, guid: fe172aea7216ff249ba28a07e47596b1, type: 3}
+  enemyRenderer: {fileID: 137694054147993012}
+  ragdollController: {fileID: 7353150931010406570}
+  rb: {fileID: 7963796608409310648}
   headCollider: {fileID: 220827599005428051}
+  bodyCollider: {fileID: 9071669330773166094}
   headBone: {fileID: 4854274546089016}
+  lootTable:
+  - itemPrefab: {fileID: 1435410842068634, guid: e408da02bc682274e94d73bbb3429de3, type: 3}
+    dropChance: 100
 --- !u!95 &95921630161195528
 Animator:
   serializedVersion: 7
@@ -4113,8 +4124,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.5, y: 1.8, z: 0.45}
-  m_Center: {x: 0, y: 0.9, z: 0}
+  m_Size: {x: 0.5, y: 1.5082386, z: 0.45}
+  m_Center: {x: 0, y: 0.7541193, z: 0}
 --- !u!114 &7759306354274811935
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4156,11 +4167,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: AstarPathfindingProject::Pathfinding.AIPath
   version: 5
-  radius: 0.3
+  radius: 0.6
   height: 2
   canMove: 1
   maxSpeed: 1
-  gravity: {x: NaN, y: NaN, z: NaN}
+  gravity: {x: 0, y: -9.81, z: 0}
   groundMask:
     serializedVersion: 2
     m_Bits: 128
@@ -4172,8 +4183,8 @@ MonoBehaviour:
   autoRepath:
     mode: 2
     interval: 0.5
-    sensitivity: 15
-    maximumInterval: 0.9
+    sensitivity: 20
+    maximumInterval: 0.2
     visualizeSensitivity: 0
   targetCompatibility: {fileID: 0}
   maxAcceleration: -2.5

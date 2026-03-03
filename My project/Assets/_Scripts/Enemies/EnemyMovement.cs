@@ -1,6 +1,7 @@
-using UnityEngine;
 using Pathfinding;
 using System.Collections;
+using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 public class EnemyMovement : MonoBehaviour
 {
@@ -21,8 +22,9 @@ public class EnemyMovement : MonoBehaviour
         agent = GetComponent<AIPath>();
         enemyAnimator = GetComponent<Animator>();
 
-        agent.canMove = false;
-        agent.updateRotation = true;
+        agent.canMove = true;
+        agent.updateRotation = false;
+
         enemyAnimator.applyRootMotion = false;
     }
 
@@ -79,17 +81,21 @@ public class EnemyMovement : MonoBehaviour
     {
         if (agent == null) return;
 
-        // 1. Let the animator handle the position shift (Root Motion)
-        transform.position += enemyAnimator.deltaPosition;
+        Vector3 delta = enemyAnimator.deltaPosition;
 
-        // 2. Ask the AI agent where it wants to be and how it wants to face
-        agent.MovementUpdate(Time.deltaTime, out Vector3 nextPosition, out Quaternion nextRotation);
+        Vector3 desiredDir = agent.desiredVelocity;
+        desiredDir.y = 0;
 
-        // 3. APPLY the rotation to the transform so the enemy actually turns
-        transform.rotation = nextRotation;
+        if (desiredDir.sqrMagnitude < 0.001f)
+            return;
 
-        // 4. Finalize the internal state of the agent
-        agent.FinalizeMovement(nextPosition, nextRotation);
+        desiredDir.Normalize();
+
+        // Project animation forward movement onto AI desired direction
+        Vector3 projected = Vector3.Project(delta, desiredDir);
+
+        // This moves both the transform and keeps AIPath synced
+        agent.Move(projected);
     }
 
     public void DisableRootMotionMovement()
@@ -137,6 +143,12 @@ public class EnemyMovement : MonoBehaviour
 
         agent.isStopped = false;
         agent.destination = target.position;
+    }
+
+    public void ChasingToShotLocation(Vector3 location)
+    {
+        agent.isStopped = false;
+        agent.destination = location;
     }
 
     public void Stop()

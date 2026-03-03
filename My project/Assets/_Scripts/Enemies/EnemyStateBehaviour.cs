@@ -3,6 +3,7 @@ using Pathfinding;
 using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Animations.Rigging;
 
 public class EnemyStateBehaviour : MonoBehaviour
 {
@@ -32,6 +33,12 @@ public class EnemyStateBehaviour : MonoBehaviour
     private float _screamTimer = 0f;
     public float screamDuration = 1.5f;
 
+    [Space]
+    public AudioList idle;
+    public AudioList screamSound;
+    public AudioList attack;
+    public AudioList dead;
+
     private Vector3 _lastKnownLocation; // Last known location of the player for Investigate state
     private Coroutine _attackRoutine;
 
@@ -56,6 +63,7 @@ public class EnemyStateBehaviour : MonoBehaviour
     {
         if (_health.isDead)
         {
+            AudioManager.Instance.PlaySounds(dead, transform.position);
             ChangeState(EnemyState.Dead);
             _movement.Stop();
             agent.maxSpeed = 0f;
@@ -86,6 +94,24 @@ public class EnemyStateBehaviour : MonoBehaviour
 
             case EnemyState.GetHit:
                 ChangeState(EnemyState.Chase);
+                break;
+
+            case EnemyState.Investigate:
+                // 1. Tell the agent to keep moving to the noise location
+                _movement.ChasingToShotLocation(_lastKnownLocation);
+
+                // 2. Check: Did we arrive?
+                // Using a small buffer (like 1.5f) is often more reliable than reachedDestination
+                if (agent.reachedDestination || agent.remainingDistance < 1.5f)
+                {
+                    ChangeState(EnemyState.Patrol);
+                }
+
+                // 3. Check: Did we stumble upon the player?
+                if (_vision.CanSeePlayer())
+                {
+                    ChangeState(EnemyState.Scream);
+                }
                 break;
 
             case EnemyState.Chase:
@@ -135,19 +161,27 @@ public class EnemyStateBehaviour : MonoBehaviour
                 _movement.Stop();
                 _movement.patrolCenter.transform.LookAt(target: _vision.player);
                 _movement.enemyAnimator.SetTrigger("isScreaming");
+                AudioManager.Instance.PlaySounds(screamSound, transform.position);
                 break;
 
             case EnemyState.Chase:
                 _movement.enemyAnimator.SetBool("isChasingPlayer", true);
                 break;
 
+            case EnemyState.Investigate:
+                _movement.enemyAnimator.SetBool("isChasingPlayer", true);
+                AudioManager.Instance.PlaySounds(screamSound, transform.position);
+                _movement.ChasingToShotLocation(_lastKnownLocation);
+                break;
+
             case EnemyState.Patrol:
                 _movement.enemyAnimator.SetBool("isChasingPlayer", false);
+                AudioManager.Instance.PlaySounds(idle, transform.position);
                 break;
 
             case EnemyState.GetHit:
                 _movement.enemyAnimator.SetTrigger("GetHit");
-                break; 
+                break;
 
             case EnemyState.Attack:
                 _movement.Stop();
@@ -158,9 +192,37 @@ public class EnemyStateBehaviour : MonoBehaviour
 
     public void TriggerGetHit()
     {
-        if(currentState != EnemyState.Dead)
+        if (currentState != EnemyState.Dead)
         {
             ChangeState(EnemyState.GetHit);
+        }
+    }
+
+    private void OnEnable()
+    {
+        WeaponNoiseManager.OnNoiseMade += ListenForNoise;
+    }
+
+    private void OnDisable()
+    {
+        WeaponNoiseManager.OnNoiseMade -= ListenForNoise;
+    }
+
+    private void ListenForNoise(Vector3 noisePosition, float radius)
+    {
+        if (currentState == EnemyState.Dead) return;
+
+        float distanceToNoise = Vector3.Distance(transform.position, noisePosition);
+
+        // If the noise is within the sound's travel distance
+        if (distanceToNoise <= radius)
+        {
+            // Only check if we aren't already chasing or attacking the player
+            if (currentState != EnemyState.Chase && currentState != EnemyState.Attack)
+            {
+                _lastKnownLocation = noisePosition;
+                ChangeState(EnemyState.Investigate);
+            }
         }
     }
 
@@ -177,6 +239,7 @@ public class EnemyStateBehaviour : MonoBehaviour
             int attackIndex = Random.Range(0, 3);
             _movement.enemyAnimator.SetInteger("attackIndex", attackIndex);
             _movement.enemyAnimator.SetBool("isAttackingPlayer", true);
+            AudioManager.Instance.PlaySounds(attack, transform.position);
 
             // Wait for the next swing
             yield return new WaitForSeconds(_attack.atkInterval);

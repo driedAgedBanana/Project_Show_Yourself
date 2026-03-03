@@ -308,7 +308,7 @@ public class WeaponBase : MonoBehaviour, IWeapon
             direction += _mainCam.transform.up * Random.Range(-aimingBulletSpread, aimingBulletSpread);
         }
 
-        ActivateNoise();
+        WeaponNoiseManager.MakeNoise(transform.position, noiseCollider.radius);
 
         if (Physics.Raycast(_mainCam.transform.position, direction, out hit, range, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore))
         {

@@ -135,7 +135,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &468107832
 Transform:
   m_ObjectHideFlags: 0
@@ -290,12 +290,7 @@ MonoBehaviour:
   _movingWallPrefab: {fileID: 4725644372996588504, guid: 0167ce69ef16d464494f07da13098ff6, type: 3}
   _movingWallChance: 0.03
   _playerPrefab: {fileID: 1982049497142310322, guid: a271d79b42c78d546a33b5543674a931, type: 3}
-  _enemyPrefabs:
-  - {fileID: 1418193975600942, guid: 2526165081945504d842d913f7dab6da, type: 3}
-  - {fileID: 1418193975600942, guid: 20db4c55a7910774f918b2c75bbe8a2c, type: 3}
-  - {fileID: 1418193975600942, guid: 63f3425de0112444ba01b796244ac3d8, type: 3}
-  - {fileID: 1418193975600942, guid: 184c8d52755e36842934cda8019684e3, type: 3}
-  - {fileID: 1418193975600942, guid: 366a1fabd1ba6944fa2cb1ed719cd013, type: 3}
+  _enemyPrefabs: []
   _minTotalEnemies: 5
   _maxTotalEnemies: 15
   _minSpawnDistance: 7
