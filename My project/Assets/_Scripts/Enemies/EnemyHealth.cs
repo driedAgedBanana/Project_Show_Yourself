@@ -77,7 +77,6 @@ public class EnemyHealth : MonoBehaviour
         isDead = true;
         rb.isKinematic = false;
         bodyCollider.enabled = false;
-        GetComponent<EnemyMovement>().DisableRootMotionMovement();
 
         if (bloodHitParticle != null)
         {

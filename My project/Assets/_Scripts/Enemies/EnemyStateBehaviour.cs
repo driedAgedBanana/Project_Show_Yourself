@@ -149,7 +149,7 @@ public class EnemyStateBehaviour : MonoBehaviour
             _attackRoutine = null;
         }
 
-        // Reset triggers/bools so they don't get stuck
+        // We still keep the attack bool, as that's a separate action from moving
         _movement.enemyAnimator.SetBool("isAttackingPlayer", false);
 
         currentState = newState;
@@ -159,23 +159,18 @@ public class EnemyStateBehaviour : MonoBehaviour
             case EnemyState.Scream:
                 _screamTimer = screamDuration;
                 _movement.Stop();
-                _movement.patrolCenter.transform.LookAt(target: _vision.player);
+                // Ensure we look at the player during the scream
+                transform.LookAt(new Vector3(_vision.player.position.x, transform.position.y, _vision.player.position.z));
                 _movement.enemyAnimator.SetTrigger("isScreaming");
                 AudioManager.Instance.PlaySounds(screamSound, transform.position);
                 break;
 
-            case EnemyState.Chase:
-                _movement.enemyAnimator.SetBool("isChasingPlayer", true);
-                break;
-
             case EnemyState.Investigate:
-                _movement.enemyAnimator.SetBool("isChasingPlayer", true);
                 AudioManager.Instance.PlaySounds(screamSound, transform.position);
                 _movement.ChasingToShotLocation(_lastKnownLocation);
                 break;
 
             case EnemyState.Patrol:
-                _movement.enemyAnimator.SetBool("isChasingPlayer", false);
                 AudioManager.Instance.PlaySounds(idle, transform.position);
                 break;
 

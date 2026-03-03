@@ -1,7 +1,6 @@
 using Pathfinding;
 using System.Collections;
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
 
 public class EnemyMovement : MonoBehaviour
 {
@@ -14,17 +13,24 @@ public class EnemyMovement : MonoBehaviour
     private int _walkCount = 0;
     private int _maxWalkCount;
     private bool _isAllowedToWalk = true;
-
     private bool _isScreaming = false;
+
+    [Space]
+    public float walkSpeed = 1.5f;
+    public float runSpeed = 4f;
 
     private void Awake()
     {
         agent = GetComponent<AIPath>();
         enemyAnimator = GetComponent<Animator>();
 
+        // IMPORTANT: Let AIPath handle the movement
         agent.canMove = true;
-        agent.updateRotation = false;
 
+        // Let AIPath handle rotation, or set to false if you use a custom script to rotate
+        agent.updateRotation = true;
+
+        // Explicitly disable Root Motion in code to be safe
         enemyAnimator.applyRootMotion = false;
     }
 
@@ -34,7 +40,6 @@ public class EnemyMovement : MonoBehaviour
             patrolCenter = transform;
 
         _maxWalkCount = Random.Range(3, 10);
-
     }
 
     private void Update()
@@ -47,15 +52,16 @@ public class EnemyMovement : MonoBehaviour
         if (!_isAllowedToWalk || _isScreaming) return;
 
         agent.isStopped = false;
+        agent.maxSpeed = walkSpeed;
 
-        if (!agent.hasPath || agent.reachedDestination)
+        // Check if we reached destination or don't have one
+        if (!agent.pathPending && (agent.reachedDestination || !agent.hasPath))
         {
             if (TryGetRandomPointOnGraph(patrolCenter.position, patrolRadius, out Vector3 validPoint))
             {
                 agent.destination = validPoint;
+                _walkCount++;
             }
-
-            _walkCount++;
 
             if (_walkCount >= _maxWalkCount)
             {
@@ -66,46 +72,16 @@ public class EnemyMovement : MonoBehaviour
 
     private void UpdateAnimation()
     {
-        Vector3 velocity = agent.desiredVelocity;
-
-        // Remove the y component for animation purposes
-        velocity.y = 0;
-
-        float speed = velocity.magnitude;
-        float normalizedSpeed = speed / agent.maxSpeed;
-
-        enemyAnimator.SetFloat("Speed", normalizedSpeed);
+        // Just send the raw speed. 
+        // 0 = Idle, 1.5 = Walk animation, 4 = Run animation.
+        float currentSpeed = agent.velocity.magnitude;
+        enemyAnimator.SetFloat("Speed", currentSpeed, 0.1f, Time.deltaTime);
     }
 
-    private void OnAnimatorMove()
-    {
-        if (agent == null) return;
-
-        Vector3 delta = enemyAnimator.deltaPosition;
-
-        Vector3 desiredDir = agent.desiredVelocity;
-        desiredDir.y = 0;
-
-        if (desiredDir.sqrMagnitude < 0.001f)
-            return;
-
-        desiredDir.Normalize();
-
-        // Project animation forward movement onto AI desired direction
-        Vector3 projected = Vector3.Project(delta, desiredDir);
-
-        // This moves both the transform and keeps AIPath synced
-        agent.Move(projected);
-    }
-
-    public void DisableRootMotionMovement()
-    {
-        agent.updatePosition = false;
-        agent.updateRotation = false;
-    }
 
     private bool TryGetRandomPointOnGraph(Vector3 center, float radius, out Vector3 result)
     {
+        // Note: A* Project has a built-in helper for this, but your method works well too!
         for (int i = 0; i < 10; i++)
         {
             Vector3 randomPoint = center + Random.insideUnitSphere * radius;
@@ -115,7 +91,7 @@ public class EnemyMovement : MonoBehaviour
 
             if (nearest.node != null && nearest.node.Walkable)
             {
-                result = (Vector3)nearest.node.position;
+                result = nearest.position; // NNInfo.position is already a Vector3
                 return true;
             }
         }
@@ -127,12 +103,14 @@ public class EnemyMovement : MonoBehaviour
     private IEnumerator StopWalkingForSeconds()
     {
         _isAllowedToWalk = false;
+        agent.isStopped = true; // Make sure the agent stops moving physically
 
         yield return new WaitForSeconds(Random.Range(3f, 10f));
 
         _walkCount = 0;
         _maxWalkCount = Random.Range(3, 10);
         _isAllowedToWalk = true;
+        agent.isStopped = false;
     }
 
     #region Chasing player
@@ -140,8 +118,8 @@ public class EnemyMovement : MonoBehaviour
     public void ChasingPlayer(Transform target)
     {
         if (target == null) return;
-
         agent.isStopped = false;
+        agent.maxSpeed = runSpeed;
         agent.destination = target.position;
     }
 
