@@ -15,7 +15,6 @@ public class EnemyMovement : MonoBehaviour
     private bool _isAllowedToWalk = true;
 
     private bool _isScreaming = false;
-    private bool _isInvestigating = true;
 
     private void Awake()
     {
@@ -139,30 +138,5 @@ public class EnemyMovement : MonoBehaviour
         agent.isStopped = true;
     }
 
-    #endregion
-
-    #region Investigation logic
-
-    public void Investigate(Vector3 location)
-    {
-        // If the enemy is screaming or it's not supposed to walk, don't investigate
-        if (_isScreaming) return;
-
-        _isInvestigating = true;
-        agent.isStopped = false;
-        agent.destination = location;
-    }
-
-    public bool HasReachedInvestigationPoint()
-    {
-        return agent.reachedDestination && !agent.pathPending;
-    }
-
-    public void FinishedInvestigating()
-    {
-        _isInvestigating = false;
-        // Standing still for a bit before resuming patrol
-        StartCoroutine(StopWalkingForSeconds());
-    }
     #endregion
 }
