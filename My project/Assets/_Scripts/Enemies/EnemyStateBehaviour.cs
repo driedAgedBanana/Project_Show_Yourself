@@ -11,6 +11,7 @@ public class EnemyStateBehaviour : MonoBehaviour
         Patrol,
         Scream,
         Chase,
+        Investigate,
         Attack,
         Dead
     }
@@ -30,6 +31,7 @@ public class EnemyStateBehaviour : MonoBehaviour
     private float _screamTimer = 0f;
     public float screamDuration = 1.5f;
 
+    private Vector3 _lastKnownLocation; // Last known location of the player for Investigate state
     private Coroutine _attackRoutine;
 
     private void Awake()

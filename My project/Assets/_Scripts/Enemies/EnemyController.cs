@@ -57,7 +57,6 @@ public class EnemyController : MonoBehaviour
 
     [Header("Line of sight")]
     public GameObject player;
-    public float visionDegree;
     [HideInInspector] public bool isDead = false;
     [SerializeField] private LayerMask visionBlockingLayers;
 
