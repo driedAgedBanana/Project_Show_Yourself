@@ -9,7 +9,7 @@ public class Door : MonoBehaviour, IPlayerInteract
     public BoxCollider doorCollider;
     public float moveTime = 1f;
     private Vector3 _newPosition;
-    public Volume doorVFX;
+    // public Volume doorVFX;
     public GameObject missionCompletePanel;
 
 
@@ -37,7 +37,7 @@ public class Door : MonoBehaviour, IPlayerInteract
             doorCollider.isTrigger = false;
         }
 
-        doorVFX = GetComponentInChildren<Volume>();
+        // doorVFX = GetComponentInChildren<Volume>();
 
         doorAudioSource = GetComponent<AudioSource>();
 
@@ -88,9 +88,9 @@ public class Door : MonoBehaviour, IPlayerInteract
 
         doorAudioSource.volume = intensity;
 
-        if (doorVFX != null && doorVFX.profile != null)
-        {
-            doorVFX.weight = intensity;
-        }
+        //if (doorVFX != null && doorVFX.profile != null)
+        //{
+        //    doorVFX.weight = intensity;
+        //}
     }
 }
