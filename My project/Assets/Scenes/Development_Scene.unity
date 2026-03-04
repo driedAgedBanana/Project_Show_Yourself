@@ -180,34 +180,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0146b6d76e2723846b05264dc2fec6ca, type: 3}
---- !u!1 &284281272 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1418193975600942, guid: 84e3fef1a71553848bd28b67adb5a2c3, type: 3}
-  m_PrefabInstance: {fileID: 1786001342}
-  m_PrefabAsset: {fileID: 0}
---- !u!136 &284281285
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 284281272}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Height: 2.3845825
-  m_Direction: 1
-  m_Center: {x: 0, y: 0.692291, z: 0}
 --- !u!1 &474239973 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1982049497142310322, guid: a271d79b42c78d546a33b5543674a931, type: 3}
@@ -244,7 +216,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: AstarPathfindingProject::AstarPath
   version: 1
   data:
-    dataString: UEsDBBQAAAgIAAAIIex7w8/7XwIAACkFAAALACQAZ3JhcGgwLmpzb24KACAAAAAAAAEAGAAAgD7V3rGdAQCAPtXesZ0BAIA+1d6xnQGFVE1z2jAQ/SuMzi1jE0qS3lqHkB5ImJBOLr4IaY01yJJHH3wkw3/vSjbYkEO5mHn7dvft27U/iVC2Bua0mRnB55oD+Tkg4T/5NuiCT7Cna62W4gNOnHfBXRlINHJeqRMa8TSkWV2BM4L9UmsZyAmCXolCm2rK15Bp6yzCBZUWMGS0C9kKoc8B2bcJh/b5EZ6DI/5joByY/7G8YpJWNfCgtiPfJMMk/NL7NqsDYprCudqMZHgTumkphW1lEXeo49gZra3HoZDABcUxo6BkmN4iUoJYly64MBxdlHgpCguuIYaB6eFBGHStqU5+68bKitpNo3hLpQ/90mQ0jvKa0vMvhNvJJMYLo6unc/skWOJKwTav9MCodT23+/BDN0IardtRuaErCe8lqGc9M9orjkFnfEj1FkYPvVLn+bIS2KbjNWKvQF9/3Vzabe4Y599nUlSraNS4AZZSR+fvQw4Y3NIfFBzvxbYVEA0i/lp4o+v+YbWBR2Gsw1BLV0HdSnsTqGQaPQvDeJdpoyDCreYaFJXusMAy7mKNX2O9tleRRxpeobZ5Gzu9GVcpEe74SXIVWujdeVm21Ls52PLFOykUdKJD4Bl9yrRSzY31PTmlLb0pKOulrb3gl7dFYLVKgN1RYHx8x8e33+FulfIfowlnY56OJ5zE2xMK56Ry0Qht7cGtqa64wjs7fVkGM0PreO/c0N1MfFS6Z7lQhV4yA6Bemgpn4WCwCb6hfMoFGrQE54SK+yafOZGabYDn50J5nHS6d4bmXZWc1GKrXUByksXvSU4CfD7lhYGtgF1ofip2JMd/UEsDBBQAAAgIAAAIIezqqBFDbQAAAHgAAAAJACQAbWV0YS5qc29uCgAgAAAAAAABABgAAIA+1d6xnQEAgD7V3rGdAQCAPtXesZ0Bq1YqSy0qzszPU7JSMNEz0jM011FQSi9KLMgoBooYgjilmSkgdrRSalKSQWqyRWJqcoqJRYqJuW6qRZJhiqmRWUqySYqhiVmKUixQfUllQapfYm4qRE9AYklGWmZeSmZeup57UWaKO8hopdhaAFBLAQItABQAAAgIAAAIIex7w8/7XwIAACkFAAALACQAAAAAAAAAAAAAAAAAAABncmFwaDAuanNvbgoAIAAAAAAAAQAYAACAPtXesZ0BAIA+1d6xnQEAgD7V3rGdAVBLAQItABQAAAgIAAAIIezqqBFDbQAAAHgAAAAJACQAAAAAAAAAAAAAAKwCAABtZXRhLmpzb24KACAAAAAAAAEAGAAAgD7V3rGdAQCAPtXesZ0BAIA+1d6xnQFQSwUGAAAAAAIAAgC4AAAAZAMAAAAA
+    dataString: UEsDBBQAAAgIAAAIIexBfaERXgIAACcFAAALACQAZ3JhcGgwLmpzb24KACAAAAAAAAEAGAAAgD7V3rGdAQCAPtXesZ0BAIA+1d6xnQGFVMty2jAU/RVG65axCSGku9YQ0gWBCelk442Qrm0NsuTRg+fw75VkG7tkUW9sn/s699wrXRATugJipFooRpeSAvoxQP4bfRt0xlc44lyKDTtD6/PJqCm8Ew4+79gw6fDYh2lZglGM/BQ5986RA61gmVTlnOaQSG20gzPMNTiTksZHCwddBujYBJya99m/B1f3RUAYUP/zsoJwXFZAPdvO+SEaRv6Jn5uoDghhwvXVRETDB19Ncs50QwuZUxXaTnClrWvKOVCGXZuBUDSMHx1SAMsLE/4nz/0UqyzTYBqqCp9mTDnN6tzol6yFLLHe1Xz3mFtfLY5G40CuTrz84vA0mQR7pmT52haPI1/FFIzs3vGJYG16WvfhWddAHIQ7YL7DWw6fBYg3uVDSCuqMRlkfajWMZr1Ut+6SAsiu86vJ3oG2+jq3uJvbNfR/TDgrt0G/cQ1suAy6P/sYUG5Gvx3hsC1+g0Y16kn80fCB8/5aNYYXprRxpqag8Oy20irviuZBM9+MNYlUAgLccK5AYG5Oa5fG3A/xztYre2d5wf4ANcUbW3su7kIC3PlH0Z1pLQ+3YelCHpagi5U1nAnoSHvDm9MpkULUO9bXpA3bWJVh0gvLLaP/7haC7TYCMsVA6HhKx0/fYbqN6eNoQsmYxuMJRWH3mHB9Yr6uiTbyuKmJLrlwe9beK4OFwlXYd6rwYcHOpexJzkQmN0QBiFWd4UYclCviziedU+YE2oAxTIR5o0uKuCQ7oOktURo6nR+NwmmXJUUV20vjkRQl4TZJkYdvq7xWsGdw8MXbZFd0/QtQSwMEFAAACAgAAAgh7OqoEUNtAAAAeAAAAAkAJABtZXRhLmpzb24KACAAAAAAAAEAGAAAgD7V3rGdAQCAPtXesZ0BAIA+1d6xnQGrVipLLSrOzM9TslIw0TPSMzTXUVBKL0osyCgGihiCOKWZKSB2tFJqUpJBarJFYmpyiolFiom5bqpFkmGKqZFZSrJJiqGJWYpSLFB9SWVBql9ibipET0BiSUZaZl5KZl66nntRZoo7yGil2FoAUEsBAi0AFAAACAgAAAgh7EF9oRFeAgAAJwUAAAsAJAAAAAAAAAAAAAAAAAAAAGdyYXBoMC5qc29uCgAgAAAAAAABABgAAIA+1d6xnQEAgD7V3rGdAQCAPtXesZ0BUEsBAi0AFAAACAgAAAgh7OqoEUNtAAAAeAAAAAkAJAAAAAAAAAAAAAAAqwIAAG1ldGEuanNvbgoAIAAAAAAAAQAYAACAPtXesZ0BAIA+1d6xnQEAgD7V3rGdAVBLBQYAAAAAAgACALgAAABjAwAAAAA=
     upgradeData: 
     file_cachedStartup: {fileID: 0}
     data_cachedStartup: 
@@ -258,7 +230,7 @@ MonoBehaviour:
   showSearchTree: 0
   unwalkableNodeDebugSize: 0.3
   logPathResults: 1
-  maxNearestNodeDistance: 100
+  maxNearestNodeDistance: 500
   scanOnStartup: 1
   fullGetNearestSearch: 0
   prioritizeGraphs: 0
@@ -305,9 +277,9 @@ MonoBehaviour:
   - 29
   - 30
   - 31
-  heuristic: 2
+  heuristic: 0
   heuristicScale: 1
-  threadCount: 3
+  threadCount: 8
   maxFrameTime: 10
   batchGraphUpdates: 0
   graphUpdateBatchingInterval: 0.2
@@ -909,7 +881,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4063173299238248689, guid: 84e3fef1a71553848bd28b67adb5a2c3, type: 3}
       propertyPath: radius
-      value: 0.57
+      value: 0.7
       objectReference: {fileID: 0}
     - target: {fileID: 4063173299238248689, guid: 84e3fef1a71553848bd28b67adb5a2c3, type: 3}
       propertyPath: maxSpeed
@@ -931,6 +903,14 @@ PrefabInstance:
       propertyPath: pickNextWaypointDist
       value: 0.7
       objectReference: {fileID: 0}
+    - target: {fileID: 4063173299238248689, guid: 84e3fef1a71553848bd28b67adb5a2c3, type: 3}
+      propertyPath: autoRepath.visualizeSensitivity
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7487162938459201719, guid: 84e3fef1a71553848bd28b67adb5a2c3, type: 3}
+      propertyPath: protectCollider
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 7759306354274811935, guid: 84e3fef1a71553848bd28b67adb5a2c3, type: 3}
       propertyPath: detailedGizmos
       value: 0
@@ -946,10 +926,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 1418193975600942, guid: 84e3fef1a71553848bd28b67adb5a2c3, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 284281285}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 84e3fef1a71553848bd28b67adb5a2c3, type: 3}
 --- !u!1001 &2416863877136900326
 PrefabInstance:
