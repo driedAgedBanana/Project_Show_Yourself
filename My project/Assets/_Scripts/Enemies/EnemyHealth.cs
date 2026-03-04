@@ -16,6 +16,8 @@ public class EnemyHealth : MonoBehaviour
     public BoxCollider bodyCollider;
     public Transform headBone;
 
+    public static event Action OnEnemyKilled;
+
 
     public List<EnemiesDeadLoot> lootTable = new List<EnemiesDeadLoot>();
 
@@ -78,11 +80,17 @@ public class EnemyHealth : MonoBehaviour
         rb.isKinematic = false;
         bodyCollider.enabled = false;
 
+        EnemyStateBehaviour behaviour = GetComponent<EnemyStateBehaviour>();
+
+        AudioManager.Instance.PlaySounds(behaviour.dead, transform.position);
+
         if (bloodHitParticle != null)
         {
             GameObject bloodParticle = Instantiate(bloodHitParticle, hitPoint, Quaternion.LookRotation(hitPoint));
             Destroy(bloodParticle, 1f);
         }
+
+        OnEnemyKilled?.Invoke();
 
         ragdollController.SetRagdoll(true);
         StartCoroutine(HideBody());

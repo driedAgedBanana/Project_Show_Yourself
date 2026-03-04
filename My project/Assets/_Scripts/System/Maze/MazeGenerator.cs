@@ -275,7 +275,7 @@ public class MazeGenerator : MonoBehaviour
     // Change the subscriber to call a "Delay" version
     private void OnEnable()
     {
-        EnemyController.OnEnemyKilled += HandleEnemyDeath;
+        EnemyHealth.OnEnemyKilled += HandleEnemyDeath;
     }
 
     private void HandleEnemyDeath()
@@ -292,8 +292,7 @@ public class MazeGenerator : MonoBehaviour
 
     public void OnDisable()
     {
-        // Match the method used in OnEnable
-        EnemyController.OnEnemyKilled -= HandleEnemyDeath;
+        EnemyHealth.OnEnemyKilled -= HandleEnemyDeath;
     }
 
     public void SpawnMovingWalls()

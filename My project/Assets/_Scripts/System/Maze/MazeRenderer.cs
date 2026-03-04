@@ -36,20 +36,22 @@ public class MazeRenderer : MonoBehaviour
                 bool bottomWall = false;
 
                 if (x == _mazeGenerator.mazeWidth - 1) rightWall = true;
-                if(y == 0) bottomWall = true;
+                if (y == 0) bottomWall = true;
 
                 // Check if this specific cell is the exit
                 bool isThisTheExit = (x == exitCoords.x && y == exitCoords.y);
 
                 mazeCell.Initialize(topWall, bottomWall, rightWall, leftWall, isThisTheExit);
-                AstarPath.active.Scan();
             }
         }
+
 
         // 2. Spawn Moving Walls (Do this BEFORE baking so NavMesh sees them)
         // Note: If they have NavMeshObstacle + Carve, they can be spawned after, 
         // but it's safer to have them ready now.
         _mazeGenerator.SpawnMovingWalls();
+
+        AstarPath.active.Scan();
 
         //// 3. BAKE THE NAVMESH
         //// This creates the floor that SamplePosition needs to work!

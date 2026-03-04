@@ -10,6 +10,7 @@ public class Door : MonoBehaviour, IPlayerInteract
     public float moveTime = 1f;
     private Vector3 _newPosition;
     public Volume doorVFX;
+    public GameObject missionCompletePanel;
 
 
     public GameObject player;
@@ -39,6 +40,11 @@ public class Door : MonoBehaviour, IPlayerInteract
         doorVFX = GetComponentInChildren<Volume>();
 
         doorAudioSource = GetComponent<AudioSource>();
+
+        if(missionCompletePanel != null)
+        {
+            missionCompletePanel.SetActive(false);
+        }
         
     }
 
@@ -49,7 +55,9 @@ public class Door : MonoBehaviour, IPlayerInteract
 
     public void Interact()
     {
-        print("Do something!");
+        missionCompletePanel.SetActive(true);
+        GameManager.Instance.PauseGame();
+        StopStaticAudio();
     }
 
     public void PlayStaticAudio()

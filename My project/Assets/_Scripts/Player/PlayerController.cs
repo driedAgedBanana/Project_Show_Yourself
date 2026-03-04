@@ -96,6 +96,7 @@ public class PlayerController : MonoBehaviour
         }
 
         Instance = this;
+        GameManager.Instance.HideMouse();
 
         playerHealth = GetComponent<PlayerHealth>();
         playerInteract = GetComponent<PlayerInteract>();
@@ -119,7 +120,6 @@ public class PlayerController : MonoBehaviour
         currentStamina = maxStamina;
         cameraShakeManager = GetComponentInChildren<CameraShakeManager>();
 
-        GameManager.Instance.HideMouse();
 
         if (_playerVFX.profile.TryGet<Vignette>(out _vignette))
         {

@@ -3996,6 +3996,8 @@ MonoBehaviour:
   patrolCenter: {fileID: 4243538704547566}
   patrolRadius: 10
   enemyAnimator: {fileID: 95921630161195528}
+  walkSpeed: 2
+  runSpeed: 4
 --- !u!114 &6676737870124174592
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4143,8 +4145,8 @@ MonoBehaviour:
   detailedGizmos: 0
   startEndModifier:
     addPoints: 0
-    exactStartPoint: 3
-    exactEndPoint: 3
+    exactStartPoint: 1
+    exactEndPoint: 1
     useRaycasting: 0
     mask:
       serializedVersion: 2
@@ -4167,10 +4169,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: AstarPathfindingProject::Pathfinding.AIPath
   version: 5
-  radius: 0.6
+  radius: 0.7
   height: 2
   canMove: 1
-  maxSpeed: 1
+  maxSpeed: 0.1
   gravity: {x: 0, y: -9.81, z: 0}
   groundMask:
     serializedVersion: 2
@@ -4183,14 +4185,14 @@ MonoBehaviour:
   autoRepath:
     mode: 2
     interval: 0.5
-    sensitivity: 20
-    maximumInterval: 0.2
+    sensitivity: 1
+    maximumInterval: 15
     visualizeSensitivity: 0
   targetCompatibility: {fileID: 0}
   maxAcceleration: -2.5
-  rotationSpeed: 360
-  slowdownDistance: 0.7
-  pickNextWaypointDist: 3
+  rotationSpeed: 720
+  slowdownDistance: 0.8
+  pickNextWaypointDist: 0.7
   endReachedDistance: 1
   alwaysDrawGizmos: 0
   slowWhenNotFacingTarget: 1

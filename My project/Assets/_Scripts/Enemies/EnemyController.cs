@@ -692,11 +692,6 @@ public class EnemyController : MonoBehaviour
         if (nearestPart != null)
             nearestPart.AddForceAtPosition(hitForce, hitPoint, ForceMode.Impulse);
 
-        //if (QuestSystemManager.Instance != null)
-        //{
-        //    QuestSystemManager.Instance.OnEnemyKilled(enemyID);
-        //}
-
         OnEnemyKilled?.Invoke();
 
         CalculateDropLoot();

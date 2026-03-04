@@ -78,24 +78,22 @@ public class EnemyMovement : MonoBehaviour
         enemyAnimator.SetFloat("Speed", currentSpeed, 0.1f, Time.deltaTime);
     }
 
-
     private bool TryGetRandomPointOnGraph(Vector3 center, float radius, out Vector3 result)
     {
-        // Note: A* Project has a built-in helper for this, but your method works well too!
         for (int i = 0; i < 10; i++)
         {
             Vector3 randomPoint = center + Random.insideUnitSphere * radius;
             randomPoint.y = center.y;
 
+            // Use NNConstraint.Default to ensure it only picks walkable nodes
             NNInfo nearest = AstarPath.active.GetNearest(randomPoint, NNConstraint.Default);
 
             if (nearest.node != null && nearest.node.Walkable)
             {
-                result = nearest.position; // NNInfo.position is already a Vector3
+                result = nearest.position;
                 return true;
             }
         }
-
         result = center;
         return false;
     }

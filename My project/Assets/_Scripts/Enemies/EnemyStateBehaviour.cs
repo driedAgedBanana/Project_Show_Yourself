@@ -63,7 +63,6 @@ public class EnemyStateBehaviour : MonoBehaviour
     {
         if (_health.isDead)
         {
-            AudioManager.Instance.PlaySounds(dead, transform.position);
             ChangeState(EnemyState.Dead);
             _movement.Stop();
             agent.maxSpeed = 0f;

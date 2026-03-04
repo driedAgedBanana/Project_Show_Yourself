@@ -915,7 +915,7 @@ MonoBehaviour:
   crouchSpeed: 2
   inputSmoothTime: 0.1
   isMoving: 0
-  maxStamina: 100
+  maxStamina: 120
   staminaDrainRate: 30
   staminaRecoverRate: 7
   canSprint: 0

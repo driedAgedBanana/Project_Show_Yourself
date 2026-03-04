@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 4589427283787544609}
   - component: {fileID: 3468683452277196089}
   - component: {fileID: 7715926297375826469}
+  - component: {fileID: 8029985124392989516}
   m_Layer: 10
   m_Name: Wall
   m_TagString: Wall
@@ -127,3 +128,19 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &8029985124392989516
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4725644372996588504}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 183748dd497aa473a98ff0cd8cb67fc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: AstarPathfindingProject::Pathfinding.DynamicGridObstacle
+  version: 1
+  uniqueID: 7817229248350694703
+  updateError: 1
+  checkTime: 0.2
