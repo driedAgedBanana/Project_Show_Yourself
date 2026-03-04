@@ -41,13 +41,13 @@ public class LoadingManager : MonoBehaviour
 
     private IEnumerator LoadNextScene()
     {
-        yield return new WaitForSeconds(0.1f);
-
-        AsyncOperation operation = SceneManager.LoadSceneAsync(_sceneToLoad);
-        operation.allowSceneActivation = false;
+        yield return new WaitForSeconds(0.01f);
 
         loadingCanva?.SetActive(true); // Ensure UI stays visible
         menuCanvas?.SetActive(false);
+
+        AsyncOperation operation = SceneManager.LoadSceneAsync(_sceneToLoad);
+        operation.allowSceneActivation = false;
 
         while (!operation.isDone)
         {

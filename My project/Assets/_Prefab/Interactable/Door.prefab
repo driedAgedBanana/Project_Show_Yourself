@@ -256,11 +256,10 @@ MonoBehaviour:
   door: {fileID: 576438496033134567}
   doorCollider: {fileID: 5817685591268272421}
   moveTime: 1
-  doorVFX: {fileID: 1922222303060601779}
   missionCompletePanel: {fileID: 5737232653990290869}
   player: {fileID: 0}
   doorAudioSource: {fileID: 3474341560067059131}
-  staticNoise: {fileID: 8300000, guid: 8e13906019282604fb2e5ea1c92e81fb, type: 3}
+  staticNoise: {fileID: 0}
   referenceDistance: 10
 --- !u!33 &7812574596792429545
 MeshFilter:
@@ -524,9 +523,9 @@ RectTransform:
   - {fileID: 4225562672037409664}
   m_Father: {fileID: 3111688149939796998}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 186.0648, y: -62.0216}
   m_SizeDelta: {x: 434.3878, y: 81.4477}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7916038352305352297
@@ -657,9 +656,9 @@ RectTransform:
   - {fileID: 8709558717258584405}
   m_Father: {fileID: 3111688149939796998}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 186.0648, y: -310.108}
   m_SizeDelta: {x: 434.3878, y: 81.4477}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1122292263560322172
@@ -1103,9 +1102,9 @@ RectTransform:
   - {fileID: 2960198418259141516}
   m_Father: {fileID: 3111688149939796998}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 186.0648, y: -186.06479}
   m_SizeDelta: {x: 434.3878, y: 81.4477}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1989664518798508435
@@ -1207,7 +1206,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &3213204441501026564
 RectTransform:
   m_ObjectHideFlags: 0

@@ -314,7 +314,7 @@ MonoBehaviour:
   startX: 0
   startY: 0
   _movingWallPrefab: {fileID: 4725644372996588504, guid: 0167ce69ef16d464494f07da13098ff6, type: 3}
-  _movingWallChance: 0.03
+  _movingWallChance: 0.06
   _playerPrefab: {fileID: 1982049497142310322, guid: a271d79b42c78d546a33b5543674a931, type: 3}
   _enemyPrefabs:
   - {fileID: 1418193975600942, guid: 05d1315c03087c749b3444976575811c, type: 3}
@@ -322,8 +322,8 @@ MonoBehaviour:
   - {fileID: 1418193975600942, guid: 1e6a5af0435780944853788b22ebc77a, type: 3}
   - {fileID: 1418193975600942, guid: bb4f0570be56a0e4ab990943352717b9, type: 3}
   - {fileID: 1418193975600942, guid: 20f188b739d573b499a258978691fdd8, type: 3}
-  _minTotalEnemies: 5
-  _maxTotalEnemies: 20
+  _minTotalEnemies: 10
+  _maxTotalEnemies: 25
   _minSpawnDistance: 8
 --- !u!114 &1037290600
 MonoBehaviour:

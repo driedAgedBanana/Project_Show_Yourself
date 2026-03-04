@@ -46,7 +46,7 @@ GameObject:
   - component: {fileID: 5317302714930588106}
   - component: {fileID: 8482564334400318877}
   - component: {fileID: 5752463144692681929}
-  m_Layer: 6
+  m_Layer: 5
   m_Name: CurrentAmount
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6406,7 +6406,7 @@ GameObject:
   - component: {fileID: 4592229306915699267}
   - component: {fileID: 3781380953996493805}
   - component: {fileID: 265744884997502087}
-  m_Layer: 6
+  m_Layer: 5
   m_Name: Divider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8249,7 +8249,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6658313672584845257}
-  m_Layer: 6
+  m_Layer: 5
   m_Name: AmmoAmount
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -13322,7 +13322,7 @@ GameObject:
   - component: {fileID: 884237041528261455}
   - component: {fileID: 2926637504726316936}
   - component: {fileID: 5830371334608701495}
-  m_Layer: 6
+  m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14105,7 +14105,7 @@ GameObject:
   - component: {fileID: 1054946057802638726}
   - component: {fileID: 8011821885818203379}
   - component: {fileID: 1299326378557689831}
-  m_Layer: 6
+  m_Layer: 5
   m_Name: TotalAmount
   m_TagString: Untagged
   m_Icon: {fileID: 0}
