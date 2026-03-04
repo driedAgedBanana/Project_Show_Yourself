@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Rendering;
@@ -87,6 +88,9 @@ public class PlayerController : MonoBehaviour
     public AudioList footstepSounds;
     private bool _hasStepped; // Prevents the sound from playing every frame at the bottom of the curve
 
+    [Header("Restricted weapon")]
+    public GameObject weaponSlot;
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -135,6 +139,8 @@ public class PlayerController : MonoBehaviour
         {
             _depthOfField.focalLength.value = 0f;
         }
+
+        WeaponAllowed(true);
     }
 
     private void LateUpdate()
@@ -342,6 +348,11 @@ public class PlayerController : MonoBehaviour
     public void OnMove(InputAction.CallbackContext ctx)
     {
         moveInput = ctx.ReadValue<Vector2>();
+    }
+
+    public void WeaponAllowed(bool isAllowed)
+    {
+        weaponSlot.SetActive(isAllowed);
     }
 
     public void OnLook(InputAction.CallbackContext ctx) => lookInput = ctx.ReadValue<Vector2>();

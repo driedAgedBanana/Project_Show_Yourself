@@ -214,7 +214,6 @@ GameObject:
   - component: {fileID: 7812574596792429545}
   - component: {fileID: 6787042955717514015}
   - component: {fileID: 5817685591268272421}
-  - component: {fileID: 1677009509807247967}
   - component: {fileID: 1922222303060601779}
   - component: {fileID: 8874324394473693536}
   - component: {fileID: 3474341560067059131}
@@ -338,22 +337,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!208 &1677009509807247967
-NavMeshObstacle:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 576438496033134567}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Shape: 1
-  m_Extents: {x: 0.5, y: 0.5, z: 0.5}
-  m_MoveThreshold: 0.1
-  m_Carve: 1
-  m_CarveOnlyStationary: 1
-  m_Center: {x: 0, y: 0, z: 0}
-  m_TimeToStationary: 0.5
 --- !u!114 &1922222303060601779
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -368,7 +351,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.RenderPipelines.Core.Runtime::UnityEngine.Rendering.Volume
   m_IsGlobal: 0
   priority: 2
-  blendDistance: 3
+  blendDistance: 4
   weight: 1
   sharedProfile: {fileID: 11400000, guid: 61b5ff61519a1094497d0278dc45ca4d, type: 2}
 --- !u!65 &8874324394473693536
@@ -390,7 +373,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.23, y: 1, z: 137}
+  m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!82 &3474341560067059131
 AudioSource:
