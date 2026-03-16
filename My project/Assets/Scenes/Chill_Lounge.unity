@@ -7867,6 +7867,11 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 143336, guid: ad4dfe1ea448bb849be9e911a68dce43, type: 3}
   m_PrefabInstance: {fileID: 628669624}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &267333339 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1684080539971154, guid: 5bd992a5f1eab24409ea90889e0aabbf, type: 3}
+  m_PrefabInstance: {fileID: 379453670}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &269257063
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10527,13 +10532,28 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1684080539971154, guid: 5bd992a5f1eab24409ea90889e0aabbf, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 379453675}
   m_SourcePrefab: {fileID: 100100000, guid: 5bd992a5f1eab24409ea90889e0aabbf, type: 3}
 --- !u!4 &379453671 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4718328645695972, guid: 5bd992a5f1eab24409ea90889e0aabbf, type: 3}
   m_PrefabInstance: {fileID: 379453670}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &379453675
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 267333339}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9dcf3eb9ba855314d889c7b75abc0c39, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Music_Radio
 --- !u!1001 &380364800
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -40147,7 +40167,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1343340325
 Transform:
   m_ObjectHideFlags: 0
@@ -43116,7 +43136,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1437785170
 Transform:
   m_ObjectHideFlags: 0
@@ -44028,7 +44048,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1466896404
 Transform:
   m_ObjectHideFlags: 0
@@ -47536,7 +47556,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1565352318
 Transform:
   m_ObjectHideFlags: 0
@@ -49715,7 +49735,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1610095459
 Transform:
   m_ObjectHideFlags: 0
@@ -53145,7 +53165,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1715758088
 Transform:
   m_ObjectHideFlags: 0
