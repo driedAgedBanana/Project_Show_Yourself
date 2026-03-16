@@ -96,6 +96,7 @@ public class PlayerController : MonoBehaviour
 
     [Header("Restricted weapon")]
     public GameObject weaponSlot;
+    private bool _isInRestrictedArea = false;
 
     private void Awake()
     {
@@ -164,10 +165,13 @@ public class PlayerController : MonoBehaviour
         if (playerHealth.isAlive && !phoneManager.isPhoneActive)
         {
             HandleLook();
-            WeaponAllowed(true);
+
+            // Only allow weapon if NOT in a restricted area
+            WeaponAllowed(!_isInRestrictedArea);
+
             GameManager.Instance.HideMouse();
         }
-        else if(phoneManager.isPhoneActive)
+        else if (phoneManager.isPhoneActive)
         {
             WeaponAllowed(false);
             GameManager.Instance.ShowMouse();
@@ -389,6 +393,11 @@ public class PlayerController : MonoBehaviour
         {
             door.PlayStaticAudio();
         }
+
+        if (other.gameObject.CompareTag("Restricted_Area"))
+        {
+            _isInRestrictedArea = true;
+        }
     }
 
     private void OnTriggerExit(Collider other)
@@ -396,6 +405,11 @@ public class PlayerController : MonoBehaviour
         if (other.TryGetComponent(out Door door))
         {
             door.doorAudioSource.Stop();
+        }
+
+        if (other.gameObject.CompareTag("Restricted_Area"))
+        {
+            _isInRestrictedArea = false;
         }
     }
 

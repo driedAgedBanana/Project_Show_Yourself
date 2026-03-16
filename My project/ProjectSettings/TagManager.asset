@@ -9,6 +9,7 @@ TagManager:
   - OuterCorner
   - Room
   - Head
+  - Restricted_Area
   layers:
   - Default
   - TransparentFX
