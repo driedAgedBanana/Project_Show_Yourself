@@ -66,7 +66,7 @@ public class PhoneManager : MonoBehaviour
         // Disable after moving to point B
         if (!isPhoneActive)
         {
-            phone.SetActive(false); 
+            phone.SetActive(false);
         }
     }
 }

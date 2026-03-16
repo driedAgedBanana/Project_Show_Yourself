@@ -336,15 +336,15 @@ public class PlayerController : MonoBehaviour
         // 1. Vignette (Darkening)
         if (_vignette != null)
         {
-            // Lerp between base (0.1), tired (0.5), and dying (0.8)
-            float targetIntensity = Mathf.Lerp(0.1f, 0.8f, combinedVignette);
+            // Lerp between base (0.1), tired (0.5), and dying (0.7)
+            float targetIntensity = Mathf.Lerp(0.1f, 0.7f, combinedVignette);
             _vignette.intensity.value = Mathf.MoveTowards(_vignette.intensity.value, targetIntensity, Time.deltaTime);
         }
 
         // 2. Depth of Field (Blur)
         if (_depthOfField != null)
         {
-            float targetFocal = Mathf.Lerp(1f, 100f, combinedBlur);
+            float targetFocal = Mathf.Lerp(1f, 65f, combinedBlur);
             _depthOfField.focalLength.value = Mathf.MoveTowards(_depthOfField.focalLength.value, targetFocal, Time.deltaTime * 10f);
         }
 

@@ -97,7 +97,7 @@ public class PlayerHealth : MonoBehaviour
 
     public void UpdateHealthBarText()
     {
-        healthText.text = $"Current Health: {currentHealth:F0} / {maxHealth:F0}";
+        healthText.text = $"Medische Status: {currentHealth:F0} / {maxHealth:F0}";
     }
 
     #endregion
