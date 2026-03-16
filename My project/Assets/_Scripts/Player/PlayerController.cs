@@ -13,6 +13,7 @@ public class PlayerController : MonoBehaviour
     public PlayerHealth playerHealth;
     public CameraShakeManager cameraShakeManager;
     public PlayerInteract playerInteract;
+    public PhoneManager phoneManager;
 
     [Header("References")]
     public Rigidbody rb;
@@ -81,8 +82,13 @@ public class PlayerController : MonoBehaviour
     private GameObject spawnedVolume;
     [SerializeField] private Volume _playerVFX;
     private Vignette _vignette;
+    private Bloom _bloom;
+    private ColorAdjustments _colourAdjustment;
     private ChromaticAberration _chromaticAberration;
     private DepthOfField _depthOfField;
+
+    private float _tirednessFactor; // 0 to 1 based on stamina
+    private float _lowHealthFactor; // 0 to 1 based on health < 30%
 
     [Header("SFX")]
     public AudioList footstepSounds;
@@ -140,27 +146,47 @@ public class PlayerController : MonoBehaviour
             _depthOfField.focalLength.value = 0f;
         }
 
+        if(_playerVFX.profile.TryGet<Bloom>(out _bloom))
+        {
+            _bloom.intensity.value = 0.3f;
+        }
+
+        if(_playerVFX.profile.TryGet<ColorAdjustments>(out _colourAdjustment))
+        {
+            _colourAdjustment.contrast.value = 10f;
+        }
+
         WeaponAllowed(true);
     }
 
     private void LateUpdate()
     {
-        if (playerHealth.isAlive)
+        if (playerHealth.isAlive && !phoneManager.isPhoneActive)
         {
             HandleLook();
+            WeaponAllowed(true);
+            GameManager.Instance.HideMouse();
+        }
+        else if(phoneManager.isPhoneActive)
+        {
+            WeaponAllowed(false);
+            GameManager.Instance.ShowMouse();
         }
     }
 
     private void Update()
     {
-        if (playerHealth.isAlive)
+        if (playerHealth.isAlive && !phoneManager.isPhoneActive)
         {
             _currentMoveInput = Vector2.SmoothDamp(_currentMoveInput, moveInput, ref _moveInputVelocity, inputSmoothTime);
+
+            HandleStamina();      
+            HandleHealthEffects(); 
+            ApplyUnifiedVisuals(); // Apply the winner to the Camera
 
             HandleLean();
             HandleFOV();
             HandleHeadBob();
-            HandleStamina();
         }
     }
 
@@ -267,38 +293,67 @@ public class PlayerController : MonoBehaviour
     {
         canSprint = runHeld && isMoving && !isCrouching && currentStamina > 0;
 
-        if (canSprint)
-        {
-            currentStamina -= staminaDrainRate * Time.deltaTime;
-        }
-        else
-        {
-            currentStamina += staminaRecoverRate * Time.deltaTime;
-        }
+        // Update stamina values
+        if (canSprint) currentStamina -= staminaDrainRate * Time.deltaTime;
+        else currentStamina += staminaRecoverRate * Time.deltaTime;
 
         currentStamina = Mathf.Clamp(currentStamina, 0, maxStamina);
 
-        // Calculate the "Tiredness" (0 when full stamina, 1 when empty)
-        float tiredness = 1f - (currentStamina / maxStamina);
+        // Just calculate the factor here, don't apply visuals yet
+        _tirednessFactor = 1f - (currentStamina / maxStamina);
+    }
 
-        // Apply the intensity. 
-        // This will go from 0.1f (resting) to 0.5f (exhausted)
+    private void HandleHealthEffects()
+    {
+        float healthPercentage = playerHealth.currentHealth / playerHealth.maxHealth;
+
+        if (healthPercentage <= 0.3f)
+        {
+            _lowHealthFactor = 1f - Mathf.Clamp01(healthPercentage / 0.3f);
+
+            // Keep the heartbeat logic here as it's independent of visuals
+            playerHealth.heartbeatTimer -= Time.deltaTime;
+            if (playerHealth.heartbeatTimer <= 0)
+            {
+                AudioManager.Instance.PlaySounds(playerHealth.heartBeat, transform.position);
+                playerHealth.heartbeatTimer = Mathf.Lerp(1.0f, 0.4f, _lowHealthFactor);
+            }
+        }
+        else
+        {
+            _lowHealthFactor = 0f;
+            playerHealth.heartbeatTimer = 0;
+        }
+    }
+
+    private void ApplyUnifiedVisuals()
+    {
+        // PICK THE STRONGEST EFFECT
+        // If player is tired AND dying, use whichever effect is more intense
+        float combinedVignette = Mathf.Max(_tirednessFactor, _lowHealthFactor);
+        float combinedBlur = Mathf.Max(_tirednessFactor, _lowHealthFactor);
+
+        // 1. Vignette (Darkening)
         if (_vignette != null)
         {
-            float targetIntensity = Mathf.Lerp(0.1f, 0.5f, tiredness);
+            // Lerp between base (0.1), tired (0.5), and dying (0.8)
+            float targetIntensity = Mathf.Lerp(0.1f, 0.8f, combinedVignette);
             _vignette.intensity.value = Mathf.MoveTowards(_vignette.intensity.value, targetIntensity, Time.deltaTime);
         }
 
-        if (_chromaticAberration != null)
-        {
-            float targetIntensity = Mathf.Lerp(0f, 1f, tiredness);
-            _chromaticAberration.intensity.value = Mathf.MoveTowards(_chromaticAberration.intensity.value, targetIntensity, Time.deltaTime);
-        }
-
+        // 2. Depth of Field (Blur)
         if (_depthOfField != null)
         {
-            float targetFocalLength = Mathf.Lerp(1f, 50f, tiredness);
-            _depthOfField.focalLength.value = Mathf.MoveTowards(_depthOfField.focalLength.value, targetFocalLength, Time.deltaTime * 10f);
+            float targetFocal = Mathf.Lerp(1f, 100f, combinedBlur);
+            _depthOfField.focalLength.value = Mathf.MoveTowards(_depthOfField.focalLength.value, targetFocal, Time.deltaTime * 10f);
+        }
+
+        // 3. Health-Specific Extras (Bloom/Color)
+        // These usually only happen when dying, so we just use _lowHealthFactor
+        if (_colourAdjustment != null)
+        {
+            float targetContrast = Mathf.Lerp(10f, -40f, _lowHealthFactor);
+            _colourAdjustment.contrast.value = Mathf.MoveTowards(_colourAdjustment.contrast.value, targetContrast, Time.deltaTime * 5f);
         }
     }
 

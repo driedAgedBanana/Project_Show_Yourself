@@ -37,8 +37,6 @@ public class WeaponBase : MonoBehaviour, IWeapon
 
     [Header("Aiming")]
     private Camera _mainCam;
-    public GameObject crossHair;
-    public GameObject scopeCorssHair;
     public Transform weaponRoot;
     public Transform defaultPosition;
     public Transform aimingPosition;
@@ -109,9 +107,6 @@ public class WeaponBase : MonoBehaviour, IWeapon
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        crossHair.SetActive(true);
-        scopeCorssHair.SetActive(false);
-
         _mainCam = PlayerController.Instance.playerCam;
 
         defaultFOV = PlayerController.Instance.normalFOV;
@@ -257,8 +252,7 @@ public class WeaponBase : MonoBehaviour, IWeapon
             Transform targetPosition = isAiming ? aimingPosition : defaultPosition;
             float targetFOV = isAiming ? zoomInFOV : defaultFOV;
 
-            crossHair.SetActive(!isAiming);
-            scopeCorssHair.SetActive(isAiming);
+            bool isCrosshairActive = PlayerController.Instance.phoneManager.isPhoneActive;
 
             // Smoothly transition aiming time between 0 and 1
             aimTime = Mathf.Clamp01(aimTime + Time.deltaTime * aimingSpeed * (isAiming ? 1 : -1));
@@ -498,7 +492,7 @@ public class WeaponBase : MonoBehaviour, IWeapon
 
     public void OnAim(InputAction.CallbackContext ctx)
     {
-        if (!PlayerController.Instance.playerHealth.isAlive) return;
+        if (!PlayerController.Instance.playerHealth.isAlive || PlayerController.Instance.phoneManager.isPhoneActive) return;
         if(isCheckingForAmmo) return;
 
         isAiming = ctx.ReadValue<float>() > 0;
@@ -506,7 +500,7 @@ public class WeaponBase : MonoBehaviour, IWeapon
 
     public void OnShoot(InputAction.CallbackContext ctx)
     {
-        if (!PlayerController.Instance.playerHealth.isAlive) return;
+        if (!PlayerController.Instance.playerHealth.isAlive || PlayerController.Instance.phoneManager.isPhoneActive) return;
         if (isCheckingForAmmo) return;
 
         if (currentWeaponType != WeaponType.Pistol || !gameObject.activeSelf || _isReloading) return;
@@ -529,7 +523,7 @@ public class WeaponBase : MonoBehaviour, IWeapon
     {
         if (!gameObject.activeInHierarchy) return;
 
-        if (!PlayerController.Instance.playerHealth.isAlive || isCheckingForAmmo || _isReloading) return;
+        if (!PlayerController.Instance.playerHealth.isAlive || isCheckingForAmmo || _isReloading || PlayerController.Instance.phoneManager.isPhoneActive) return;
 
         if (ctx.started)
         {
@@ -548,7 +542,7 @@ public class WeaponBase : MonoBehaviour, IWeapon
 
     public void OnReload(InputAction.CallbackContext ctx)
     {
-        if (!PlayerController.Instance.playerHealth.isAlive) return;
+        if (!PlayerController.Instance.playerHealth.isAlive || PlayerController.Instance.phoneManager.isPhoneActive) return;
 
         if(_currentAmmo >= ammoData.maxAmmo || totalAmountOfCarryAmmo <= 0) return;
 
@@ -564,7 +558,7 @@ public class WeaponBase : MonoBehaviour, IWeapon
 
     public void OnCheckMagazine(InputAction.CallbackContext ctx)
     {
-        if (!PlayerController.Instance.playerHealth.isAlive) return;
+        if (!PlayerController.Instance.playerHealth.isAlive || PlayerController.Instance.phoneManager.isPhoneActive) return;
         if (!this.gameObject.activeSelf) return;
 
         if (ctx.started)

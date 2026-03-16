@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 
@@ -12,6 +13,11 @@ public class PlayerHealth : MonoBehaviour
     [HideInInspector] public bool isAlive = true;
     public GameObject weaponSlot;
     private Rigidbody _rb;
+    [Space]
+    public AudioList heartBeat;
+    [Header("Low Health Audio")]
+    public float heartbeatInterval = 1.0f; // Seconds between beats
+    [HideInInspector] public float heartbeatTimer;
 
     [Header("Health UI")]
     public Slider healthSlider;
@@ -20,6 +26,8 @@ public class PlayerHealth : MonoBehaviour
     public GameObject gameOverPanel;
     [SerializeField] private float _waitTime;
     private float _targetFillAmount;
+    [Space]
+    public TextMeshProUGUI healthText;
 
 
     [Header("Radiation Rads")]
@@ -69,6 +77,7 @@ public class PlayerHealth : MonoBehaviour
         }
 
         UpdateHealthBarUI();
+        UpdateHealthBarText();
 
         currentHealth = Mathf.Clamp(currentHealth, 0f, maxHealth);
     }
@@ -84,6 +93,11 @@ public class PlayerHealth : MonoBehaviour
 
         // Smoothly interpolate the current slider value toward the target
         healthSlider.value = Mathf.Lerp(healthSlider.value, _targetFillAmount, Time.deltaTime * lerpSpeed);
+    }
+
+    public void UpdateHealthBarText()
+    {
+        healthText.text = $"Current Health: {currentHealth:F0} / {maxHealth:F0}";
     }
 
     #endregion
