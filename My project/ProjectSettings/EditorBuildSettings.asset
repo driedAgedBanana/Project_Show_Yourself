@@ -14,5 +14,8 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Main_Maze.unity
     guid: 41b33dda8189aa24eb98dfed44e6b4b9
+  - enabled: 1
+    path: Assets/Scenes/Chill_Lounge.unity
+    guid: fcd57f637bcf46f4dbeb56b5c51cd61e
   m_configObjects: {}
   m_UseUCBPForAssetBundles: 0

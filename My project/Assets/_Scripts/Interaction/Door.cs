@@ -55,8 +55,7 @@ public class Door : MonoBehaviour, IPlayerInteract
 
     public void Interact()
     {
-        missionCompletePanel.SetActive(true);
-        GameManager.Instance.PauseGame();
+        GameManager.Instance.StartLoadingScene("Chill_Lounge");
         StopStaticAudio();
     }
 

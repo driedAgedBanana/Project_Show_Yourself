@@ -96,7 +96,7 @@ public class PlayerController : MonoBehaviour
 
     [Header("Restricted weapon")]
     public GameObject weaponSlot;
-    private bool _isInRestrictedArea = false;
+    [HideInInspector] public bool isInRestrictedArea = false;
 
     private void Awake()
     {
@@ -167,7 +167,7 @@ public class PlayerController : MonoBehaviour
             HandleLook();
 
             // Only allow weapon if NOT in a restricted area
-            WeaponAllowed(!_isInRestrictedArea);
+            WeaponAllowed(!isInRestrictedArea);
 
             GameManager.Instance.HideMouse();
         }
@@ -396,7 +396,7 @@ public class PlayerController : MonoBehaviour
 
         if (other.gameObject.CompareTag("Restricted_Area"))
         {
-            _isInRestrictedArea = true;
+            isInRestrictedArea = true;
         }
     }
 
@@ -409,7 +409,7 @@ public class PlayerController : MonoBehaviour
 
         if (other.gameObject.CompareTag("Restricted_Area"))
         {
-            _isInRestrictedArea = false;
+            isInRestrictedArea = false;
         }
     }
 

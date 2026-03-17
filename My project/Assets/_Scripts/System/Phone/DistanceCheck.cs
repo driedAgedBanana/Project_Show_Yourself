@@ -18,6 +18,7 @@ public class DistanceCheck : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (destinationPrefab == null) return;
         CalculateDistance();
     }
 

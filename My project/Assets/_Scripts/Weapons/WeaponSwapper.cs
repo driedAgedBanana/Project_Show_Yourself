@@ -54,7 +54,7 @@ public class WeaponSwapper : MonoBehaviour
 
     public void OnScroll(InputAction.CallbackContext ctx)
     {
-        if (PlayerController.Instance.phoneManager.isPhoneActive) return;
+        if (PlayerController.Instance.phoneManager.isPhoneActive || PlayerController.Instance.isInRestrictedArea) return;
 
         // Prevent swapping if we're already in the middle of a swap
         if (isSwapping || !ctx.performed) return;

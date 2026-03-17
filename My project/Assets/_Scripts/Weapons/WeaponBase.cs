@@ -492,7 +492,7 @@ public class WeaponBase : MonoBehaviour, IWeapon
 
     public void OnAim(InputAction.CallbackContext ctx)
     {
-        if (!PlayerController.Instance.playerHealth.isAlive || PlayerController.Instance.phoneManager.isPhoneActive) return;
+        if (!PlayerController.Instance.playerHealth.isAlive || PlayerController.Instance.phoneManager.isPhoneActive || PlayerController.Instance.isInRestrictedArea) return;
         if(isCheckingForAmmo) return;
 
         isAiming = ctx.ReadValue<float>() > 0;
@@ -500,7 +500,7 @@ public class WeaponBase : MonoBehaviour, IWeapon
 
     public void OnShoot(InputAction.CallbackContext ctx)
     {
-        if (!PlayerController.Instance.playerHealth.isAlive || PlayerController.Instance.phoneManager.isPhoneActive) return;
+        if (!PlayerController.Instance.playerHealth.isAlive || PlayerController.Instance.phoneManager.isPhoneActive || PlayerController.Instance.isInRestrictedArea) return;
         if (isCheckingForAmmo) return;
 
         if (currentWeaponType != WeaponType.Pistol || !gameObject.activeSelf || _isReloading) return;
@@ -523,7 +523,7 @@ public class WeaponBase : MonoBehaviour, IWeapon
     {
         if (!gameObject.activeInHierarchy) return;
 
-        if (!PlayerController.Instance.playerHealth.isAlive || isCheckingForAmmo || _isReloading || PlayerController.Instance.phoneManager.isPhoneActive) return;
+        if (!PlayerController.Instance.playerHealth.isAlive || isCheckingForAmmo || _isReloading || PlayerController.Instance.phoneManager.isPhoneActive || PlayerController.Instance.isInRestrictedArea) return;
 
         if (ctx.started)
         {
@@ -542,7 +542,7 @@ public class WeaponBase : MonoBehaviour, IWeapon
 
     public void OnReload(InputAction.CallbackContext ctx)
     {
-        if (!PlayerController.Instance.playerHealth.isAlive || PlayerController.Instance.phoneManager.isPhoneActive) return;
+        if (!PlayerController.Instance.playerHealth.isAlive || PlayerController.Instance.phoneManager.isPhoneActive || PlayerController.Instance.isInRestrictedArea) return;
 
         if(_currentAmmo >= ammoData.maxAmmo || totalAmountOfCarryAmmo <= 0) return;
 
@@ -558,7 +558,7 @@ public class WeaponBase : MonoBehaviour, IWeapon
 
     public void OnCheckMagazine(InputAction.CallbackContext ctx)
     {
-        if (!PlayerController.Instance.playerHealth.isAlive || PlayerController.Instance.phoneManager.isPhoneActive) return;
+        if (!PlayerController.Instance.playerHealth.isAlive || PlayerController.Instance.phoneManager.isPhoneActive || PlayerController.Instance.isInRestrictedArea) return;
         if (!this.gameObject.activeSelf) return;
 
         if (ctx.started)
