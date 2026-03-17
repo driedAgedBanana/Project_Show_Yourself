@@ -10872,6 +10872,8 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 9e99b05a7a7164d458291bfe7ac66bea, type: 3}
   - {fileID: 8300000, guid: 2fd5f0b4c96cc1f4f849d2611e6be3a8, type: 3}
   - {fileID: 8300000, guid: e4d41b2f1624fda43b1b89c90648c366, type: 3}
+  - {fileID: 8300000, guid: 8db1e6213fd36b643bf4e8204d6a25b5, type: 3}
+  - {fileID: 8300000, guid: 9d94f56826a33284b90aba7acbdc7b06, type: 3}
   buttonPressed: {fileID: 11400000, guid: ceaa6875f3d77ae4d8688607899ed3c8, type: 2}
   songNames: {fileID: 1148492520}
 --- !u!82 &379453676
@@ -30372,6 +30374,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 144684, guid: 9094862f648f77641af28567c096d27a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1009567617}
+    - targetCorrespondingSourceObject: {fileID: 144684, guid: 9094862f648f77641af28567c096d27a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1009567620}
+    - targetCorrespondingSourceObject: {fileID: 144684, guid: 9094862f648f77641af28567c096d27a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1009567621}
     - targetCorrespondingSourceObject: {fileID: 199714, guid: 9094862f648f77641af28567c096d27a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1392896582}
@@ -30403,6 +30411,39 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 4300000, guid: b2bb207d9715bbb4d90e83d0885b7377, type: 3}
+--- !u!65 &1009567620
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 570155360}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 2.5607057, y: 3.7455504, z: 0.45363143}
+  m_Center: {x: 0.0000019073486, y: 1.8727752, z: 0.0000038146973}
+--- !u!114 &1009567621
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 570155360}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: afa674dc67945dd459b34e45240c6572, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BackTomainMenu
 --- !u!1001 &1010419453
 PrefabInstance:
   m_ObjectHideFlags: 0

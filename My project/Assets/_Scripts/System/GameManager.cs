@@ -26,8 +26,6 @@ public class GameManager : MonoBehaviour
             Instance = this;
             DontDestroyOnLoad(gameObject);
         }
-
-        ResumeGame();
     }
 
     private void Start()
@@ -84,6 +82,28 @@ public class GameManager : MonoBehaviour
         }
 
         loadingCanva?.SetActive(false);
+    }
+
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (scene.name == "MenuScene")
+        {
+            ShowMouse();
+        }
+        else
+        {
+            HideMouse();
+        }
     }
 
     public void HideMouse()
