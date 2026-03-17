@@ -1,4 +1,5 @@
 using System.Collections;
+using TMPro;
 using UnityEngine;
 
 [RequireComponent(typeof(AudioSource))]
@@ -12,9 +13,17 @@ public class Music_Radio : MonoBehaviour, IPlayerInteract
     private bool _isOn = false;
     private Coroutine _activeRadioRoutine; // Tracks the "Radio Station" logic
 
+    [Header("UI")]
+    public TextMeshProUGUI songNames;
+
     private void Awake()
     {
         audioSource = GetComponent<AudioSource>();
+    }
+
+    private void Update()
+    {
+
     }
 
     public void Interact()
@@ -58,18 +67,24 @@ public class Music_Radio : MonoBehaviour, IPlayerInteract
         {
             if (playlist.Length == 0) yield break;
 
-            // Pick and Play
+            // 1. Pick a random index
             int randomIndex = Random.Range(0, playlist.Length);
-            audioSource.clip = playlist[randomIndex];
+            AudioClip selectedClip = playlist[randomIndex];
+
+            // 2. Assign and Play
+            audioSource.clip = selectedClip;
             audioSource.Play();
 
-            Debug.Log($"Radio playing: {audioSource.clip.name}");
+            // 3. Update the UI once (No foreach loop needed!)
+            if (songNames != null)
+            {
+                songNames.text = $"Now playing: {selectedClip.name}";
+            }
 
-            // WAIT until the song is finished
-            // We wait for the length of the clip, then add a tiny buffer (0.1s)
-            yield return new WaitForSeconds(audioSource.clip.length);
+            Debug.Log($"Radio playing: {selectedClip.name}");
 
-            // The loop repeats here, picking a new song!
+            // 4. Wait for the song to finish
+            yield return new WaitForSeconds(selectedClip.length);
         }
     }
 
@@ -78,5 +93,11 @@ public class Music_Radio : MonoBehaviour, IPlayerInteract
         audioSource.Stop();
         _isOn = false;
         _activeRadioRoutine = null;
+
+        // Clear the UI text when the radio is off
+        if (songNames != null)
+        {
+            songNames.text = "Radio Off"; // Or set to string.Empty
+        }
     }
 }
