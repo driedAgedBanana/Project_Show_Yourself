@@ -11,6 +11,7 @@ public class PhoneManager : MonoBehaviour
 
     [HideInInspector] public bool isPhoneActive = false;
     private Coroutine _movementCoroutine;
+    public AudioList phoneSFX;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -33,6 +34,8 @@ public class PhoneManager : MonoBehaviour
             phone.SetActive(true);
 
             Vector3 targetPosition = isPhoneActive ? pointA.position : pointB.position;
+            AudioManager.Instance.PlaySounds(phoneSFX, transform.position);
+
 
             if (_movementCoroutine != null) StopCoroutine(_movementCoroutine);
             _movementCoroutine = StartCoroutine(MovePhone(targetPosition));
@@ -47,6 +50,7 @@ public class PhoneManager : MonoBehaviour
             GameManager.Instance.HideMouse();
 
             Vector3 targetPosition = pointB.position;
+            AudioManager.Instance.PlaySounds(phoneSFX, transform.position);
 
             if (_movementCoroutine != null) StopCoroutine(_movementCoroutine);
             _movementCoroutine = StartCoroutine(MovePhone(targetPosition));

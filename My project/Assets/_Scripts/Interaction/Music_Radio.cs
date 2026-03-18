@@ -113,7 +113,7 @@ public class Music_Radio : MonoBehaviour, IPlayerInteract
         }
     }
 
-    private void TurnOff()
+    public void TurnOff()
     {
         audioSource.Stop();
         _isOn = false;

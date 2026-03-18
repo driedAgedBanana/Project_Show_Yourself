@@ -21,6 +21,11 @@ public class LoadingManager : MonoBehaviour
         {
             loadingCanva.SetActive(false); 
         }
+
+        if(menuCanvas == null)
+        {
+            return;
+        }
     }
 
     public void StartLoadingScene(string sceneName)
