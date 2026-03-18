@@ -98,6 +98,19 @@ public class PlayerController : MonoBehaviour
     public GameObject weaponSlot;
     [HideInInspector] public bool isInRestrictedArea = false;
 
+    [Header("Tutorial Logic")]
+    public bool instructorAuthorizedWeapons = false;
+    public bool primaryAuthorized = false;
+    public bool sidearmAuthorized = false;
+
+    [Header("Movement Authorization")]
+    public bool canMoveAtAll = false;
+    public bool canSprintAuthorized = false;
+    public bool canCrouchAuthorized = false;
+
+    [Header("Tactical Authorization")]
+    public bool canLeanAuthorized = false; // Locked until the CQB segment
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -166,8 +179,10 @@ public class PlayerController : MonoBehaviour
         {
             HandleLook();
 
-            // Only allow weapon if NOT in a restricted area
-            WeaponAllowed(!isInRestrictedArea);
+            // New Logic: Weapons are ONLY allowed if:
+            // 1. Not in a restricted area AND the Instructor has given the green light.
+            bool canUse = !isInRestrictedArea && instructorAuthorizedWeapons;
+            WeaponAllowed(canUse);
 
             GameManager.Instance.HideMouse();
         }
@@ -182,7 +197,9 @@ public class PlayerController : MonoBehaviour
     {
         if (playerHealth.isAlive && !phoneManager.isPhoneActive)
         {
-            _currentMoveInput = Vector2.SmoothDamp(_currentMoveInput, moveInput, ref _moveInputVelocity, inputSmoothTime);
+            // If not authorized to move, force the input to zero
+            Vector2 finalMoveInput = canMoveAtAll ? moveInput : Vector2.zero;
+            _currentMoveInput = Vector2.SmoothDamp(_currentMoveInput, finalMoveInput, ref _moveInputVelocity, inputSmoothTime);
 
             HandleStamina();      
             HandleHealthEffects(); 
@@ -295,7 +312,8 @@ public class PlayerController : MonoBehaviour
 
     private void HandleStamina()
     {
-        canSprint = runHeld && isMoving && !isCrouching && currentStamina > 0;
+        // Added canSprintAuthorized check
+        canSprint = runHeld && isMoving && !isCrouching && currentStamina > 0 && canSprintAuthorized;
 
         // Update stamina values
         if (canSprint) currentStamina -= staminaDrainRate * Time.deltaTime;
@@ -375,7 +393,10 @@ public class PlayerController : MonoBehaviour
 
     private void HandleLean()
     {
-        float targetZ = -leanInput * leanAngle;
+        // If not authorized, force the target angle to 0
+        float effectiveLeanInput = canLeanAuthorized ? leanInput : 0f;
+
+        float targetZ = -effectiveLeanInput * leanAngle;
         Quaternion targetRot = Quaternion.Euler(0, 0, targetZ);
         leanPivot.localRotation = Quaternion.Slerp(leanPivot.localRotation, targetRot, Time.deltaTime * leanSpeed);
     }
@@ -421,7 +442,18 @@ public class PlayerController : MonoBehaviour
 
     public void WeaponAllowed(bool isAllowed)
     {
-        weaponSlot.SetActive(isAllowed);
+        // If the instructor hasn't authorized ANY weapons, force close
+        if (!primaryAuthorized && !sidearmAuthorized)
+        {
+            weaponSlot.SetActive(false);
+            return;
+        }
+
+        // Logic: If we are holding Main, is Main allowed? If Sidearm, is Sidearm allowed?
+        WeaponSwapper swapper = GetComponentInChildren<WeaponSwapper>();
+        bool currentSlotAuthorized = swapper.isMainWeaponActive ? primaryAuthorized : sidearmAuthorized;
+
+        weaponSlot.SetActive(isAllowed && currentSlotAuthorized);
     }
 
     public void OnLook(InputAction.CallbackContext ctx) => lookInput = ctx.ReadValue<Vector2>();

@@ -331,6 +331,12 @@ public class WeaponBase : MonoBehaviour, IWeapon
 
                 Destroy(bulletImpact);
             }
+
+            TutorialTarget target = hit.transform.GetComponent<TutorialTarget>();
+            if (target != null)
+            {
+                target.TakeDamage(damage, hit.point, force);
+            }
         }
         else
         {

@@ -55,15 +55,17 @@ public class WeaponSwapper : MonoBehaviour
     public void OnScroll(InputAction.CallbackContext ctx)
     {
         if (PlayerController.Instance.phoneManager.isPhoneActive || PlayerController.Instance.isInRestrictedArea) return;
-
-        // Prevent swapping if we're already in the middle of a swap
         if (isSwapping || !ctx.performed) return;
 
-        Vector2 scrollInput = ctx.ReadValue<Vector2>();
+        // --- NEW TUTORIAL CHECK ---
+        // If the player tries to swap to the other weapon, check if it's authorized
+        bool tryingToSwapToSecondary = isMainWeaponActive; // If currently main, next is secondary
+        bool tryingToSwapToMain = !isMainWeaponActive;    // If currently secondary, next is main
 
-        if (Mathf.Abs(scrollInput.y) > 0.1f && !isSwapping)
-        {
-            StartCoroutine(SwapWeaponSequence());
-        }
+        if (tryingToSwapToSecondary && !PlayerController.Instance.sidearmAuthorized) return;
+        if (tryingToSwapToMain && !PlayerController.Instance.primaryAuthorized) return;
+        // ---------------------------
+
+        StartCoroutine(SwapWeaponSequence());
     }
 }

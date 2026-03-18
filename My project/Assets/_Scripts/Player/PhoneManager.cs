@@ -13,11 +13,14 @@ public class PhoneManager : MonoBehaviour
     private Coroutine _movementCoroutine;
     public AudioList phoneSFX;
 
+    [Header("Phone Authorization")]
+    public bool canOpenPhone = false; // Set this to true when the tutorial allows the player to use the phone
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        if(phone != null)
+        if (phone != null)
         {
             phone.transform.position = pointB.position;
             phone.SetActive(false);
@@ -26,19 +29,25 @@ public class PhoneManager : MonoBehaviour
 
     public void OnTogglePhone(InputAction.CallbackContext ctx)
     {
-        // Only trigger on the initial press
-        if (ctx.performed)
+        if (canOpenPhone)
         {
-            isPhoneActive = !isPhoneActive;
+            if (ctx.performed)
+            {
+                isPhoneActive = !isPhoneActive;
 
-            phone.SetActive(true);
+                phone.SetActive(true);
 
-            Vector3 targetPosition = isPhoneActive ? pointA.position : pointB.position;
-            AudioManager.Instance.PlaySounds(phoneSFX, transform.position);
+                Vector3 targetPosition = isPhoneActive ? pointA.position : pointB.position;
+                AudioManager.Instance.PlaySounds(phoneSFX, transform.position);
 
 
-            if (_movementCoroutine != null) StopCoroutine(_movementCoroutine);
-            _movementCoroutine = StartCoroutine(MovePhone(targetPosition));
+                if (_movementCoroutine != null) StopCoroutine(_movementCoroutine);
+                _movementCoroutine = StartCoroutine(MovePhone(targetPosition));
+            }
+        }
+        else
+        {
+            return; // Ignore input if phone is not authorized yet
         }
     }
 
