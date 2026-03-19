@@ -14,9 +14,16 @@ public class TutorialManager : MonoBehaviour
     public int targetGoal = 0;
     public DialougeSO nextDialogueAfterTargets;
 
+    [Header("Task UI References")]
+    public GameObject taskPanel; // The TutorialPanel from your hierarchy
+    public TextMeshProUGUI titleText;
+    public TextMeshProUGUI instructionText;
+
+    private bool _requirementMet = false;
+
     private void Awake()
     {
-        if(Instance == null)
+        if (Instance == null)
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
@@ -27,12 +34,31 @@ public class TutorialManager : MonoBehaviour
         }
     }
 
+    private void Start()
+    {
+        // If we are in the Tutorial Scene, lock the player down immediately
+        PlayerController pc = PlayerController.Instance;
+        pc.primaryAuthorized = false;
+        pc.sidearmAuthorized = false;
+        pc.canMoveAtAll = false;
+        pc.canSprintAuthorized = false;
+        pc.canLeanAuthorized = false;
+    }
+
     public void PlayDialouge(DialougeSO dialogue)
     {
+        PlayerController pc = PlayerController.Instance;
+
         StopAllCoroutines();
 
-        // --- INSTANT ACTIONS (Safety/Freezing) ---
-        PlayerController pc = PlayerController.Instance;
+        // Reset all tracking bools so the player has to do the action AGAIN
+        WeaponSwapper swapper = pc.GetComponentInChildren<WeaponSwapper>();
+        if (swapper != null)
+        {
+            swapper.hasSwappedWeapon = false;
+            swapper.mainWeapon.GetComponent<WeaponBase>().hasCheckedMagazine = false;
+            swapper.secondWeapon.GetComponent<WeaponBase>().hasCheckedMagazine = false;
+        }
 
         // We freeze the player immediately so they have to listen
         if (dialogue.freezePlayer) pc.canMoveAtAll = false;
@@ -45,6 +71,15 @@ public class TutorialManager : MonoBehaviour
             pc.phoneManager.canOpenPhone = false;
         }
 
+        // FORCE the panel off if it was stuck from a previous failed requirement
+        if (taskPanel.activeSelf)
+        {
+            StartCoroutine(FadePanel(1f, 0.4f));
+            taskPanel.SetActive(false);
+            Debug.Log("Forcing old panel closed for new dialogue.");
+        }
+        pc.playerInteract.hasInteracted = false;
+
         // --- START SEQUENCE ---
         dialougeVoiceSource.clip = dialogue.voiceClip;
         dialougeVoiceSource.Play();
@@ -55,7 +90,7 @@ public class TutorialManager : MonoBehaviour
 
     private IEnumerator DisplaySubtitleSequence(DialougeSO dialogue)
     {
-        // 1. Play all subtitles
+        // 1. Play subtitles
         foreach (SubtitleTextLine line in dialogue.subtitleLines)
         {
             yield return new WaitForSeconds(line.startTime);
@@ -64,28 +99,130 @@ public class TutorialManager : MonoBehaviour
             subtitleText.text = "";
         }
 
-        // 2. Wait for the actual audio clip to finish (in case subtitles are shorter than audio)
-        while (dialougeVoiceSource.isPlaying)
+        // 2. Wait for audio only if a clip exists
+        if (dialougeVoiceSource.clip != null)
         {
-            yield return null;
+            while (dialougeVoiceSource.isPlaying) yield return null;
         }
 
-        // 3. --- DELAYED ACTIONS (Unlocks happen here) ---
+        // 3. --- AUTHORIZE ACTIONS FIRST ---
+        // We unlock the abilities NOW so the player CAN perform the requirement below.
         PlayerController pc = PlayerController.Instance;
-
         if (dialogue.unlockBasicMovement) pc.canMoveAtAll = true;
         if (dialogue.unlockSprint) pc.canSprintAuthorized = true;
         if (dialogue.unlockCrouch) pc.canCrouchAuthorized = true;
         if (dialogue.unlockLeaning) pc.canLeanAuthorized = true;
-
         if (dialogue.unlockPrimary) pc.primaryAuthorized = true;
         if (dialogue.unlockSidearm) pc.sidearmAuthorized = true;
         if (dialogue.unlockPhone) pc.phoneManager.canOpenPhone = true;
 
-        // 4. Trigger the Target Practice goal AFTER the speech is done
+        // 4. --- SHOW TASK PANEL & WAIT FOR COMPLETION ---
+        if (dialogue.showTaskPanel)
+        {
+            titleText.text = dialogue.taskTitle;
+            instructionText.text = dialogue.taskInstruction;
+
+            CanvasGroup cg = taskPanel.GetComponent<CanvasGroup>();
+            if (cg != null) cg.alpha = 0;
+
+            taskPanel.SetActive(true);
+            yield return StartCoroutine(FadePanel(1f, 0.4f));
+
+            _requirementMet = false;
+
+            // This will now work for silent tasks because the player is "unfrozen" above
+            yield return new WaitUntil(() => CheckRequirement(dialogue));
+
+            yield return new WaitForSeconds(0.8f);
+
+            yield return StartCoroutine(FadePanel(0f, 0.4f));
+            taskPanel.SetActive(false);
+        }
+
+        // 5. TRIGGER TARGETS (For non-panel shooting tasks)
         if (dialogue.requireTargetsHit > 0)
         {
             SetTargetGoal(dialogue.requireTargetsHit, dialogue.dialogueAfterGoalReached);
+        }
+
+        if (dialogue.unlockLiveFire)
+        {
+            // Find the weapons and unlock their triggers
+            WeaponBase[] weapons = pc.GetComponentsInChildren<WeaponBase>(true);
+            foreach (WeaponBase w in weapons)
+            {
+                w.instructorTriggerAuth = true;
+            }
+        }
+
+        if (dialogue.dialogueAfterGoalReached != null && dialogue.requireTargetsHit == 0)
+        {
+            Debug.Log("Task Complete. Moving to: " + dialogue.dialogueAfterGoalReached.name);
+            PlayDialouge(dialogue.dialogueAfterGoalReached);
+        }
+
+        // 6. Action-Based Auto-Progression
+        // This triggers after the WaitUntil requirement is met
+        if (dialogue.dialogueAfterGoalReached != null && dialogue.completionRequirement != TutorialRequirements.None)
+        {
+            Debug.Log($"Action '{dialogue.completionRequirement}' Complete. Triggering: {dialogue.dialogueAfterGoalReached.name}");
+
+            // A small delay makes the transition feel less "robotic"
+            yield return new WaitForSeconds(0.5f);
+            PlayDialouge(dialogue.dialogueAfterGoalReached);
+        }
+    }
+
+    private bool CheckRequirement(DialougeSO dialogue)
+    {
+        PlayerController pc = PlayerController.Instance;
+        WeaponSwapper swapper = pc.GetComponentInChildren<WeaponSwapper>();
+
+        // Get the currently active weapon to check its magazine status
+        WeaponBase currentWeapon = null;
+        if (swapper != null)
+        {
+            currentWeapon = swapper.isMainWeaponActive ?
+                swapper.mainWeapon.GetComponent<WeaponBase>() :
+                swapper.secondWeapon.GetComponent<WeaponBase>();
+        }
+
+        switch (dialogue.completionRequirement)
+        {
+            case TutorialRequirements.Move:
+                return pc.isMoving;
+
+            case TutorialRequirements.ShootTarget:
+                return targetsHit >= targetGoal;
+
+            case TutorialRequirements.Sprint:
+                // Check if the player is currently holding run and moving
+                return pc.runHeld && pc.isMoving;
+
+            case TutorialRequirements.Interact:
+                bool interacted = pc.playerInteract.hasInteracted;
+                if (interacted) Debug.Log("<color=green>TUTORIAL: Interaction detected by Manager!</color>");
+                return interacted; 
+
+            case TutorialRequirements.Lean:
+                // Checks if leanPivot is rotated away from center
+                return Mathf.Abs(pc.leanPivot.localRotation.z) > 0.05f;
+
+            case TutorialRequirements.InspectAmmo:
+                if (currentWeapon == null) return false;
+                return currentWeapon.hasCheckedMagazine;
+
+            case TutorialRequirements.SwitchWeapon:
+                return swapper != null && swapper.hasSwappedWeapon;
+
+            case TutorialRequirements.OpenPhone:
+                return pc.phoneManager.isPhoneActive;
+
+            case TutorialRequirements.None:
+                return true;
+
+            default:
+                return false;
         }
     }
 
@@ -100,10 +237,27 @@ public class TutorialManager : MonoBehaviour
     {
         targetsHit++;
 
-        if(targetsHit >= targetGoal && targetGoal > 0)
+        if (targetsHit >= targetGoal && targetGoal > 0)
         {
             targetGoal = 0; // Reset the goal to prevent multiple triggers
             PlayDialouge(nextDialogueAfterTargets);
         }
+    }
+
+    private IEnumerator FadePanel(float targetAlpha, float duration)
+    {
+        CanvasGroup cg = taskPanel.GetComponent<CanvasGroup>();
+        if (cg == null) yield break;
+
+        float startAlpha = cg.alpha;
+        float time = 0;
+
+        while (time < duration)
+        {
+            time += Time.deltaTime;
+            cg.alpha = Mathf.Lerp(startAlpha, targetAlpha, time / duration);
+            yield return null;
+        }
+        cg.alpha = targetAlpha;
     }
 }

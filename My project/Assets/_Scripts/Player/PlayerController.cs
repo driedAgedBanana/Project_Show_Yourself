@@ -14,6 +14,7 @@ public class PlayerController : MonoBehaviour
     public CameraShakeManager cameraShakeManager;
     public PlayerInteract playerInteract;
     public PhoneManager phoneManager;
+    private WeaponSwapper _swapper;
 
     [Header("References")]
     public Rigidbody rb;
@@ -47,7 +48,7 @@ public class PlayerController : MonoBehaviour
     public float staminaRecoverRate = 0.5f;
     private float currentStamina;
     [HideInInspector] public bool canSprint;
-    private bool runHeld;
+    [HideInInspector] public bool runHeld;
 
     [Header("FOV")]
     public int normalFOV = 60;
@@ -99,17 +100,16 @@ public class PlayerController : MonoBehaviour
     [HideInInspector] public bool isInRestrictedArea = false;
 
     [Header("Tutorial Logic")]
-    public bool instructorAuthorizedWeapons = false;
-    public bool primaryAuthorized = false;
-    public bool sidearmAuthorized = false;
+    public bool primaryAuthorized = true;
+    public bool sidearmAuthorized = true;
 
     [Header("Movement Authorization")]
-    public bool canMoveAtAll = false;
-    public bool canSprintAuthorized = false;
-    public bool canCrouchAuthorized = false;
+    public bool canMoveAtAll = true;
+    public bool canSprintAuthorized = true;
+    public bool canCrouchAuthorized = true;
 
     [Header("Tactical Authorization")]
-    public bool canLeanAuthorized = false; // Locked until the CQB segment
+    public bool canLeanAuthorized = true; 
 
     private void Awake()
     {
@@ -124,6 +124,8 @@ public class PlayerController : MonoBehaviour
 
         playerHealth = GetComponent<PlayerHealth>();
         playerInteract = GetComponent<PlayerInteract>();
+
+        _swapper = GetComponentInChildren<WeaponSwapper>(true);
 
         if (globalVolume != null)
         {
@@ -181,7 +183,7 @@ public class PlayerController : MonoBehaviour
 
             // New Logic: Weapons are ONLY allowed if:
             // 1. Not in a restricted area AND the Instructor has given the green light.
-            bool canUse = !isInRestrictedArea && instructorAuthorizedWeapons;
+            bool canUse = !isInRestrictedArea;
             WeaponAllowed(canUse);
 
             GameManager.Instance.HideMouse();
@@ -442,16 +444,21 @@ public class PlayerController : MonoBehaviour
 
     public void WeaponAllowed(bool isAllowed)
     {
-        // If the instructor hasn't authorized ANY weapons, force close
+        // 1. If we haven't found the swapper yet, try one more time
+        if (_swapper == null) _swapper = GetComponentInChildren<WeaponSwapper>(true);
+
+        // 2. If it's STILL null, exit to prevent the crash
+        if (_swapper == null) return;
+
+        // 3. Global authorization check
         if (!primaryAuthorized && !sidearmAuthorized)
         {
             weaponSlot.SetActive(false);
             return;
         }
 
-        // Logic: If we are holding Main, is Main allowed? If Sidearm, is Sidearm allowed?
-        WeaponSwapper swapper = GetComponentInChildren<WeaponSwapper>();
-        bool currentSlotAuthorized = swapper.isMainWeaponActive ? primaryAuthorized : sidearmAuthorized;
+        // 4. Specific slot check
+        bool currentSlotAuthorized = _swapper.isMainWeaponActive ? primaryAuthorized : sidearmAuthorized;
 
         weaponSlot.SetActive(isAllowed && currentSlotAuthorized);
     }

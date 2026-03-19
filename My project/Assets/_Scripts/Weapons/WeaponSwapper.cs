@@ -21,6 +21,8 @@ public class WeaponSwapper : MonoBehaviour
     [Header("SFX")]
     public AudioList swapSound;
 
+    [HideInInspector] public bool hasSwappedWeapon;
+
     // Update is called once per frame
     void Update()
     {
@@ -31,6 +33,7 @@ public class WeaponSwapper : MonoBehaviour
     private IEnumerator SwapWeaponSequence()
     {
         isSwapping = true;
+        hasSwappedWeapon = true;
 
         // Drop the weapon
         _targetPos = hiddenOffset;

@@ -10,25 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 56dea13167c4a45419e7aa74c50d2517, type: 3}
-  m_Name: Intro
+  m_Name: WalkToWeapon
   m_EditorClassIdentifier: Assembly-CSharp::DialougeSO
-  voiceClip: {fileID: 8300000, guid: b6c679f0b40a6eb45a5e75c86b672125, type: 3}
+  voiceClip: {fileID: 0}
   subtitleLines:
-  - text: 'Neural link established. Welcome to the Tactical Suite, Sector 3. '
+  - text: 
     startTime: 0
-    duration: 4
-  - text: This environment is a localized sub-routine; expect minor visual artifacts
-      as the simulation stabilizes.
-    startTime: 0
-    duration: 6
-  - text: Your locomotion is now active. Proceed to the armory station and calibrate
-      your neural grip on the provided hardware.
-    startTime: 0
-    duration: 7
+    duration: 0
   unlockPrimary: 0
   unlockSidearm: 0
   lockEverything: 0
-  unlockBasicMovement: 1
+  unlockBasicMovement: 0
   unlockSprint: 0
   unlockCrouch: 0
   freezePlayer: 0
@@ -38,7 +30,8 @@ MonoBehaviour:
   requireTargetsHit: 0
   dialogueAfterGoalReached: {fileID: 0}
   showTaskPanel: 1
-  taskTitle: Moving
-  taskInstruction: Move with <color=yellow>[W][A][S][D]</color>
-  completionRequirement: 1
+  taskTitle: Interact
+  taskInstruction: '"Press <color=yellow>[F]</color> to interact with objects. An
+    icon will indicate interactable items."'
+  completionRequirement: 4
   targetsRequired: 0

@@ -8,8 +8,12 @@ public class PlayerInteract : MonoBehaviour
     public GameObject interactIcon;
 
     private Camera _mainCamera;
-    private bool _isInteracting = false;
-    private bool _canInteract = false;
+    private bool _canInteract = true; // Default to true
+
+    // Store the interface we found
+    private IPlayerInteract _currentInteractable;
+
+    [HideInInspector] public bool hasInteracted;
 
     private void Start()
     {
@@ -26,38 +30,38 @@ public class PlayerInteract : MonoBehaviour
 
     public void RaycastCheck()
     {
-        RaycastHit hit;
         Ray ray = new Ray(_mainCamera.transform.position, _mainCamera.transform.forward);
-        Debug.DrawRay(ray.origin, ray.direction * interactRange, Color.red);
+        RaycastHit hit;
 
         if (Physics.Raycast(ray, out hit, interactRange))
         {
-            GameObject hitObject = hit.collider.gameObject;
-
-            if (hitObject.TryGetComponent(out IPlayerInteract interactable))
+            // Try to get the interface from what we hit
+            if (hit.collider.TryGetComponent(out IPlayerInteract interactable))
             {
+                _currentInteractable = interactable; // STORE IT
                 interactIcon.SetActive(true);
-
-                if (_isInteracting)
-                {
-                    interactable.Interact();
-                    _isInteracting = false;
-                }
                 return;
             }
         }
 
+        // If we hit nothing or something non-interactable
+        _currentInteractable = null;
         interactIcon.SetActive(false);
-        _isInteracting = false;
     }
 
     public void OnInteract(InputAction.CallbackContext ctx)
     {
-        if (ctx.started)
+        if (ctx.started && _canInteract && _currentInteractable != null)
         {
-            _isInteracting = true;
+            // 1. SET THE FLAG FIRST
+            hasInteracted = true;
+            Debug.Log("Tutorial: Interaction Flag Set to True");
+
+            // 2. DO THE INTERACTION
+            _currentInteractable.Interact();
+
+            StartCoroutine(InteractionCoolDown(0.2f));
         }
-        StartCoroutine(InteractionCoolDown(0.1f));
     }
 
     private IEnumerator InteractionCoolDown(float time)

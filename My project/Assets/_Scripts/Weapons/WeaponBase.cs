@@ -103,6 +103,11 @@ public class WeaponBase : MonoBehaviour, IWeapon
     [Header("Weapon Swapper")]
     public WeaponSwapper weaponSwapper;
 
+    [HideInInspector] public bool hasCheckedMagazine; // Reset this when a new task starts
+
+
+    [HideInInspector] public bool instructorTriggerAuth = false; 
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -509,7 +514,7 @@ public class WeaponBase : MonoBehaviour, IWeapon
         if (!PlayerController.Instance.playerHealth.isAlive || PlayerController.Instance.phoneManager.isPhoneActive || PlayerController.Instance.isInRestrictedArea) return;
         if (isCheckingForAmmo) return;
 
-        if (currentWeaponType != WeaponType.Pistol || !gameObject.activeSelf || _isReloading) return;
+        if (currentWeaponType != WeaponType.Pistol || !gameObject.activeSelf || _isReloading || !instructorTriggerAuth) return;
 
         if (ctx.started && _currentAmmo > 0)
         {
@@ -529,7 +534,7 @@ public class WeaponBase : MonoBehaviour, IWeapon
     {
         if (!gameObject.activeInHierarchy) return;
 
-        if (!PlayerController.Instance.playerHealth.isAlive || isCheckingForAmmo || _isReloading || PlayerController.Instance.phoneManager.isPhoneActive || PlayerController.Instance.isInRestrictedArea) return;
+        if (!PlayerController.Instance.playerHealth.isAlive || isCheckingForAmmo || _isReloading || PlayerController.Instance.phoneManager.isPhoneActive || PlayerController.Instance.isInRestrictedArea || !instructorTriggerAuth) return;
 
         if (ctx.started)
         {
@@ -569,6 +574,7 @@ public class WeaponBase : MonoBehaviour, IWeapon
 
         if (ctx.started)
         {
+            hasCheckedMagazine = true;
             PlayCheckMagAnimation();
         }
 
