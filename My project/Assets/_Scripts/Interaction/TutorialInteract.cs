@@ -20,18 +20,22 @@ public class TutorialInteract : MonoBehaviour, IPlayerInteract
         // defined inside that specific SO.
 
         TutorialManager.Instance.PlayDialouge(dialougeToPlay);
+        _hasPlayed = true;
 
-        // Handle the physical barriers if there are any
-        if (physicalBarriers != null)
+        if (playOnce && _hasPlayed)
         {
-            foreach (GameObject barrier in physicalBarriers)
+            // Handle the physical barriers if there are any
+            if (physicalBarriers != null)
             {
-                // Example: Open a door when the instructor starts talking
-                barrier.SetActive(false);
+                foreach (GameObject barrier in physicalBarriers)
+                {
+                    // Example: Open a door when the instructor starts talking
+                    barrier.SetActive(false);
+                }
             }
         }
 
-        _hasPlayed = true;
+
 
         // Optional: Disable the trigger object entirely if playOnce is true
         if (playOnce) gameObject.SetActive(false);
