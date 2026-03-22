@@ -1,0 +1,53 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56dea13167c4a45419e7aa74c50d2517, type: 3}
+  m_Name: ShootingRange
+  m_EditorClassIdentifier: Assembly-CSharp::DialougeSO
+  voiceClip: {fileID: 8300000, guid: 1c18e7e9b6d670c41afa9e879d7971f7, type: 3}
+  subtitleLines:
+  - text: Welcome to the Precision Ballistic Zone.
+    startTime: 0
+    duration: 2.2
+  - text: Here, we move beyond theory to kinetic application.
+    startTime: 0
+    duration: 3.6
+  - text: You are expected to maintain absolute grouping and discipline.
+    startTime: 0
+    duration: 3.18
+  - text: "Today\u2019s engagement code is 'THREAT'."
+    startTime: 0
+    duration: 2.2
+  - text: Stand by... find your focus... THREAT!
+    startTime: 0
+    duration: 3
+  unlockPrimary: 0
+  unlockSidearm: 0
+  lockEverything: 0
+  unlockBasicMovement: 0
+  unlockSprint: 0
+  unlockCrouch: 0
+  freezePlayer: 0
+  unlockLeaning: 0
+  unlockLiveFire: 1
+  unlockPhone: 0
+  requireTargetsHit: 5
+  dialogueAfterGoalReached: {fileID: 11400000, guid: 9bcc1a177c57577479c30b3ceac44c6b, type: 2}
+  showTaskPanel: 1
+  taskTitle: Shooting
+  taskInstruction: 'Press <color=yellow>[LMB]</color> to fire
+
+    Hold <color=yellow>[RMB]</color>
+    to aim your shots
+
+    Press <color=yellow>[R]</color> to reload'
+  completionRequirement: 0
+  targetsRequired: 0

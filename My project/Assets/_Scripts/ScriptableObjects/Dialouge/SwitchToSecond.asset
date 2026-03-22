@@ -1,0 +1,52 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56dea13167c4a45419e7aa74c50d2517, type: 3}
+  m_Name: SwitchToSecond
+  m_EditorClassIdentifier: Assembly-CSharp::DialougeSO
+  voiceClip: {fileID: 8300000, guid: 4f21f7aad13b85f41b79d4adf3c998a7, type: 3}
+  subtitleLines:
+  - text: Your performance metrics are exceeding the standard initiate baseline.
+    startTime: 0
+    duration: 4.6
+  - text: Exceptional.
+    startTime: 0
+    duration: 1.07
+  - text: If you require a resupply, ammunition crates are located on the left flank
+      of the staging table.
+    startTime: 0
+    duration: 5.06
+  - text: Sidearm authorization is now active.
+    startTime: 0
+    duration: 2.14
+  - text: Switch to your secondary weapon and resume the engagement.
+    startTime: 0
+    duration: 3.04
+  - text: THREAT!!
+    startTime: 0
+    duration: 0.6
+  unlockPrimary: 0
+  unlockSidearm: 1
+  lockEverything: 0
+  unlockBasicMovement: 0
+  unlockSprint: 0
+  unlockCrouch: 0
+  freezePlayer: 0
+  unlockLeaning: 0
+  unlockLiveFire: 1
+  unlockPhone: 0
+  requireTargetsHit: 5
+  dialogueAfterGoalReached: {fileID: 11400000, guid: ec623f8112517f643994bb7f22bff081, type: 2}
+  showTaskPanel: 1
+  taskTitle: Shooting with secondary
+  taskInstruction: Scroll <color=yellow>[Mouse Wheel]</color> to switch weapons
+  completionRequirement: 0
+  targetsRequired: 0

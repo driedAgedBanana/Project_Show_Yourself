@@ -337,10 +337,9 @@ public class WeaponBase : MonoBehaviour, IWeapon
                 Destroy(bulletImpact);
             }
 
-            TutorialTarget target = hit.transform.GetComponent<TutorialTarget>();
-            if (target != null)
+            else if (hit.collider.TryGetComponent(out TutorialTarget target))
             {
-                target.TakeDamage(damage, hit.point, force);
+                target.TakeDamage(damage);
             }
         }
         else

@@ -5,7 +5,7 @@ public class TutorialTarget : MonoBehaviour
     public bool isDestroyed = false;
 
     // This method is called by the WeaponBase via Raycast
-    public void TakeDamage(int damage, Vector3 hitPoint, Vector3 force)
+    public void TakeDamage(int damage)
     {
         if (isDestroyed) return;
 
@@ -16,6 +16,6 @@ public class TutorialTarget : MonoBehaviour
         TutorialManager.Instance.OnTargetHit();
 
         // Visuals (Optional: Play a sound or fall over)
-        gameObject.SetActive(false);
+        Destroy(gameObject);
     }
 }

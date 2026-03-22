@@ -1266,10 +1266,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyMovement
   patrolCenter: {fileID: 4243538704547566}
-  patrolRadius: 10
+  patrolRadius: 2
   enemyAnimator: {fileID: 95921630161195528}
-  walkSpeed: 2
-  runSpeed: 4
+  walkSpeed: 1
+  runSpeed: 2
 --- !u!114 &6676737870124174592
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1283,11 +1283,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyVision
   player: {fileID: 0}
-  visionDistance: 15
-  visionDegree: 180
+  visionDistance: 0
+  visionDegree: 0
   blockingLayers:
     serializedVersion: 2
-    m_Bits: 1280
+    m_Bits: 0
 --- !u!114 &8765081719794197619
 MonoBehaviour:
   m_ObjectHideFlags: 0

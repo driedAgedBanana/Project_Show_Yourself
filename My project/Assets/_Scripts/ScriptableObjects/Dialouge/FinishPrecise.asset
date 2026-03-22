@@ -1,0 +1,48 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56dea13167c4a45419e7aa74c50d2517, type: 3}
+  m_Name: FinishPrecise
+  m_EditorClassIdentifier: Assembly-CSharp::DialougeSO
+  voiceClip: {fileID: 8300000, guid: 283a9443aae0e57408637bd9b45dffdb, type: 3}
+  subtitleLines:
+  - text: Evaluation of precise engagement is complete.
+    startTime: 0
+    duration: 3.01
+  - text: You have demonstrated sufficient tactical adaptability.
+    startTime: 0
+    duration: 3.04
+  - text: The sector to your immediate right is now accessible.
+    startTime: 0
+    duration: 2.19
+  - text: Proceed to the designated zone for final processing.
+    startTime: 0
+    duration: 2.9
+  unlockPrimary: 0
+  unlockSidearm: 0
+  lockEverything: 0
+  unlockBasicMovement: 0
+  unlockSprint: 0
+  unlockCrouch: 0
+  freezePlayer: 0
+  unlockLeaning: 0
+  unlockLiveFire: 0
+  unlockPhone: 0
+  requireTargetsHit: 0
+  dialogueAfterGoalReached: {fileID: 0}
+  showTaskPanel: 0
+  taskTitle: 
+  taskInstruction: 
+  completionRequirement: 0
+  targetsRequired: 0
+  objectsToEnable: []
+  objectsToDisable:
+  - Container_01

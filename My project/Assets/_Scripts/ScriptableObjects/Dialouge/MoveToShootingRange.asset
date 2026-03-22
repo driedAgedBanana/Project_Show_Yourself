@@ -10,31 +10,35 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 56dea13167c4a45419e7aa74c50d2517, type: 3}
-  m_Name: GrabWeapon
+  m_Name: MoveToShootingRange
   m_EditorClassIdentifier: Assembly-CSharp::DialougeSO
-  voiceClip: {fileID: 8300000, guid: 4348e3b50c73de049816be591e96ee42, type: 3}
+  voiceClip: {fileID: 8300000, guid: 3ed2ce4cd800b364e9dfdb1af6ac4789, type: 3}
   subtitleLines:
-  - text: 'Weapon recognized. Sidearm authorization confirmed. '
+  - text: Not bad for a trainee.
     startTime: 0
-    duration: 4.5
-  - text: Before we live-fire, perform a status check on your hardware. Verify your
-      current magazine capacity.
+    duration: 2.7
+  - text: 'Just a tip: try not to be staring at your ammo count when the bullets
+      start flying. '
     startTime: 0
-    duration: 4.5
-  unlockPrimary: 1
+    duration: 5.6
+  - text: "Readiness happens before the fight, not during. The range is behind you\u2014try
+      not to get lost on the way."
+    startTime: 0
+    duration: 6
+  unlockPrimary: 0
   unlockSidearm: 0
   lockEverything: 0
-  unlockBasicMovement: 0
+  unlockBasicMovement: 1
   unlockSprint: 0
   unlockCrouch: 0
-  freezePlayer: 1
+  freezePlayer: 0
   unlockLeaning: 0
   unlockLiveFire: 0
   unlockPhone: 0
   requireTargetsHit: 0
-  dialogueAfterGoalReached: {fileID: 11400000, guid: d35a7fe24407e14499fd93cf3a5fb1ac, type: 2}
-  showTaskPanel: 1
-  taskTitle: Inspect ammo
-  taskInstruction: Press <color=yellow>[T]</color> to check ammo.
-  completionRequirement: 3
+  dialogueAfterGoalReached: {fileID: 0}
+  showTaskPanel: 0
+  taskTitle: 
+  taskInstruction: 
+  completionRequirement: 0
   targetsRequired: 0

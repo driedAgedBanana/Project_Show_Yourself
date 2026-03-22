@@ -1,11 +1,13 @@
 using UnityEngine;
 using TMPro;
 using System.Collections;
+using System.Collections.Generic;
 
 public class TutorialManager : MonoBehaviour
 {
     public static TutorialManager Instance;
 
+    [SerializeField] private Dictionary<string, TutorialObjects> _roomObjects = new Dictionary<string, TutorialObjects>();
     public AudioSource dialougeVoiceSource;
     public TextMeshProUGUI subtitleText;
 
@@ -20,6 +22,9 @@ public class TutorialManager : MonoBehaviour
     public TextMeshProUGUI instructionText;
 
     private bool _requirementMet = false;
+
+    private DialougeSO _currentDialogue; // To keep track of what's playing
+
 
     private void Awake()
     {
@@ -45,11 +50,53 @@ public class TutorialManager : MonoBehaviour
         pc.canLeanAuthorized = false;
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.F12))
+        {
+            SkipStep();
+        }
+    }
+
+    private void SkipStep()
+    {
+        if (_currentDialogue == null) return;
+
+        Debug.Log("<color=cyan>Dev Skip: Jumping to next step.</color>");
+
+        // 1. Find the next dialogue in the chain
+        DialougeSO next = null;
+        if (_currentDialogue.dialogueAfterGoalReached != null)
+            next = _currentDialogue.dialogueAfterGoalReached;
+        else if (nextDialogueAfterTargets != null)
+            next = nextDialogueAfterTargets;
+
+        // 2. Clear UI instantly
+        subtitleText.text = "";
+        taskPanel.SetActive(false);
+        dialougeVoiceSource.Stop();
+
+        // 3. Play next or unlock player if at the end
+        if (next != null)
+        {
+            PlayDialouge(next);
+        }
+        else
+        {
+            // Safety: If there is nothing next, at least unfreeze the player
+            PlayerController.Instance.canMoveAtAll = true;
+            Debug.Log("No more dialogues in the chain.");
+        }
+    }
+
     public void PlayDialouge(DialougeSO dialogue)
     {
         PlayerController pc = PlayerController.Instance;
 
         StopAllCoroutines();
+
+        if (dialogue == null) return;
+        _currentDialogue = dialogue; // Store the reference here
 
         // Reset all tracking bools so the player has to do the action AGAIN
         WeaponSwapper swapper = pc.GetComponentInChildren<WeaponSwapper>();
@@ -130,6 +177,8 @@ public class TutorialManager : MonoBehaviour
 
             _requirementMet = false;
 
+            UpdateEnvironment(dialogue);
+
             // This will now work for silent tasks because the player is "unfrozen" above
             yield return new WaitUntil(() => CheckRequirement(dialogue));
 
@@ -202,11 +251,15 @@ public class TutorialManager : MonoBehaviour
             case TutorialRequirements.Interact:
                 bool interacted = pc.playerInteract.hasInteracted;
                 if (interacted) Debug.Log("<color=green>TUTORIAL: Interaction detected by Manager!</color>");
-                return interacted; 
+                return interacted;
 
             case TutorialRequirements.Lean:
                 // Checks if leanPivot is rotated away from center
                 return Mathf.Abs(pc.leanPivot.localRotation.z) > 0.05f;
+
+            case TutorialRequirements.LeanAndShoot:
+                bool isLeaning = Mathf.Abs(pc.leanPivot.localRotation.z) > 0.05f;
+                return isLeaning && targetsHit >= targetGoal;
 
             case TutorialRequirements.InspectAmmo:
                 if (currentWeapon == null) return false;
@@ -223,6 +276,29 @@ public class TutorialManager : MonoBehaviour
 
             default:
                 return false;
+        }
+    }
+
+    public void RegisterObject(TutorialObjects obj)
+    {
+        if (!_roomObjects.ContainsKey(obj.objectID))
+            _roomObjects.Add(obj.objectID, obj);
+    }
+
+    private void UpdateEnvironment(DialougeSO dialogue)
+    {
+        // Turn things OFF
+        foreach (string id in dialogue.objectsToDisable)
+        {
+            if (_roomObjects.TryGetValue(id, out TutorialObjects obj))
+                obj.SetState(false);
+        }
+
+        // Turn things ON
+        foreach (string id in dialogue.objectsToEnable)
+        {
+            if (_roomObjects.TryGetValue(id, out TutorialObjects obj))
+                obj.SetState(true);
         }
     }
 

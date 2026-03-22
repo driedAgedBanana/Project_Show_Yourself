@@ -1,0 +1,78 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56dea13167c4a45419e7aa74c50d2517, type: 3}
+  m_Name: Leaning
+  m_EditorClassIdentifier: Assembly-CSharp::DialougeSO
+  voiceClip: {fileID: 8300000, guid: 9638cc09f132945419576f2b358f9849, type: 3}
+  subtitleLines:
+  - text: Exceptional work, initiate.
+    startTime: 0
+    duration: 1.18
+  - text: 'Never forget: transitioning to your sidearm is always faster than performing
+      a reload. '
+    startTime: 0
+    duration: 4.15
+  - text: "You\u2019ve likely noted the profile difference\u2014"
+    startTime: 0
+    duration: 2.07
+  - text: 'your primary offers superior stopping power at the cost of high acoustic
+      signatures and significant recoil. '
+    startTime: 0
+    duration: 6
+  - text: Your sidearm is suppressed and stable, but lacks punch.
+    startTime: 0
+    duration: 3.14
+  - text: A successful operative balances both to control the engagement.
+    startTime: 0
+    duration: 4
+  - text: You wouldn't want to kick a wasp nest before you're ready to handle the
+      swarm, would you?
+    startTime: 0
+    duration: 4.5
+  - text: Advanced locomotion is now authorized.
+    startTime: 0
+    duration: 2.1
+  - text: 'You are cleared to lean left and right. '
+    startTime: 0
+    duration: 1.2
+  - text: This is essential for minimizing your silhouette while scanning unknown
+      sectors.
+    startTime: 0
+    duration: 4.8
+  - text: 'Resume the engagement, but this time: stay behind cover and lean into
+      your shots.'
+    startTime: 0
+    duration: 4.22
+  - text: Threat!
+    startTime: 0
+    duration: 0.3
+  unlockPrimary: 1
+  unlockSidearm: 1
+  lockEverything: 0
+  unlockBasicMovement: 1
+  unlockSprint: 0
+  unlockCrouch: 0
+  freezePlayer: 0
+  unlockLeaning: 1
+  unlockLiveFire: 1
+  unlockPhone: 0
+  requireTargetsHit: 10
+  dialogueAfterGoalReached: {fileID: 11400000, guid: 704eb26198cc02841832f4e539837bfa, type: 2}
+  showTaskPanel: 1
+  taskTitle: Leaning
+  taskInstruction: 'Lean with <color=yellow>[Q]</color> and <color=yellow>[E]</color>
+
+    You
+    can lean while firing'
+  completionRequirement: 0
+  targetsRequired: 0
+  disableObjectIDs: []

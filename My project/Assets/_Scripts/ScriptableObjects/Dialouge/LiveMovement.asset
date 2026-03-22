@@ -1,0 +1,66 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56dea13167c4a45419e7aa74c50d2517, type: 3}
+  m_Name: LiveMovement
+  m_EditorClassIdentifier: Assembly-CSharp::DialougeSO
+  voiceClip: {fileID: 8300000, guid: 23da538ad6f882f408e3d833ef27c7a0, type: 3}
+  subtitleLines:
+  - text: Substantial progress, Initiate.
+    startTime: 0
+    duration: 1.28
+  - text: 'We are transitioning to the final phase of the ballistic course: Live-Entity
+      Engagement.'
+    startTime: 0
+    duration: 6
+  - text: Welcome to the Movement Range.
+    startTime: 0
+    duration: 2
+  - text: "Your targets are the 'Undead'\u2014biologically compromised, hyper-hostile,
+      and always superior in number."
+    startTime: 0
+    duration: 7
+  - text: Rest easy; these specimens are currently under motor-restriction and sensory-dampening
+      protocols. They pose no immediate threat.
+    startTime: 0
+    duration: 7.21
+  - text: 'However, note their behavior: they lack higher cognition, but their auditory
+      senses remain acute.'
+    startTime: 0
+    duration: 7
+  - text: They will track the source of any unsuppressed fire.
+    startTime: 0
+    duration: 3
+  - text: Balance your arsenal. Use brute force when cornered, and stealth when navigating
+      the shadows.
+    startTime: 0
+    duration: 7
+  - text: The floor is yours, Initiate. Eliminate a few specimens to observe their
+      reactions before we proceed.
+    startTime: 0
+    duration: 7
+  unlockPrimary: 1
+  unlockSidearm: 1
+  lockEverything: 0
+  unlockBasicMovement: 1
+  unlockSprint: 0
+  unlockCrouch: 0
+  freezePlayer: 0
+  unlockLeaning: 1
+  unlockLiveFire: 1
+  unlockPhone: 0
+  requireTargetsHit: 8
+  dialogueAfterGoalReached: {fileID: 0}
+  showTaskPanel: 0
+  taskTitle: 
+  taskInstruction: 
+  completionRequirement: 0
+  targetsRequired: 0
