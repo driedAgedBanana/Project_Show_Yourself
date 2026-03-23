@@ -5,7 +5,7 @@ using UnityEngine;
 public class ItemSpawner : MonoBehaviour
 {
     [Header("Spawn Settings")]
-    public GameObject enemyPrefab;
+    public GameObject[] enemyPrefabs;
     public Transform[] spawnPoints;
     public float spawnInterval = 2f;
     public int spawnLimit = 10;
@@ -29,12 +29,21 @@ public class ItemSpawner : MonoBehaviour
         }
     }
 
-    void SpawnObjects()
+    private void SpawnObjects()
     {
-        if (enemyPrefab == null || spawnPoints.Length == 0) return;
+        if (enemyPrefabs.Length == 0 || spawnPoints.Length == 0) return;
 
-        Transform randomPoint = spawnPoints[Random.Range(0, spawnPoints.Length)];
-        GameObject newEnemy = Instantiate(enemyPrefab, randomPoint.position, randomPoint.rotation);
-        _activeEnemies.Add(newEnemy);
+        for (int i = 0; i < spawnLimit; i++)
+        {
+            // 1. Pick a random PREFAB from your array
+            GameObject randomPrefab = enemyPrefabs[Random.Range(0, enemyPrefabs.Length)];
+
+            // 2. Pick a random SPAWN POINT
+            Transform randomPoint = spawnPoints[Random.Range(0, spawnPoints.Length)];
+
+            // 3. Instantiate and store the reference
+            GameObject newEnemy = Instantiate(randomPrefab, randomPoint.position, randomPoint.rotation);
+            _activeEnemies.Add(newEnemy);
+        }
     }
 }

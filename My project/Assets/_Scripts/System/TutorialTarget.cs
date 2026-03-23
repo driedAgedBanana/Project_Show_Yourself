@@ -12,10 +12,15 @@ public class TutorialTarget : MonoBehaviour
         // Logic for "Destroying" the target
         isDestroyed = true;
 
-        // Notify the Manager that a target was hit
-        TutorialManager.Instance.OnTargetHit();
+        RegisterHit();
 
         // Visuals (Optional: Play a sound or fall over)
         Destroy(gameObject);
+    }
+
+    public void RegisterHit()
+    {
+        // Notify the Manager that a target was hit
+        TutorialManager.Instance.OnTargetHit();
     }
 }

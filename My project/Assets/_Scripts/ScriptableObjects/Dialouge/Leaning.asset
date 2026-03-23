@@ -16,11 +16,11 @@ MonoBehaviour:
   subtitleLines:
   - text: Exceptional work, initiate.
     startTime: 0
-    duration: 1.18
+    duration: 1
   - text: 'Never forget: transitioning to your sidearm is always faster than performing
       a reload. '
     startTime: 0
-    duration: 4.15
+    duration: 4
   - text: "You\u2019ve likely noted the profile difference\u2014"
     startTime: 0
     duration: 2.07
@@ -54,7 +54,7 @@ MonoBehaviour:
     duration: 4.22
   - text: Threat!
     startTime: 0
-    duration: 0.3
+    duration: 0.6
   unlockPrimary: 1
   unlockSidearm: 1
   lockEverything: 0
@@ -65,7 +65,7 @@ MonoBehaviour:
   unlockLeaning: 1
   unlockLiveFire: 1
   unlockPhone: 0
-  requireTargetsHit: 10
+  requireTargetsHit: 5
   dialogueAfterGoalReached: {fileID: 11400000, guid: 704eb26198cc02841832f4e539837bfa, type: 2}
   showTaskPanel: 1
   taskTitle: Leaning
@@ -75,4 +75,7 @@ MonoBehaviour:
     can lean while firing'
   completionRequirement: 0
   targetsRequired: 0
-  disableObjectIDs: []
+  objectsToEnable: []
+  objectsToDisable: []
+  objectsToEnableOnComplete: []
+  objectsToDisableOnComplete: []

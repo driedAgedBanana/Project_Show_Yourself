@@ -181,9 +181,7 @@ public class PlayerController : MonoBehaviour
         {
             HandleLook();
 
-            // New Logic: Weapons are ONLY allowed if:
-            // 1. Not in a restricted area AND the Instructor has given the green light.
-            bool canUse = !isInRestrictedArea;
+            bool canUse = !isInRestrictedArea && (primaryAuthorized || sidearmAuthorized);
             WeaponAllowed(canUse);
 
             GameManager.Instance.HideMouse();

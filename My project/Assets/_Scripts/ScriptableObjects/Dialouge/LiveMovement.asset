@@ -57,10 +57,14 @@ MonoBehaviour:
   unlockLeaning: 1
   unlockLiveFire: 1
   unlockPhone: 0
-  requireTargetsHit: 8
-  dialogueAfterGoalReached: {fileID: 0}
+  requireTargetsHit: 5
+  dialogueAfterGoalReached: {fileID: 11400000, guid: 4c5f51a4c96931a4e921a6f5d235e558, type: 2}
   showTaskPanel: 0
   taskTitle: 
   taskInstruction: 
   completionRequirement: 0
   targetsRequired: 0
+  objectsToEnable: []
+  objectsToDisable: []
+  objectsToEnableOnComplete: []
+  objectsToDisableOnComplete: []

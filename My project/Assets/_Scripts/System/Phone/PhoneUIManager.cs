@@ -7,7 +7,8 @@ public enum PhoneApp
     Health,
     WeaponInformations,
     Mission,
-    Notes
+    Notes,
+    Settings
 }
 public class PhoneUIManager : MonoBehaviour
 {
@@ -18,6 +19,7 @@ public class PhoneUIManager : MonoBehaviour
     public GameObject health;
     public GameObject mission;
     public GameObject weaponInformation;
+    public GameObject settings;
 
     private Dictionary<PhoneApp, GameObject> _phoneApps = new Dictionary<PhoneApp, GameObject>();
     [HideInInspector] public PhoneApp currentPhoneApp = PhoneApp.Map;
@@ -40,6 +42,7 @@ public class PhoneUIManager : MonoBehaviour
         _phoneApps[PhoneApp.Health] = health;
         _phoneApps[PhoneApp.Mission] = mission;
         _phoneApps[PhoneApp.WeaponInformations] = weaponInformation;
+        _phoneApps[PhoneApp.Settings] = settings;
 
         foreach (GameObject menu in _phoneApps.Values)
         {
@@ -84,5 +87,10 @@ public class PhoneUIManager : MonoBehaviour
     public void ToWeaponInformation()
     {
         SetAppState(PhoneApp.WeaponInformations);
+    }
+
+    public void ToSettings()
+    {
+        SetAppState(PhoneApp.Settings);
     }
 }

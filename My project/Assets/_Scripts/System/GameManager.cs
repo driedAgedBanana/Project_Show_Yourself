@@ -17,6 +17,7 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
+
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
@@ -30,14 +31,58 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        if(progressBar != null)
+        if (progressBar != null)
         {
             progressBar.interactable = false;
         }
 
-        if(loadingCanva != null)
+        if (loadingCanva != null)
         {
             loadingCanva.SetActive(false);
+        }
+
+        StartCoroutine(InitializeSceneLogic());
+    }
+
+    private IEnumerator InitializeSceneLogic()
+    {
+        // Wait until the end of the frame so PlayerController.Instance can initialize
+        yield return new WaitForEndOfFrame();
+
+        string currentScene = SceneManager.GetActiveScene().name;
+
+        if (currentScene != "Training_Facility")
+        {
+            PlayerController pc = PlayerController.Instance;
+
+            if (pc != null) // Safety check to prevent the NullReferenceException
+            {
+                // Unlock all movement and weapons
+                pc.primaryAuthorized = true;
+                pc.sidearmAuthorized = true;
+                pc.canMoveAtAll = true;
+                pc.canSprintAuthorized = true;
+                pc.canLeanAuthorized = true;
+
+                // Unlock the Phone
+                if (pc.phoneManager != null)
+                {
+                    pc.phoneManager.canOpenPhone = true;
+                }
+
+                // Unlock Live Fire for all weapons
+                WeaponBase[] weapons = pc.GetComponentsInChildren<WeaponBase>(true);
+                foreach (WeaponBase w in weapons)
+                {
+                    w.instructorTriggerAuth = true;
+                }
+
+                Debug.Log("GameManager: Non-Tutorial scene detected. All restrictions lifted.");
+            }
+            else
+            {
+                Debug.LogError("GameManager: Could not find PlayerController.Instance!");
+            }
         }
     }
 
@@ -45,7 +90,7 @@ public class GameManager : MonoBehaviour
     {
         _sceneToLoad = sceneName;
 
-        if(loadingCanva != null)
+        if (loadingCanva != null)
         {
             loadingCanva.SetActive(true);
         }
@@ -60,7 +105,7 @@ public class GameManager : MonoBehaviour
     private IEnumerator LoadNextScene()
     {
         yield return new WaitForSeconds(0.1f);
-        
+
         loadingCanva?.SetActive(true);
 
         AsyncOperation operation = SceneManager.LoadSceneAsync(_sceneToLoad);
@@ -68,14 +113,14 @@ public class GameManager : MonoBehaviour
 
         while (!operation.isDone)
         {
-            if(progressBar != null)
+            if (progressBar != null)
             {
                 progressBar.value = operation.progress;
             }
 
             yield return null;
 
-            if(operation.progress >= 0.9f)
+            if (operation.progress >= 0.9f)
             {
                 operation.allowSceneActivation = true;
             }

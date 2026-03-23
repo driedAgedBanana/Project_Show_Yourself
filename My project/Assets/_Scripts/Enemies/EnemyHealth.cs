@@ -5,6 +5,8 @@ using System.Collections;
 
 public class EnemyHealth : MonoBehaviour
 {
+    public TutorialTarget tutorialTarget;
+
     public int maxHealth = 100;
     public GameObject bloodHitParticle;
     public ParticleSystem disappearParticle;
@@ -38,14 +40,19 @@ public class EnemyHealth : MonoBehaviour
 
         ragdollController.SetRagdoll(false);
 
-        if(disappearParticle != null)
+        if (disappearParticle != null)
         {
             disappearParticle.Stop();
         }
 
-        if(enemyRenderer != null)
+        if (enemyRenderer != null)
         {
             enemyRenderer.enabled = true;
+        }
+
+        if (tutorialTarget == null)
+        {
+            return;
         }
     }
 
@@ -60,8 +67,14 @@ public class EnemyHealth : MonoBehaviour
         if (isDead) return;
         _currentHealth -= damage;
 
-        GetComponent<EnemyStateBehaviour>().TriggerGetHit();
+        // Wrap this in a null check!
+        EnemyStateBehaviour behaviour = GetComponent<EnemyStateBehaviour>();
+        if (behaviour != null)
+        {
+            behaviour.TriggerGetHit();
+        }
 
+        // Visuals
         if (bloodHitParticle != null)
         {
             GameObject bloodParticle = Instantiate(bloodHitParticle, hitPoint, Quaternion.LookRotation(hitPoint));
@@ -80,21 +93,23 @@ public class EnemyHealth : MonoBehaviour
         rb.isKinematic = false;
         bodyCollider.enabled = false;
 
+        // 1. Handle State/Audio
         EnemyStateBehaviour behaviour = GetComponent<EnemyStateBehaviour>();
-
-        AudioManager.Instance.PlaySounds(behaviour.dead, transform.position);
-
-        if (bloodHitParticle != null)
+        if (behaviour != null) // Add a safety check here!
         {
-            GameObject bloodParticle = Instantiate(bloodHitParticle, hitPoint, Quaternion.LookRotation(hitPoint));
-            Destroy(bloodParticle, 1f);
+            AudioManager.Instance.PlaySounds(behaviour.dead, transform.position);
         }
 
-        OnEnemyKilled?.Invoke();
+        // 2. Tutorial Check (Make this a standalone block so it doesn't block other code)
+        if (tutorialTarget != null)
+        {
+            tutorialTarget.RegisterHit();
+        }
 
+        // 3. Essential Death Logic (This must run for EVERY enemy)
+        OnEnemyKilled?.Invoke();
         ragdollController.SetRagdoll(true);
         StartCoroutine(HideBody());
-
         CalculateDropLoot();
     }
 
@@ -127,7 +142,7 @@ public class EnemyHealth : MonoBehaviour
 
     private void CalculateDropLoot()
     {
-        foreach(EnemiesDeadLoot loot in lootTable)
+        foreach (EnemiesDeadLoot loot in lootTable)
         {
             float roll = UnityEngine.Random.Range(0f, 100f);
             if (roll <= loot.dropChance)

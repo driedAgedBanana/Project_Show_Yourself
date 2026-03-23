@@ -1,7 +1,8 @@
-using UnityEngine;
-using TMPro;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
+using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class TutorialManager : MonoBehaviour
 {
@@ -37,17 +38,6 @@ public class TutorialManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
-    }
-
-    private void Start()
-    {
-        // If we are in the Tutorial Scene, lock the player down immediately
-        PlayerController pc = PlayerController.Instance;
-        pc.primaryAuthorized = false;
-        pc.sidearmAuthorized = false;
-        pc.canMoveAtAll = false;
-        pc.canSprintAuthorized = false;
-        pc.canLeanAuthorized = false;
     }
 
     private void Update()

@@ -1055,6 +1055,7 @@ GameObject:
   - component: {fileID: 9071669330773166094}
   - component: {fileID: 7759306354274811935}
   - component: {fileID: 4063173299238248689}
+  - component: {fileID: 1226831289948472563}
   m_Layer: 0
   m_Name: TutorialZombie
   m_TagString: Untagged
@@ -1177,6 +1178,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b6fbb9c5139db14db47cf589bc02602, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyHealth
+  tutorialTarget: {fileID: 1226831289948472563}
   maxHealth: 100
   bloodHitParticle: {fileID: 194062, guid: 8b81f2bc17dd06346b0d4cb5d1249404, type: 3}
   disappearParticle: {fileID: 19885060, guid: fe172aea7216ff249ba28a07e47596b1, type: 3}
@@ -1186,7 +1188,11 @@ MonoBehaviour:
   headCollider: {fileID: 220827599005428051}
   bodyCollider: {fileID: 9071669330773166094}
   headBone: {fileID: 4854274546089016}
-  lootTable: []
+  lootTable:
+  - itemPrefab: {fileID: 1495748077833478, guid: f0e4f968d921c9e429e57aa61a766ca2, type: 3}
+    dropChance: 50
+  - itemPrefab: {fileID: 1364968598790260, guid: 36c9aa7d916c8e74497bf3d85ab5b785, type: 3}
+    dropChance: 50
 --- !u!95 &95921630161195528
 Animator:
   serializedVersion: 7
@@ -1327,6 +1333,19 @@ MonoBehaviour:
   slowWhenNotFacingTarget: 1
   whenCloseToDestination: 0
   constrainInsideGraph: 1
+--- !u!114 &1226831289948472563
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1418193975600942}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26630141272b8de46b8a78694a5e47a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TutorialTarget
+  isDestroyed: 0
 --- !u!1 &1423411692011380
 GameObject:
   m_ObjectHideFlags: 0

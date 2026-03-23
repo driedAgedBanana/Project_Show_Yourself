@@ -25,6 +25,7 @@ public class PhoneManager : MonoBehaviour
             phone.transform.position = pointB.position;
             phone.SetActive(false);
         }
+
     }
 
     public void OnTogglePhone(InputAction.CallbackContext ctx)

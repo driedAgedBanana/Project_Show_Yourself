@@ -1,0 +1,67 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56dea13167c4a45419e7aa74c50d2517, type: 3}
+  m_Name: Observation
+  m_EditorClassIdentifier: Assembly-CSharp::DialougeSO
+  voiceClip: {fileID: 8300000, guid: 81011abc1aa58fe4e96832811365d500, type: 3}
+  subtitleLines:
+  - text: 'Observation: Neutralized entities will de-materialize after a short duration.'
+    startTime: 0
+    duration: 4
+  - text: This is a programmed safeguard to reduce cognitive load on the system.
+    startTime: 0
+    duration: 4
+  - text: "Upon removal, the simulation may cycle and manifest high-value utility
+      items in their place\u2014providing tactical rewards for your efficiency."
+    startTime: 0
+    duration: 9
+  - text: Stay vigilant for these drops.
+    startTime: 0
+    duration: 1.5
+  - text: We are approaching the conclusion of your induction, Initiate.
+    startTime: 0
+    duration: 3
+  - text: Your performance has been... noted.
+    startTime: 0
+    duration: 2
+  - text: The final directive involves your Personal Digital Assistant, or PDA.
+    startTime: 0
+    duration: 5
+  - text: This device synchronized with your biometrics to monitor vitals, localized
+      mapping, and mission-critical data.
+    startTime: 0
+    duration: 6.5
+  - text: 'Authorization is now active. Open the interface and verify your system
+      status. '
+    startTime: 0
+    duration: 5
+  unlockPrimary: 0
+  unlockSidearm: 0
+  lockEverything: 1
+  unlockBasicMovement: 0
+  unlockSprint: 0
+  unlockCrouch: 0
+  freezePlayer: 1
+  unlockLeaning: 1
+  unlockLiveFire: 0
+  unlockPhone: 1
+  requireTargetsHit: 0
+  dialogueAfterGoalReached: {fileID: 0}
+  showTaskPanel: 1
+  taskTitle: PDA
+  taskInstruction: Open PDA with <color=yellow>[P]</color>
+  completionRequirement: 0
+  targetsRequired: 0
+  objectsToEnable: []
+  objectsToDisable: []
+  objectsToEnableOnComplete: []
+  objectsToDisableOnComplete: []

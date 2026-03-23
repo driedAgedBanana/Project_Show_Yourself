@@ -316,6 +316,7 @@ MonoBehaviour:
   _movingWallPrefab: {fileID: 4725644372996588504, guid: 0167ce69ef16d464494f07da13098ff6, type: 3}
   _movingWallChance: 0.06
   _playerPrefab: {fileID: 1982049497142310322, guid: a271d79b42c78d546a33b5543674a931, type: 3}
+  _unlockBox: {fileID: 3329557677386295162, guid: be9eda9aa40511c498f0aa295f6e80c3, type: 3}
   _enemyPrefabs:
   - {fileID: 1418193975600942, guid: 05d1315c03087c749b3444976575811c, type: 3}
   - {fileID: 1418193975600942, guid: 8cc0a27c27868ca45b0e7407b76aeb8a, type: 3}

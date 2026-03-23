@@ -26,6 +26,6 @@ public class DistanceCheck : MonoBehaviour
     {
         float distance = Vector3.Distance(transform.position, destinationPrefab.transform.position);
 
-        distanceAmountText.text = $"Afstand tot eindpunt: {distance:F2} meters";
+        distanceAmountText.text = $"Distance to end point: {distance:F2} metres";
     }
 }
