@@ -10874,6 +10874,10 @@ MonoBehaviour:
   - {fileID: 8300000, guid: e4d41b2f1624fda43b1b89c90648c366, type: 3}
   - {fileID: 8300000, guid: 8db1e6213fd36b643bf4e8204d6a25b5, type: 3}
   - {fileID: 8300000, guid: 9d94f56826a33284b90aba7acbdc7b06, type: 3}
+  - {fileID: 8300000, guid: c806e67cabd266c43830fce80bc6e77a, type: 3}
+  - {fileID: 8300000, guid: 0ddb93e0e50c47d4989452b8ede8e40f, type: 3}
+  - {fileID: 8300000, guid: 05aa496e3cbf8414892eadeda5f6ccb3, type: 3}
+  - {fileID: 8300000, guid: 1e95e937270fe8848a184febdd03aefc, type: 3}
   buttonPressed: {fileID: 11400000, guid: ceaa6875f3d77ae4d8688607899ed3c8, type: 2}
   songNames: {fileID: 1148492520}
 --- !u!82 &379453676
