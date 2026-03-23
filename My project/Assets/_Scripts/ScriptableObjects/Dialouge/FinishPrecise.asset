@@ -46,3 +46,6 @@ MonoBehaviour:
   objectsToEnable: []
   objectsToDisable:
   - Container_01
+  objectsToEnableOnComplete: []
+  objectsToDisableOnComplete:
+  - Container_01

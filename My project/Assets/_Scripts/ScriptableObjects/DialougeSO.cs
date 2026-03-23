@@ -65,8 +65,11 @@ public class DialougeSO : ScriptableObject
     public int targetsRequired = 0; // Only used if requirement is ShootTargets
 
     [Header("Environmental Interaction")]
-    public string[] objectsToEnable;  // IDs of objects to turn ON
-    public string[] objectsToDisable; // IDs of objects to turn OFF
+    public string[] objectsToEnable;
+    public string[] objectsToDisable;
+
+    public string[] objectsToEnableOnComplete;
+    public string[] objectsToDisableOnComplete;
 
     // Debug property to see how long the audio is in the inspector
     public float TotalAudioLength => voiceClip != null ? voiceClip.length : 0f;

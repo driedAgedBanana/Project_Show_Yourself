@@ -93,6 +93,8 @@ public class TutorialManager : MonoBehaviour
     {
         PlayerController pc = PlayerController.Instance;
 
+        ApplyImmediateEnvironment(dialogue);
+
         StopAllCoroutines();
 
         if (dialogue == null) return;
@@ -176,8 +178,6 @@ public class TutorialManager : MonoBehaviour
             yield return StartCoroutine(FadePanel(1f, 0.4f));
 
             _requirementMet = false;
-
-            UpdateEnvironment(dialogue);
 
             // This will now work for silent tasks because the player is "unfrozen" above
             yield return new WaitUntil(() => CheckRequirement(dialogue));
@@ -281,20 +281,27 @@ public class TutorialManager : MonoBehaviour
 
     public void RegisterObject(TutorialObjects obj)
     {
+        if (obj == null || string.IsNullOrEmpty(obj.objectID)) return;
+
         if (!_roomObjects.ContainsKey(obj.objectID))
+        {
             _roomObjects.Add(obj.objectID, obj);
+        }
+        else
+        {
+            // Update the reference if the ID already exists (useful for scene reloads)
+            _roomObjects[obj.objectID] = obj;
+        }
     }
 
-    private void UpdateEnvironment(DialougeSO dialogue)
+    private void ApplyImmediateEnvironment(DialougeSO dialogue)
     {
-        // Turn things OFF
         foreach (string id in dialogue.objectsToDisable)
         {
             if (_roomObjects.TryGetValue(id, out TutorialObjects obj))
                 obj.SetState(false);
         }
 
-        // Turn things ON
         foreach (string id in dialogue.objectsToEnable)
         {
             if (_roomObjects.TryGetValue(id, out TutorialObjects obj))
