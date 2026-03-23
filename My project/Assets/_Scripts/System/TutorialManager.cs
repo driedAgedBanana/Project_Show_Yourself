@@ -8,7 +8,7 @@ public class TutorialManager : MonoBehaviour
 {
     public static TutorialManager Instance;
 
-    [SerializeField] private Dictionary<string, TutorialObjects> _roomObjects = new Dictionary<string, TutorialObjects>();
+    private Dictionary<string, TutorialObjects> _roomObjects;
     public AudioSource dialougeVoiceSource;
     public TextMeshProUGUI subtitleText;
 
@@ -32,6 +32,7 @@ public class TutorialManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
+            _roomObjects = new Dictionary<string, TutorialObjects>();
             DontDestroyOnLoad(gameObject);
         }
         else
@@ -46,6 +47,21 @@ public class TutorialManager : MonoBehaviour
         {
             SkipStep();
         }
+    }
+
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        _roomObjects.Clear();
     }
 
     private void SkipStep()
@@ -84,6 +100,16 @@ public class TutorialManager : MonoBehaviour
         PlayerController pc = PlayerController.Instance;
 
         ApplyImmediateEnvironment(dialogue);
+
+        // HARD RESET player state before applying dialogue rules
+        pc.canMoveAtAll = false;
+        pc.primaryAuthorized = false;
+        pc.sidearmAuthorized = false;
+        pc.canSprintAuthorized = false;
+        pc.canLeanAuthorized = false;
+
+        if (pc.phoneManager != null)
+            pc.phoneManager.canOpenPhone = false;
 
         StopAllCoroutines();
 
@@ -286,16 +312,27 @@ public class TutorialManager : MonoBehaviour
 
     private void ApplyImmediateEnvironment(DialougeSO dialogue)
     {
-        foreach (string id in dialogue.objectsToDisable)
+        if (dialogue == null) return;
+
+        if (_roomObjects == null)
+            _roomObjects = new Dictionary<string, TutorialObjects>();
+
+        if (dialogue.objectsToDisable != null)
         {
-            if (_roomObjects.TryGetValue(id, out TutorialObjects obj))
-                obj.SetState(false);
+            foreach (string id in dialogue.objectsToDisable)
+            {
+                if (_roomObjects.TryGetValue(id, out TutorialObjects obj) && obj != null)
+                    obj.SetState(false);
+            }
         }
 
-        foreach (string id in dialogue.objectsToEnable)
+        if (dialogue.objectsToEnable != null)
         {
-            if (_roomObjects.TryGetValue(id, out TutorialObjects obj))
-                obj.SetState(true);
+            foreach (string id in dialogue.objectsToEnable)
+            {
+                if (_roomObjects.TryGetValue(id, out TutorialObjects obj) && obj != null)
+                    obj.SetState(true);
+            }
         }
     }
 

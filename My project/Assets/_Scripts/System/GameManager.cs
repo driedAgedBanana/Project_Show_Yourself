@@ -40,50 +40,43 @@ public class GameManager : MonoBehaviour
         {
             loadingCanva.SetActive(false);
         }
-
-        StartCoroutine(InitializeSceneLogic());
     }
 
-    private IEnumerator InitializeSceneLogic()
+    private void ApplySceneRules(string sceneName)
     {
-        // Wait until the end of the frame so PlayerController.Instance can initialize
-        yield return new WaitForEndOfFrame();
+        PlayerController pc = PlayerController.Instance;
 
-        string currentScene = SceneManager.GetActiveScene().name;
-
-        if (currentScene != "Training_Facility")
+        if (pc == null)
         {
-            PlayerController pc = PlayerController.Instance;
-
-            if (pc != null) // Safety check to prevent the NullReferenceException
-            {
-                // Unlock all movement and weapons
-                pc.primaryAuthorized = true;
-                pc.sidearmAuthorized = true;
-                pc.canMoveAtAll = true;
-                pc.canSprintAuthorized = true;
-                pc.canLeanAuthorized = true;
-
-                // Unlock the Phone
-                if (pc.phoneManager != null)
-                {
-                    pc.phoneManager.canOpenPhone = true;
-                }
-
-                // Unlock Live Fire for all weapons
-                WeaponBase[] weapons = pc.GetComponentsInChildren<WeaponBase>(true);
-                foreach (WeaponBase w in weapons)
-                {
-                    w.instructorTriggerAuth = true;
-                }
-
-                Debug.Log("GameManager: Non-Tutorial scene detected. All restrictions lifted.");
-            }
-            else
-            {
-                Debug.LogError("GameManager: Could not find PlayerController.Instance!");
-            }
+            Debug.LogError("GameManager: PlayerController not found!");
+            return;
         }
+
+        // DO NOT touch anything in training scene
+        if (sceneName == "Training_Facility")
+        {
+            Debug.Log("GameManager: Training scene → TutorialManager has full control.");
+            return;
+        }
+
+        // For ALL other scenes → fully unlock player
+        pc.primaryAuthorized = true;
+        pc.sidearmAuthorized = true;
+        pc.canMoveAtAll = true;
+        pc.canSprintAuthorized = true;
+        pc.canLeanAuthorized = true;
+        pc.isInRestrictedArea = false;
+
+        if (pc.phoneManager != null)
+            pc.phoneManager.canOpenPhone = true;
+
+        WeaponBase[] weapons = pc.GetComponentsInChildren<WeaponBase>(true);
+        foreach (WeaponBase w in weapons)
+        {
+            w.instructorTriggerAuth = true;
+        }
+
+        Debug.Log("GameManager: Non-training scene → unrestricted.");
     }
 
     public void StartLoadingScene(string sceneName)
@@ -122,6 +115,7 @@ public class GameManager : MonoBehaviour
 
             if (operation.progress >= 0.9f)
             {
+                yield return new WaitForSeconds(0.2f); // give systems time
                 operation.allowSceneActivation = true;
             }
         }
@@ -149,6 +143,8 @@ public class GameManager : MonoBehaviour
         {
             HideMouse();
         }
+
+        ApplySceneRules(scene.name);
     }
 
     public void HideMouse()
