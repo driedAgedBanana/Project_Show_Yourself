@@ -29,7 +29,7 @@ MonoBehaviour:
   - text: Stand by... find your focus... THREAT!
     startTime: 0
     duration: 3
-  unlockPrimary: 0
+  unlockPrimary: 1
   unlockSidearm: 0
   lockEverything: 0
   unlockBasicMovement: 0
@@ -51,3 +51,7 @@ MonoBehaviour:
     Press <color=yellow>[R]</color> to reload'
   completionRequirement: 0
   targetsRequired: 0
+  objectsToEnable: []
+  objectsToDisable: []
+  objectsToEnableOnComplete: []
+  objectsToDisableOnComplete: []

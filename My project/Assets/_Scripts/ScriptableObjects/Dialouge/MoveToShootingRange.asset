@@ -25,7 +25,7 @@ MonoBehaviour:
       not to get lost on the way."
     startTime: 0
     duration: 6
-  unlockPrimary: 0
+  unlockPrimary: 1
   unlockSidearm: 0
   lockEverything: 0
   unlockBasicMovement: 1
@@ -42,3 +42,7 @@ MonoBehaviour:
   taskInstruction: 
   completionRequirement: 0
   targetsRequired: 0
+  objectsToEnable: []
+  objectsToDisable: []
+  objectsToEnableOnComplete: []
+  objectsToDisableOnComplete: []
